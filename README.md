@@ -37,19 +37,10 @@ Contoso Coffee House started a Loyalty Program about 10 years ago where every $1
 
 ![Architecture](/Architecture/Solution.png)
 
-## SLA Details
-A more concrete overview of the SLA uptime of how long the solution can be down in the context of the duration below.
-
-1. Daily: 1m 26s
-2. Weekly: 10m 4s
-3. Monthly: 43m 49s
-4. Quarterly: 2h 11m 29s
-5. Yearly: 8h 45m 56s
-
 # Demo
-The Customer Service App can be hosted on many different platforms, which includes directly on a VM (VMSS), Container (AKS), and App Service. As such, this project by itself is not typically used independently. 
+We will host this solution in Azure Kubernetes Service (AKS)
 
-The technology stack used includes .NET 6, MS SSQL, Azure Storage Queue, Azure Service Bus, and Azure Functions. Most services can be run and debugged locally via emulators except for Azure Service Bus.
+The technology stack used includes .NET 6, MS SSQL, Azure Service Bus, and Azure Functions for processing backend requests. Most services can be run and debugged locally via emulators except for Azure Service Bus.
 
 ## Use this Project to showcase solutions
 1. This solution employs a microservice architecture where we have the API and legacy API service in relation to the Member Id question. It may not make sense for the business to include the old Member Id as part of the new system as it will be retired in 3 years. As such, we are keeping the legacy API. Here, it may make sense to think about leveraging APIM so we have a consistent API experience for our microservice.
@@ -64,18 +55,35 @@ If you are interested to run this Solution locally as a Developer, you will need
 ```
 
 # Get Started
-To deploy artifcats in your Azure subscription (Azure Storage for zip deployments into App Services and Images into Azure Container Registry), please follow the steps below.
-1. Fork this git repo. See: https://docs.github.com/en/get-started/quickstart/fork-a-repo
-2. Follow the steps in https://github.com/msft-davidlee/contoso-governance to create the necessary resources via Azure Blueprint.
-3. Create the following secret(s) in your github per environment. Be sure to populate with your desired values. The values below are all suggestions
+Please follow the steps below to deploy this solution into your Azure Subscription. Note that you will either need to use CloudShell or ensure Azure CLI is installed locally.
+
+1. We need to execute a blueprint deployment to create our environment, shared resources and take care of RBAC. The first step is to create a Service Principal which is assigned into each resource group. Take note of the tenant Id, appId and password.
+```
+az ad sp create-for-rbac -n "Contoso Coffee House GitHub"
+```
+![Create Service Principal](/doc/CreateServicePrincipal.png)
+2. We need to get the Object Id for the Service principal we have created. This is used as input to our Blueprint deployment later.
+```
+az ad sp show --id <appId from the previous command> --query "objectId" | ConvertFrom-Json
+```
+![Get Service Principal Object Id](/doc/GetServicePrincipalObjectId.png)
+3. We need to get the Object Id for our user. This is used as input to our Blueprint deployment later so we can grant oursleves access to shared resources such as Azure Key Vault.
+```
+az ad signed-in-user show --query 'objectId' | ConvertFrom-Json
+```
+![Get Signed In User Object Id](/doc/GetSignedInUserObjectId.png)
+4. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this git repo locally.
+5. We should cd into the blueprint directory and execute our blueprint.bicep with the following command.
+```
+DeployBlueprint.ps1 -SVC_PRINCIPAL_ID <Object Id for Contoso Coffee House GitHub Service Principal> -MY_PRINCIPAL_ID <Object Id for your user>
+```
+6. Create the following secret(s) in your github dev environment. Be sure to populate with your desired values from the previous steps. 
+7. Create a branch named demo or dev and push into your git remote repo to kick off the CI process.
 
 ## Secrets
 | Name | Value |
 | --- | --- |
-| MS_AZURE_CREDENTIALS | <pre>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;"clientId": "",<br/>&nbsp;&nbsp;&nbsp;&nbsp;"clientSecret": "", <br/>&nbsp;&nbsp;&nbsp;&nbsp;"subscriptionId": "",<br/>&nbsp;&nbsp;&nbsp;&nbsp;"tenantId": "" <br/>}</pre> |
-
-# DevOps Pipeline
-There is a azure-pipelines.yml file which you can use if you want to demo a connection from GitHub Repository to Azure Pipeline. As such, you are not using Azure Repo, but GitHub to store your code which gives you an advantage of having the ability to do code scanning using GitHub CodeQL.
+| CCH_AZURE_CREDENTIALS | <pre>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;"clientId": "",<br/>&nbsp;&nbsp;&nbsp;&nbsp;"clientSecret": "", <br/>&nbsp;&nbsp;&nbsp;&nbsp;"subscriptionId": "",<br/>&nbsp;&nbsp;&nbsp;&nbsp;"tenantId": "" <br/>}</pre> |
 
 ## Have an issue?
 You are welcome to create an issue if you need help but please note that there is no timeline to answer or resolve any issues you have with the contents of this project. Use the contents of this project at your own risk! If you are interested to volunteer to maintain this, please feel free to reach out to be added as a contributor and send Pull Requests (PR).
