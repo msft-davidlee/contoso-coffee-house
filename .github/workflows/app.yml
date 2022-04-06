@@ -114,7 +114,7 @@ jobs:
         uses: azure/sql-action@v1.2
         with:
           connection-string: ${{ steps.resolve-sql-connectionstring.outputs.sqlConnectionString }}
-          dacpac-package: './Db/App.dacpac'         
+          dacpac-package: './Db/cch.dacpac'         
 
       - id: deploy_apps
         name: Deploy apps
