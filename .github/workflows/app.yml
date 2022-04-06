@@ -7,9 +7,8 @@ on:
       - 'README.md'
 
 jobs:
-  build_deploy:
-    name: Build and Deploy 
-    needs: setup   
+  ci_build:
+    name: CI Build
     runs-on: windows-latest  
     steps:
       - uses: actions/checkout@v2
@@ -45,3 +44,80 @@ jobs:
       - id: buid-and-deploy
         name: Build apps and container images
         run: .\Deployment\Build.ps1
+
+  cd_deploy:
+    name: Deploy
+    needs: ci_build
+    environment: dev
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Azure CLI Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.CCH_AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+
+      - id: resolve-shared-resources
+        name: Resolve shared resources
+        working-directory: .\deployment
+        run: |
+          .\ResolveSharedResources.ps1 -Prefix ${{ secrets.PREFIX }}
+
+      - name: Build networking
+        id: build_networking
+        uses: azure/arm-deploy@v1
+        with:
+          deploymentName: 'deploy-networking-${{ github.run_number }}'
+          resourceGroupName: ${{ steps.resolve-shared-resources.outputs.networkResourceGroup }}
+          template: ./deployment/networking.bicep
+          parameters: >
+            branch=${{ github.ref }}
+            environment=dev
+            sourceIp=${{ secrets.SOURCE_IP }}
+            version=${{ github.run_number }}          
+
+      - name: Build environment
+        id: build_env
+        uses: azure/arm-deploy@v1
+        with:
+          deploymentName: 'deploy-environment-${{ github.run_number }}'
+          resourceGroupName: ${{ steps.resolve-shared-resources.outputs.appResourceGroup }}
+          template: ./deployment/app.bicep
+          parameters: >
+            version=${{ github.run_number }}
+            location=${{ steps.resolve-shared-resources.outputs.location }}
+            keyVaultName=${{ steps.resolve-shared-resources.outputs.keyVaultName }}            
+            prefix=${{ secrets.PREFIX }}
+            appEnvironment=${{ needs.setup.outputs.build_env }}
+            branch=${{ github.ref }}
+            keyVaultName=${{ steps.resolve-shared-resources.outputs.keyVaultName }}
+            sharedResourceGroup=${{ steps.resolve-shared-resources.outputs.sharedResourceGroup }}
+            nodesResourceGroup=${{ steps.resolve-shared-resources.outputs.nodesResourceGroup }}
+            subnetId=${{ steps.resolve-shared-resources.outputs.subnetId }}
+            aksMSIId=${{ steps.resolve-shared-resources.outputs.managedIdentityId }}
+
+      - id: deploy_db
+        name: Deploy database
+        uses: azure/sql-action@v1.2
+        with:
+          connection-string: ${{ steps.deploy_env.outputs.sqlConnectionString }}
+          dacpac-package: './Db/App.dacpac'         
+
+
+      - id: deploy_apps
+        name: Deploy apps
+        run: |
+          .\Deployment\Deploy.ps1 `
+          -AKS_RESOURCE_GROUP ${{ steps.resolve-shared-resources.outputs.appResourceGroup }} `
+          -AKS_NAME ${{ steps.deploy_env.outputs.aksName }} `
+          -DbName ${{ steps.deploy_env.outputs.dbname }} `
+          -SqlServer ${{ steps.deploy_env.outputs.sqlserver }} `
+          -SqlUsername ${{ steps.deploy_env.outputs.sqlusername }} `
+          -Backend ${{ steps.deploy_env.outputs.backend }} `          
+          -AKSMSIId ${{ steps.deploy_env.outputs.managedIdentityId }} `
+          -KeyVaultName ${{ steps.resolve-shared-resources.outputs.keyVaultName }} `
+          -TenantId ${{ steps.deploy_env.outputs.tenantId }} `
+          -BackendStorageName ${{ steps.deploy_env.outputs.backendappStorageName }} `
+          -QueueName ${{ steps.deploy_env.outputs.queueName }}   

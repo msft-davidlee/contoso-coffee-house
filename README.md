@@ -78,7 +78,7 @@ az ad signed-in-user show --query 'objectId' | ConvertFrom-Json
 DeployBlueprint.ps1 -SVC_PRINCIPAL_ID <Object Id for Contoso Coffee House GitHub Service Principal> -MY_PRINCIPAL_ID <Object Id for your user>
 ```
 6. Create the following secret(s) in your github dev environment. Be sure to populate with your desired values from the previous steps. 
-7. Create a branch named demo or dev and push into your git remote repo to kick off the CI process.
+7. Create a branch named demo or dev and push into your git remote repo to kick off the CI process because it is tied to the name of the git branch.
 
 ## Secrets
 | Name | Value |
