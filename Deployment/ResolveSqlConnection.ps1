@@ -16,7 +16,7 @@ function GetResource([string]$stackName, [string]$stackEnvironment) {
 }
 $ErrorActionPreference = "Stop"
 
-$all = GetResource -stackName cch-aks -stackEnvironment dev | ConvertFrom-Json
+$all = GetResource -stackName cch-aks -stackEnvironment dev
 $sql = $all | Where-Object { $_.type -eq 'Microsoft.Sql/servers' }
 $sqlSv = az sql server show --name $sql.name -g $sql.resourceGroup | ConvertFrom-Json
 $SqlServer = $sqlSv.fullyQualifiedDomainName
