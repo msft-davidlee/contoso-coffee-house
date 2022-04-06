@@ -7,8 +7,7 @@ param(
     [Parameter(Mandatory = $true)][string]$Backend,
     [Parameter(Mandatory = $true)][string]$AKSMSIId,
     [Parameter(Mandatory = $true)][string]$KeyVaultName,
-    [Parameter(Mandatory = $true)][string]$TenantId,
-    [Parameter(Mandatory = $true)][string]$QueueStorageName,
+    [Parameter(Mandatory = $true)][string]$TenantId,    
     [Parameter(Mandatory = $true)][string]$BackendStorageName,
     [Parameter(Mandatory = $true)][string]$QueueName)
 
