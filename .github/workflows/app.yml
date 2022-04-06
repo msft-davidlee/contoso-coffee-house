@@ -32,10 +32,6 @@ jobs:
         with:
           files: ${{ env.RUNNER_TEMP }}/TestResults/*.xml
 
-      - uses: kheiakiyama/install-azcopy-action@v1
-        with:
-          version: 'v10'
-
       - name: Azure CLI Login
         uses: azure/login@v1
         with:
@@ -60,24 +56,30 @@ jobs:
           creds: ${{ secrets.CCH_AZURE_CREDENTIALS }}
           enable-AzPSSession: true
 
-      - id: resolve-shared-resources
-        name: Resolve shared resources
+      - id: resolve-networking-shared-resources
+        name: Resolve networking shared resources
         working-directory: .\deployment
         run: |
-          .\ResolveSharedResources.ps1 -Prefix ${{ secrets.PREFIX }}
+          .\ResolveNetworkSharedResources.ps1
 
       - name: Build networking
         id: build_networking
         uses: azure/arm-deploy@v1
         with:
           deploymentName: 'deploy-networking-${{ github.run_number }}'
-          resourceGroupName: ${{ steps.resolve-shared-resources.outputs.networkResourceGroup }}
+          resourceGroupName: ${{ steps.resolve-networking-shared-resources.outputs.resourceGroup }}
           template: ./deployment/networking.bicep
           parameters: >
             branch=${{ github.ref }}
             environment=dev
             sourceIp=${{ secrets.SOURCE_IP }}
-            version=${{ github.run_number }}          
+            version=${{ github.run_number }}
+
+      - id: resolve-shared-resources
+        name: Resolve shared resources
+        working-directory: .\deployment
+        run: |
+          .\ResolveSharedResources.ps1 -Prefix ${{ secrets.PREFIX }}
 
       - name: Build environment
         id: build_env
