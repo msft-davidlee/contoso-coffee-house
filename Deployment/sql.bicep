@@ -57,4 +57,3 @@ resource sqlFirewall 'Microsoft.Sql/servers/virtualNetworkRules@2021-08-01-previ
 
 output sqlFqdn string = sql.properties.fullyQualifiedDomainName
 output dbName string = dbName
-output sqlConnectionString string = 'Data Source=${sql.properties.fullyQualifiedDomainName};Initial Catalog=${dbName}; User Id=${sqlUsername};Password=${sqlPassword}'

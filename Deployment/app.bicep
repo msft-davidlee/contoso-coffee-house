@@ -202,4 +202,3 @@ output backendappStorageName string = backendappStr.name
 output backend string = backendapp
 output aadinstance string = environment().authentication.loginEndpoint
 output stackname string = stackName
-output sqlConnectionString string = sql.outputs.sqlConnectionString

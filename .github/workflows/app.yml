@@ -101,13 +101,21 @@ jobs:
             subnetId=${{ steps.resolve-shared-resources.outputs.subnetId }}
             aksMSIId=${{ steps.resolve-shared-resources.outputs.managedIdentityId }}
 
+      - id: resolve-sql-connectionstring
+        name: Resolve shared resources
+        working-directory: .\deployment
+        run: |
+          .\ResolveSqlConnection.ps1 -Prefix ${{ secrets.PREFIX }} `
+          -DbName ${{ steps.deploy_env.outputs.dbname }} `
+          -SqlServer ${{ steps.deploy_env.outputs.sqlserver }} `
+          -SqlUsername ${{ steps.deploy_env.outputs.sqlusername }}        
+
       - id: deploy_db
         name: Deploy database
         uses: azure/sql-action@v1.2
         with:
-          connection-string: ${{ steps.deploy_env.outputs.sqlConnectionString }}
+          connection-string: ${{ steps.resolve-sql-connectionstring.outputs.sqlConnectionString }}
           dacpac-package: './Db/App.dacpac'         
-
 
       - id: deploy_apps
         name: Deploy apps
@@ -118,9 +126,9 @@ jobs:
           -DbName ${{ steps.deploy_env.outputs.dbname }} `
           -SqlServer ${{ steps.deploy_env.outputs.sqlserver }} `
           -SqlUsername ${{ steps.deploy_env.outputs.sqlusername }} `
-          -Backend ${{ steps.deploy_env.outputs.backend }} `          
+          -Backend ${{ steps.deploy_env.outputs.backend }} `
           -AKSMSIId ${{ steps.deploy_env.outputs.managedIdentityId }} `
           -KeyVaultName ${{ steps.resolve-shared-resources.outputs.keyVaultName }} `
           -TenantId ${{ steps.deploy_env.outputs.tenantId }} `
           -BackendStorageName ${{ steps.deploy_env.outputs.backendappStorageName }} `
-          -QueueName ${{ steps.deploy_env.outputs.queueName }}   
+          -QueueName ${{ steps.deploy_env.outputs.queueName }}
