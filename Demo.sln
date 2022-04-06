@@ -22,8 +22,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoStorageShippingFunc", "DemoStorageShippingFunc\DemoStorageShippingFunc.csproj", "{A1848368-5763-4E58-8632-1C08CC9889C6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoServiceBusShippingFunc", "DemoServiceBusShippingFunc\DemoServiceBusShippingFunc.csproj", "{1E6B863A-F488-4EC6-82F8-543157C90CF2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoCustomerServiceAltId", "DemoCustomerServiceAltId\DemoCustomerServiceAltId.csproj", "{C688604F-88A4-499E-84BC-5B117E3F86DC}"
@@ -32,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoCore", "DemoCore\DemoCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoCustomerServiceMember", "DemoCustomerServiceMember\DemoCustomerServiceMember.csproj", "{0755037F-A46B-4752-82C9-C94F9EAC38B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoCustomerServicePoints", "DemoCustomerServicePoints\DemoCustomerServicePoints.csproj", "{22DCBCAC-77A0-427D-91CA-6CF24AB1094E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoCustomerServicePoints", "DemoCustomerServicePoints\DemoCustomerServicePoints.csproj", "{22DCBCAC-77A0-427D-91CA-6CF24AB1094E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,10 +54,6 @@ Global
 		{84D34769-1E0E-4C7A-B058-8ACE166219DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84D34769-1E0E-4C7A-B058-8ACE166219DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84D34769-1E0E-4C7A-B058-8ACE166219DB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A1848368-5763-4E58-8632-1C08CC9889C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A1848368-5763-4E58-8632-1C08CC9889C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A1848368-5763-4E58-8632-1C08CC9889C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A1848368-5763-4E58-8632-1C08CC9889C6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1E6B863A-F488-4EC6-82F8-543157C90CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1E6B863A-F488-4EC6-82F8-543157C90CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E6B863A-F488-4EC6-82F8-543157C90CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
