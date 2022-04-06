@@ -26,7 +26,7 @@ var subnets = [
 ]
 
 resource primary_vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
-  name: '${priNetworkPrefix}-pri-vnet'
+  name: 'cch-${priNetworkPrefix}-pri-vnet'
   tags: tags
   location: primary_location
   properties: {
@@ -45,7 +45,7 @@ resource primary_vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
 }
 
 resource dr_vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
-  name: '${drNetworkPrefix}-dr-vnet'
+  name: 'cch-${drNetworkPrefix}-dr-vnet'
   tags: tags
   location: dr_location
   properties: {
@@ -64,7 +64,7 @@ resource dr_vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
 }
 
 resource primary_peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-05-01' = {
-  name: '${priNetworkPrefix}-pri-to-dr-peer'
+  name: 'cch-${priNetworkPrefix}-pri-to-dr-peer'
   parent: primary_vnet
   properties: {
     allowVirtualNetworkAccess: true
@@ -78,7 +78,7 @@ resource primary_peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerin
 }
 
 resource dr_peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-05-01' = {
-  name: '${drNetworkPrefix}-dr-to-pri-peer'
+  name: 'cch-${drNetworkPrefix}-dr-to-pri-peer'
   parent: dr_vnet
   properties: {
     allowVirtualNetworkAccess: true
@@ -169,7 +169,7 @@ var allowAppGatewayV2 = {
 }
 
 resource prinsgs 'Microsoft.Network/networkSecurityGroups@2021-05-01' = [for subnetName in subnets: {
-  name: '${priNetworkPrefix}-pri-${subnetName}-subnet-nsg'
+  name: 'cch-${priNetworkPrefix}-pri-${subnetName}-subnet-nsg'
   location: primary_location
   tags: tags
   properties: {
@@ -235,7 +235,7 @@ resource associateprinsg 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' 
 }]
 
 resource drnsgs 'Microsoft.Network/networkSecurityGroups@2021-05-01' = [for subnetName in subnets: {
-  name: '${drNetworkPrefix}-dr-${subnetName}-subnet-nsg'
+  name: 'cch-${drNetworkPrefix}-dr-${subnetName}-subnet-nsg'
   location: dr_location
   tags: tags
   properties: {
