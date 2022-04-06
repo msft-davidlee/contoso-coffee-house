@@ -13,7 +13,7 @@ param nodesResourceGroup string
 
 var stackName = '${prefix}${appEnvironment}'
 var tags = {
-  'stack-name': 'contoso-customer-service-aks'
+  'stack-name': 'cch-aks'
   'stack-environment': appEnvironment
   'stack-branch': branch
   'stack-version': version

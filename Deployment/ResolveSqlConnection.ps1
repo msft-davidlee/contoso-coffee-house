@@ -1,8 +1,3 @@
-param(
-    [Parameter(Mandatory = $true)][string]$DbName,
-    [Parameter(Mandatory = $true)][string]$SqlServer,
-    [Parameter(Mandatory = $true)][string]$SqlUsername)
-
 function GetResource([string]$stackName, [string]$stackEnvironment) {
     $platformRes = (az resource list --tag stack-name=$stackName | ConvertFrom-Json)
     if (!$platformRes) {
@@ -20,6 +15,16 @@ function GetResource([string]$stackName, [string]$stackEnvironment) {
     return $res
 }
 $ErrorActionPreference = "Stop"
+
+$all = GetResource -stackName cch-aks -stackEnvironment dev | ConvertFrom-Json
+$sql = $all | Where-Object { $_.type -eq 'Microsoft.Sql/servers' }
+$sqlSv = az sql server show --name $sql.name -g $sql.resourceGroup | ConvertFrom-Json
+$SqlServer = $sqlSv.fullyQualifiedDomainName
+$SqlUsername = $sqlSv.administratorLogin
+
+$db = $all | Where-Object { $_.type -eq 'Microsoft.Sql/servers/databases' }
+$dbNameParts = $db.name.Split('/')
+$DbName = $dbNameParts[1]
 
 $kv = GetResource -stackName cch-shared-key-vault -stackEnvironment dev
 $kvName = $kv.name

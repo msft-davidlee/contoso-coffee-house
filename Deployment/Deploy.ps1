@@ -1,15 +1,6 @@
-param(
-    [Parameter(Mandatory = $true)][string]$AKS_RESOURCE_GROUP,    
-    [Parameter(Mandatory = $true)][string]$AKS_NAME,        
-    [Parameter(Mandatory = $true)][string]$DbName,
-    [Parameter(Mandatory = $true)][string]$SqlServer,
-    [Parameter(Mandatory = $true)][string]$SqlUsername,
-    [Parameter(Mandatory = $true)][string]$ServiceBusName,
-    [Parameter(Mandatory = $true)][string]$Backend,
+param(     
     [Parameter(Mandatory = $true)][string]$AKSMSIId,
-    [Parameter(Mandatory = $true)][string]$KeyVaultName,
-    [Parameter(Mandatory = $true)][string]$TenantId,    
-    [Parameter(Mandatory = $true)][string]$BackendStorageName,
+    [Parameter(Mandatory = $true)][string]$KeyVaultName,     
     [Parameter(Mandatory = $true)][string]$QueueName)
 
 function GetResource([string]$stackName, [string]$stackEnvironment) {
@@ -33,6 +24,25 @@ $ErrorActionPreference = "Stop"
 # Prerequsites: 
 # * We have already assigned the managed identity with a role in Container Registry with AcrPull role.
 # * We also need to determine if the environment is created properly with the right Azure resources.
+$all = GetResource -stackName cch-aks -stackEnvironment dev | ConvertFrom-Json
+$aks = $all | Where-Object { $_.type -eq 'Microsoft.ContainerService/managedClusters' }
+$AKS_RESOURCE_GROUP = $aks.resourceGroup
+$AKS_NAME = $aks.name
+
+$sb = $all | Where-Object { $_.type -eq 'Microsoft.ServiceBus/namespaces' }
+$ServiceBusName = $sb.name
+
+$sql = $all | Where-Object { $_.type -eq 'Microsoft.Sql/servers' }
+$sqlSv = az sql server show --name $sql.name -g $sql.resourceGroup | ConvertFrom-Json
+$SqlServer = $sqlSv.fullyQualifiedDomainName
+$SqlUsername = $sqlSv.administratorLogin
+
+$db = $all | Where-Object { $_.type -eq 'Microsoft.Sql/servers/databases' }
+$dbNameParts = $db.name.Split('/')
+$DbName = $dbNameParts[1]
+
+$storage = $all | Where-Object { $_.type -eq 'Microsoft.Storage/storageAccounts' }
+$BackendStorageName = $storage.name
 
 $kv = GetResource -stackName cch-shared-key-vault -stackEnvironment dev
 $kvName = $kv.name
@@ -160,6 +170,9 @@ $ListenerQueueConnectionString = [Convert]::ToBase64String([System.Text.Encoding
 $content = Get-Content .\Deployment\azurekeyvault.yaml
 $content = $content.Replace('$MANAGEDID', $AKSMSIId)
 $content = $content.Replace('$KEYVAULTNAME', $KeyVaultName)
+
+$TenantId = az account show --query "tenantId" -o tsv
+
 $content = $content.Replace('$TENANTID', $TenantId)
 
 Set-Content -Path ".\azurekeyvault.yaml" -Value $content

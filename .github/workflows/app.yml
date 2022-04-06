@@ -1,10 +1,10 @@
-on: 
+on:
   push:
     branches:
       - dev
       - demo
-    paths-ignore: 
-      - 'README.md'
+    paths-ignore:
+      - "README.md"
 
 jobs:
   ci_build:
@@ -17,14 +17,14 @@ jobs:
       - name: Setup .NET 6
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: "6.0.x"
 
       - id: integrationtest
         name: Integration Tests
         run: |
-            $unitTestFilePath = "${{ env.RUNNER_TEMP }}\TestResults\unittests.xml"
-            Push-Location .\DemoWebsiteTests\
-            dotnet test --logger "junit;LogFilePath=$unitTestFilePath"
+          $unitTestFilePath = "${{ env.RUNNER_TEMP }}\TestResults\unittests.xml"
+          Push-Location .\DemoWebsiteTests\
+          dotnet test --logger "junit;LogFilePath=$unitTestFilePath"
 
       - name: Publish test results
         if: ${{ always() }}
@@ -66,7 +66,7 @@ jobs:
         id: build_networking
         uses: azure/arm-deploy@v1
         with:
-          deploymentName: 'deploy-networking-${{ github.run_number }}'
+          deploymentName: "deploy-networking-${{ github.run_number }}"
           resourceGroupName: ${{ steps.resolve-networking-shared-resources.outputs.resourceGroup }}
           template: ./deployment/networking.bicep
           parameters: >
@@ -85,7 +85,7 @@ jobs:
         id: build_env
         uses: azure/arm-deploy@v1
         with:
-          deploymentName: 'deploy-environment-${{ github.run_number }}'
+          deploymentName: "deploy-environment-${{ github.run_number }}"
           resourceGroupName: ${{ steps.resolve-shared-resources.outputs.appResourceGroup }}
           template: ./deployment/app.bicep
           parameters: >
@@ -101,17 +101,8 @@ jobs:
             subnetId=${{ steps.resolve-shared-resources.outputs.subnetId }}
             aksMSIId=${{ steps.resolve-shared-resources.outputs.managedIdentityId }}
     outputs:
-      appResourceGroup: ${{ steps.resolve-shared-resources.outputs.appResourceGroup }}
-      aksName: ${{ steps.build_env.outputs.aksName }}
-      dbname: ${{ steps.build_env.outputs.dbname }}
-      sqlserver: ${{ steps.build_env.outputs.sqlserver }}
-      sqlusername: ${{ steps.build_env.outputs.sqlusername }}
-      backend: ${{ steps.build_env.outputs.backend }}
       managedIdentityId: ${{ steps.build_env.outputs.managedIdentityId }}
       keyVaultName: ${{ steps.resolve-shared-resources.outputs.keyVaultName }}
-      tenantId: ${{ steps.build_env.outputs.tenantId }}
-      backendappStorageName: ${{ steps.build_env.outputs.backendappStorageName }}
-      serviceBusName: ${{ steps.build_env.outputs.serviceBusName }}
       queueName: ${{ steps.build_env.outputs.queueName }}
 
   deploy_apps:
@@ -121,7 +112,7 @@ jobs:
     environment: dev
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Azure CLI Login
         uses: azure/login@v1
         with:
@@ -132,17 +123,8 @@ jobs:
         name: Deploy apps
         run: |
           .\Deployment\Deploy.ps1 `
-          -AKS_RESOURCE_GROUP ${{ needs.cd_deploy.outputs.appResourceGroup }} `
-          -AKS_NAME ${{ needs.cd_deploy.outputs.aksName }} `
-          -DbName ${{ needs.cd_deploy.outputs.dbname }} `
-          -SqlServer ${{ needs.cd_deploy.outputs.sqlserver }} `
-          -SqlUsername ${{ needs.cd_deploy.outputs.sqlusername }} `
-          -Backend ${{ needs.cd_deploy.outputs.backend }} `
           -AKSMSIId ${{ needs.cd_deploy.outputs.managedIdentityId }} `
           -KeyVaultName ${{ needs.cd_deploy.outputs.keyVaultName }} `
-          -TenantId ${{ needs.cd_deploy.outputs.tenantId }} `
-          -BackendStorageName ${{ needs.cd_deploy.outputs.backendappStorageName }} `
-          -ServiceBusName ${{ needs.cd_deploy.outputs.serviceBusName }} `
           -QueueName ${{ needs.cd_deploy.outputs.queueName }}
 
   deploy_db:
@@ -152,7 +134,7 @@ jobs:
     environment: dev
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Azure CLI Login
         uses: azure/login@v1
         with:
@@ -163,13 +145,11 @@ jobs:
         name: Resolve SQL connection string
         working-directory: .\deployment
         run: |
-          .\ResolveSqlConnection.ps1 -DbName ${{ needs.cd_deploy.outputs.dbname }} `
-          -SqlServer ${{ needs.cd_deploy.outputs.sqlserver }} `
-          -SqlUsername ${{ needs.cd_deploy.outputs.sqlusername }}        
+          .\ResolveSqlConnection.ps1
 
       - id: deploy_db
         name: Deploy database
         uses: azure/sql-action@v1.2
         with:
           connection-string: ${{ steps.resolve-sql-connectionstring.outputs.sqlConnectionString }}
-          dacpac-package: './Db/cch.dacpac'        
+          dacpac-package: "./Db/cch.dacpac"
