@@ -4,6 +4,7 @@ param(
     [Parameter(Mandatory = $true)][string]$DbName,
     [Parameter(Mandatory = $true)][string]$SqlServer,
     [Parameter(Mandatory = $true)][string]$SqlUsername,
+    [Parameter(Mandatory = $true)][string]$ServiceBusName,
     [Parameter(Mandatory = $true)][string]$Backend,
     [Parameter(Mandatory = $true)][string]$AKSMSIId,
     [Parameter(Mandatory = $true)][string]$KeyVaultName,
@@ -141,7 +142,7 @@ if ($LastExitCode -ne 0) {
 
 $imageName = "contoso-demo-service-bus-shipping-func:$version"
 $SenderQueueConnectionString = az servicebus namespace authorization-rule keys list --resource-group $AKS_RESOURCE_GROUP `
-    --namespace-name $AKS_NAME --name Sender --query primaryConnectionString | ConvertFrom-Json    
+    --namespace-name $ServiceBusName --name Sender --query primaryConnectionString | ConvertFrom-Json    
 
 if ($LastExitCode -ne 0) {
     throw "An error has occured. Unable get service bus connection string."
@@ -149,7 +150,7 @@ if ($LastExitCode -ne 0) {
 $SenderQueueConnectionString = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($SenderQueueConnectionString))
 
 $QueueConnectionString = az servicebus namespace authorization-rule keys list --resource-group $AKS_RESOURCE_GROUP `
-    --namespace-name $AKS_NAME --name Listener --query primaryConnectionString | ConvertFrom-Json
+    --namespace-name $ServiceBusName --name Listener --query primaryConnectionString | ConvertFrom-Json
 if ($LastExitCode -ne 0) {
     throw "An error has occured. Unable get service bus listener connection string."
 }

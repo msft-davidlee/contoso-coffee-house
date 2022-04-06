@@ -100,34 +100,66 @@ jobs:
             nodesResourceGroup=${{ steps.resolve-shared-resources.outputs.nodesResourceGroup }}
             subnetId=${{ steps.resolve-shared-resources.outputs.subnetId }}
             aksMSIId=${{ steps.resolve-shared-resources.outputs.managedIdentityId }}
+    outputs:
+      ci_build_outputs: ${{ steps.build_env.outputs }}
+      resolve_shared_resources_outputs: ${{ steps.resolve-shared-resources.outputs }}
+       
+  deploy_apps:
+    name: Deploy apps    
+    needs: ci_build    
+    runs-on: windows-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Azure CLI Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.CCH_AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+
+      - id: deploy_apps
+        name: Deploy apps
+        run: |
+          .\Deployment\Deploy.ps1 `
+          -AKS_RESOURCE_GROUP ${{ needs.cd_deploy.outputs.resolve_shared_resources_outputs.appResourceGroup }} `
+          -AKS_NAME ${{ needs.cd_deploy.outputs.ci_build_outputs.aksName }} `
+          -DbName ${{ needs.cd_deploy.outputs.ci_build_outputs.dbname }} `
+          -SqlServer ${{ needs.cd_deploy.outputs.ci_build_outputs.sqlserver }} `
+          -SqlUsername ${{ needs.cd_deploy.outputs.ci_build_outputs.sqlusername }} `
+          -Backend ${{ needs.cd_deploy.outputs.ci_build_outputs.backend }} `
+          -AKSMSIId ${{ needs.cd_deploy.outputs.ci_build_outputs.managedIdentityId }} `
+          -KeyVaultName ${{ needs.cd_deploy.outputs.resolve_shared_resources_outputs.keyVaultName }} `
+          -TenantId ${{ needs.cd_deploy.outputs.ci_build_outputs.tenantId }} `
+          -BackendStorageName ${{ needs.cd_deploy.outputs.ci_build_outputs.backendappStorageName }} `
+          -ServiceBusName ${{ needs.cd_deploy.outputs.ci_build_outputs.serviceBusName }} `
+          -QueueName ${{ needs.cd_deploy.outputs.ci_build_outputs.queueName }}
+
+  deploy_db:
+    name: Deploy database    
+    needs: ci_build    
+    runs-on: windows-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Azure CLI Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.CCH_AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
 
       - id: resolve-sql-connectionstring
         name: Resolve SQL connection string
         working-directory: .\deployment
         run: |
-          .\ResolveSqlConnection.ps1 -DbName ${{ steps.build_env.outputs.dbname }} `
-          -SqlServer ${{ steps.build_env.outputs.sqlserver }} `
-          -SqlUsername ${{ steps.build_env.outputs.sqlusername }}        
+          .\ResolveSqlConnection.ps1 -DbName ${{ needs.cd_deploy.outputs.ci_build_outputs.dbname }} `
+          -SqlServer ${{ needs.cd_deploy.outputs.ci_build_outputs.sqlserver }} `
+          -SqlUsername ${{ needs.cd_deploy.outputs.ci_build_outputs.sqlusername }}        
 
       - id: deploy_db
         name: Deploy database
         uses: azure/sql-action@v1.2
         with:
           connection-string: ${{ steps.resolve-sql-connectionstring.outputs.sqlConnectionString }}
-          dacpac-package: './Db/cch.dacpac'         
-
-      - id: deploy_apps
-        name: Deploy apps
-        run: |
-          .\Deployment\Deploy.ps1 `
-          -AKS_RESOURCE_GROUP ${{ steps.resolve-shared-resources.outputs.appResourceGroup }} `
-          -AKS_NAME ${{ steps.build_env.outputs.aksName }} `
-          -DbName ${{ steps.build_env.outputs.dbname }} `
-          -SqlServer ${{ steps.build_env.outputs.sqlserver }} `
-          -SqlUsername ${{ steps.build_env.outputs.sqlusername }} `
-          -Backend ${{ steps.build_env.outputs.backend }} `
-          -AKSMSIId ${{ steps.build_env.outputs.managedIdentityId }} `
-          -KeyVaultName ${{ steps.resolve-shared-resources.outputs.keyVaultName }} `
-          -TenantId ${{ steps.build_env.outputs.tenantId }} `
-          -BackendStorageName ${{ steps.build_env.outputs.backendappStorageName }} `
-          -QueueName ${{ steps.build_env.outputs.queueName }}
+          dacpac-package: './Db/cch.dacpac'        

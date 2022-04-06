@@ -44,6 +44,8 @@ resource sbu 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
   }
 }
 
+output serviceBusName string = sbu.name
+
 resource sbuSenderAuthRule 'Microsoft.ServiceBus/namespaces/AuthorizationRules@2021-06-01-preview' = {
   parent: sbu
   name: 'Sender'
