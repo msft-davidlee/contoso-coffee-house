@@ -36,7 +36,7 @@ resource appinsights 'Microsoft.Insights/components@2020-02-02' = {
 var queueName = 'orders'
 
 resource sbu 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
-  name: stackName
+  name: '${stackName}sb'
   location: location
   tags: tags
   sku: {
