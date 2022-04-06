@@ -51,10 +51,6 @@ $apps = @(
     @{
         name = "$namePrefix-service-bus-shipping-func";
         path = "DemoServiceBusShippingFunc";
-    },
-    @{
-        name = "$namePrefix-storage-queue-func";
-        path = "DemoStorageShippingFunc";
     }
 )
 
