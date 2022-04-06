@@ -9,7 +9,8 @@ on:
 jobs:
   ci_build:
     name: CI Build
-    runs-on: windows-latest  
+    runs-on: windows-latest
+    environment: dev
     steps:
       - uses: actions/checkout@v2
 
