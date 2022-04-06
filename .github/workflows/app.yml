@@ -43,7 +43,7 @@ jobs:
         run: .\Deployment\Build.ps1
 
   cd_deploy:
-    name: Deploy
+    name: Deploy Azure Environment
     needs: ci_build
     environment: dev
     runs-on: windows-latest
@@ -62,7 +62,7 @@ jobs:
         run: |
           .\ResolveNetworkSharedResources.ps1
 
-      - name: Build networking
+      - name: Build Networks
         id: build_networking
         uses: azure/arm-deploy@v1
         with:
@@ -81,7 +81,7 @@ jobs:
         run: |
           .\ResolveSharedResources.ps1 -Prefix ${{ secrets.PREFIX }}
 
-      - name: Build environment
+      - name: Build App Environment
         id: build_env
         uses: azure/arm-deploy@v1
         with:
@@ -93,7 +93,6 @@ jobs:
             location=${{ steps.resolve-shared-resources.outputs.location }}
             keyVaultName=${{ steps.resolve-shared-resources.outputs.keyVaultName }}            
             prefix=${{ secrets.PREFIX }}
-            appEnvironment=${{ needs.setup.outputs.build_env }}
             branch=${{ github.ref }}
             keyVaultName=${{ steps.resolve-shared-resources.outputs.keyVaultName }}
             sharedResourceGroup=${{ steps.resolve-shared-resources.outputs.sharedResourceGroup }}

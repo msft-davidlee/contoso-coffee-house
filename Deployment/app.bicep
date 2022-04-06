@@ -1,5 +1,5 @@
 param prefix string
-param appEnvironment string
+param appEnvironment string = 'dev'
 param branch string
 param location string
 param sharedResourceGroup string
