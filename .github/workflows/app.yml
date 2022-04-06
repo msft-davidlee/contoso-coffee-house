@@ -106,9 +106,9 @@ jobs:
         working-directory: .\deployment
         run: |
           .\ResolveSqlConnection.ps1 -Prefix ${{ secrets.PREFIX }} `
-          -DbName ${{ steps.deploy_env.outputs.dbname }} `
-          -SqlServer ${{ steps.deploy_env.outputs.sqlserver }} `
-          -SqlUsername ${{ steps.deploy_env.outputs.sqlusername }}        
+          -DbName ${{ steps.build_env.outputs.dbname }} `
+          -SqlServer ${{ steps.build_env.outputs.sqlserver }} `
+          -SqlUsername ${{ steps.build_env.outputs.sqlusername }}        
 
       - id: deploy_db
         name: Deploy database
@@ -122,13 +122,13 @@ jobs:
         run: |
           .\Deployment\Deploy.ps1 `
           -AKS_RESOURCE_GROUP ${{ steps.resolve-shared-resources.outputs.appResourceGroup }} `
-          -AKS_NAME ${{ steps.deploy_env.outputs.aksName }} `
-          -DbName ${{ steps.deploy_env.outputs.dbname }} `
-          -SqlServer ${{ steps.deploy_env.outputs.sqlserver }} `
-          -SqlUsername ${{ steps.deploy_env.outputs.sqlusername }} `
-          -Backend ${{ steps.deploy_env.outputs.backend }} `
-          -AKSMSIId ${{ steps.deploy_env.outputs.managedIdentityId }} `
+          -AKS_NAME ${{ steps.build_env.outputs.aksName }} `
+          -DbName ${{ steps.build_env.outputs.dbname }} `
+          -SqlServer ${{ steps.build_env.outputs.sqlserver }} `
+          -SqlUsername ${{ steps.build_env.outputs.sqlusername }} `
+          -Backend ${{ steps.build_env.outputs.backend }} `
+          -AKSMSIId ${{ steps.build_env.outputs.managedIdentityId }} `
           -KeyVaultName ${{ steps.resolve-shared-resources.outputs.keyVaultName }} `
-          -TenantId ${{ steps.deploy_env.outputs.tenantId }} `
-          -BackendStorageName ${{ steps.deploy_env.outputs.backendappStorageName }} `
-          -QueueName ${{ steps.deploy_env.outputs.queueName }}
+          -TenantId ${{ steps.build_env.outputs.tenantId }} `
+          -BackendStorageName ${{ steps.build_env.outputs.backendappStorageName }} `
+          -QueueName ${{ steps.build_env.outputs.queueName }}
