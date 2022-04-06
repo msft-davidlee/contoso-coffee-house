@@ -100,7 +100,20 @@ jobs:
             nodesResourceGroup=${{ steps.resolve-shared-resources.outputs.nodesResourceGroup }}
             subnetId=${{ steps.resolve-shared-resources.outputs.subnetId }}
             aksMSIId=${{ steps.resolve-shared-resources.outputs.managedIdentityId }}
-       
+    outputs:
+      appResourceGroup: ${{ steps.resolve-shared-resources.outputs.appResourceGroup }}
+      aksName: ${{ steps.build_env.outputs.aksName }}
+      dbname: ${{ steps.build_env.outputs.dbname }}
+      sqlserver: ${{ steps.build_env.outputs.sqlserver }}
+      sqlusername: ${{ steps.build_env.outputs.sqlusername }}
+      backend: ${{ steps.build_env.outputs.backend }}
+      managedIdentityId: ${{ steps.build_env.outputs.managedIdentityId }}
+      keyVaultName: ${{ steps.resolve-shared-resources.outputs.keyVaultName }}
+      tenantId: ${{ steps.build_env.outputs.tenantId }}
+      backendappStorageName: ${{ steps.build_env.outputs.backendappStorageName }}
+      serviceBusName: ${{ steps.build_env.outputs.serviceBusName }}
+      queueName: ${{ steps.build_env.outputs.queueName }}
+
   deploy_apps:
     name: Deploy apps
     needs: cd_deploy
@@ -119,22 +132,22 @@ jobs:
         name: Deploy apps
         run: |
           .\Deployment\Deploy.ps1 `
-          -AKS_RESOURCE_GROUP ${{ needs.steps.build_env.outputs.appResourceGroup }} `
-          -AKS_NAME ${{ needs.steps.build_env.outputs.aksName }} `
-          -DbName ${{ needs.steps.build_env.outputs.dbname }} `
-          -SqlServer ${{ needs.steps.build_env.outputs.sqlserver }} `
-          -SqlUsername ${{ needs.steps.build_env.outputs.sqlusername }} `
-          -Backend ${{ needs.steps.build_env.outputs.backend }} `
-          -AKSMSIId ${{ needs.steps.build_env.outputs.managedIdentityId }} `
-          -KeyVaultName ${{ needs.steps.build_env.outputs.keyVaultName }} `
-          -TenantId ${{ needs.steps.build_env.outputs.tenantId }} `
-          -BackendStorageName ${{ needs.steps.build_env.outputs.backendappStorageName }} `
-          -ServiceBusName ${{ needs.steps.build_env.outputs.serviceBusName }} `
-          -QueueName ${{ needs.steps.build_env.outputs.queueName }}
+          -AKS_RESOURCE_GROUP ${{ needs.cd_deploy.outputs.appResourceGroup }} `
+          -AKS_NAME ${{ needs.cd_deploy.outputs.aksName }} `
+          -DbName ${{ needs.cd_deploy.outputs.dbname }} `
+          -SqlServer ${{ needs.cd_deploy.outputs.sqlserver }} `
+          -SqlUsername ${{ needs.cd_deploy.outputs.sqlusername }} `
+          -Backend ${{ needs.cd_deploy.outputs.backend }} `
+          -AKSMSIId ${{ needs.cd_deploy.outputs.managedIdentityId }} `
+          -KeyVaultName ${{ needs.cd_deploy.outputs.keyVaultName }} `
+          -TenantId ${{ needs.cd_deploy.outputs.tenantId }} `
+          -BackendStorageName ${{ needs.cd_deploy.outputs.backendappStorageName }} `
+          -ServiceBusName ${{ needs.cd_deploy.outputs.serviceBusName }} `
+          -QueueName ${{ needs.cd_deploy.outputs.queueName }}
 
   deploy_db:
-    name: Deploy database    
-    needs: cd_deploy    
+    name: Deploy database
+    needs: cd_deploy
     runs-on: windows-latest
     environment: dev
     steps:
@@ -150,9 +163,9 @@ jobs:
         name: Resolve SQL connection string
         working-directory: .\deployment
         run: |
-          .\ResolveSqlConnection.ps1 -DbName ${{ needs.steps.build_env.outputs.dbname }} `
-          -SqlServer ${{ needs.steps.build_env.outputs.sqlserver }} `
-          -SqlUsername ${{ needs.steps.build_env.outputs.sqlusername }}        
+          .\ResolveSqlConnection.ps1 -DbName ${{ needs.cd_deploy.outputs.dbname }} `
+          -SqlServer ${{ needs.cd_deploy.outputs.sqlserver }} `
+          -SqlUsername ${{ needs.cd_deploy.outputs.sqlusername }}        
 
       - id: deploy_db
         name: Deploy database
