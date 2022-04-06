@@ -77,13 +77,20 @@ az ad signed-in-user show --query 'objectId' | ConvertFrom-Json
 ```
 DeployBlueprint.ps1 -SVC_PRINCIPAL_ID <Object Id for Contoso Coffee House GitHub Service Principal> -MY_PRINCIPAL_ID <Object Id for your user>
 ```
-6. Create the following secret(s) in your github dev environment. Be sure to populate with your desired values from the previous steps. 
+6. Create the secret(s) in your github dev environment as defined in secrets section below. Be sure to populate with your desired values from the previous steps. 
 7. Create a branch named demo or dev and push into your git remote repo to kick off the CI process because it is tied to the name of the git branch.
+8. Create certificate for your solution using the following ``` openssl req -x509 -nodes -days 365 -newkey rsa:2048 -out demo.contoso.com.crt -keyout demo.contoso.com.key -subj "/CN=demo.contoso.com/O=aks-ingress-tls" ```
+9. Next, upload the outputs to a container named certs in your shared storage account.
+10. You will need to run the CompleteSetup.ps1 script manually. Be sure to pass in BUILD_ENV parameter which can be either dev or prod.
+11. To check if everything is setup successfully, review the script output for any errors.
+12. Update your local host file to point to the public ip.
 
 ## Secrets
 | Name | Value |
 | --- | --- |
 | CCH_AZURE_CREDENTIALS | <pre>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;"clientId": "",<br/>&nbsp;&nbsp;&nbsp;&nbsp;"clientSecret": "", <br/>&nbsp;&nbsp;&nbsp;&nbsp;"subscriptionId": "",<br/>&nbsp;&nbsp;&nbsp;&nbsp;"tenantId": "" <br/>}</pre> |
+| PREFIX | mytodos - or whatever name you would like for all your resources |
+| SOURCE_IP | This is your home or office IP. This is applied on NSG to allow you to access your web app |
 
 ## Have an issue?
 You are welcome to create an issue if you need help but please note that there is no timeline to answer or resolve any issues you have with the contents of this project. Use the contents of this project at your own risk! If you are interested to volunteer to maintain this, please feel free to reach out to be added as a contributor and send Pull Requests (PR).
