@@ -106,7 +106,7 @@ jobs:
        
   deploy_apps:
     name: Deploy apps    
-    needs: ci_build    
+    needs: cd_deploy    
     runs-on: windows-latest
     environment: dev
     steps:
@@ -137,7 +137,7 @@ jobs:
 
   deploy_db:
     name: Deploy database    
-    needs: ci_build    
+    needs: cd_deploy    
     runs-on: windows-latest
     environment: dev
     steps:
