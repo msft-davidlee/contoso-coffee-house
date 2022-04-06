@@ -102,7 +102,7 @@ jobs:
             aksMSIId=${{ steps.resolve-shared-resources.outputs.managedIdentityId }}
 
       - id: resolve-sql-connectionstring
-        name: Resolve shared resources
+        name: Resolve SQL connection string
         working-directory: .\deployment
         run: |
           .\ResolveSqlConnection.ps1 -DbName ${{ steps.build_env.outputs.dbname }} `

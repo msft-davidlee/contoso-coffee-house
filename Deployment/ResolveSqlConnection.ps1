@@ -25,5 +25,5 @@ $kv = GetResource -stackName cch-shared-key-vault -stackEnvironment dev
 $kvName = $kv.name
 
 $sqlPassword = (az keyvault secret show -n contoso-customer-service-sql-password --vault-name $kvName --query value | ConvertFrom-Json)
-$sqlConnectionString = "Data Source=$SqlServer;Initial Catalog=$DbName; User Id=$SqlUsername;Password=$sqlPassword"
+$sqlConnectionString = "Server=$SqlServer;Initial Catalog=$DbName; User Id=$SqlUsername;Password=$sqlPassword"
 Write-Host "::set-output name=sqlConnectionString::$sqlConnectionString"
