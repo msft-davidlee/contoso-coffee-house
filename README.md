@@ -81,7 +81,7 @@ DeployBlueprint.ps1 -SVC_PRINCIPAL_ID <Object Id for Contoso Coffee House GitHub
 7. Create a branch named demo or dev and push into your git remote repo to kick off the CI process because it is tied to the name of the git branch.
 8. Create certificate for your solution using the following ``` openssl req -x509 -nodes -days 365 -newkey rsa:2048 -out demo.contoso.com.crt -keyout demo.contoso.com.key -subj "/CN=demo.contoso.com/O=aks-ingress-tls" ```
 9. Next, upload the outputs to a container named certs in your shared storage account.
-10. You will need to run the CompleteSetup.ps1 script manually. Be sure to pass in BUILD_ENV parameter which can be either dev or prod.
+10. You will need to run the CompleteSetup.ps1 script manually in CloudShell or your local Azure CLI.
 11. To check if everything is setup successfully, review the script output for any errors.
 12. Update your local host file to point to the public ip.
 
