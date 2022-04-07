@@ -1,40 +1,36 @@
-on: 
+on:
   push:
     branches:
       - dev
       - demo
-    paths-ignore: 
-      - 'README.md'
+    paths-ignore:
+      - "README.md"
 
 jobs:
-  build_deploy:
-    name: Build and Deploy 
-    needs: setup   
-    runs-on: windows-latest  
+  ci_build:
+    name: CI Build
+    runs-on: windows-latest
+    environment: dev
     steps:
       - uses: actions/checkout@v2
 
       - name: Setup .NET 6
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: "6.0.x"
 
       - id: integrationtest
         name: Integration Tests
         run: |
-            $unitTestFilePath = "${{ env.RUNNER_TEMP }}\TestResults\unittests.xml"
-            Push-Location .\DemoWebsiteTests\
-            dotnet test --logger "junit;LogFilePath=$unitTestFilePath"
+          $unitTestFilePath = "${{ env.RUNNER_TEMP }}\TestResults\unittests.xml"
+          Push-Location .\DemoWebsiteTests\
+          dotnet test --logger "junit;LogFilePath=$unitTestFilePath"
 
       - name: Publish test results
         if: ${{ always() }}
         uses: EnricoMi/publish-unit-test-result-action/composite@v1
         with:
           files: ${{ env.RUNNER_TEMP }}/TestResults/*.xml
-
-      - uses: kheiakiyama/install-azcopy-action@v1
-        with:
-          version: 'v10'
 
       - name: Azure CLI Login
         uses: azure/login@v1
@@ -45,3 +41,114 @@ jobs:
       - id: buid-and-deploy
         name: Build apps and container images
         run: .\Deployment\Build.ps1
+
+  cd_deploy:
+    name: Deploy Azure Environment
+    needs: ci_build
+    environment: dev
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Azure CLI Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.CCH_AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+
+      - id: resolve-networking-shared-resources
+        name: Resolve networking shared resources
+        working-directory: .\deployment
+        run: |
+          .\ResolveNetworkSharedResources.ps1
+
+      - name: Build Networks
+        id: build_networking
+        uses: azure/arm-deploy@v1
+        with:
+          deploymentName: "deploy-networking-${{ github.run_number }}"
+          resourceGroupName: ${{ steps.resolve-networking-shared-resources.outputs.resourceGroup }}
+          template: ./deployment/networking.bicep
+          parameters: >
+            branch=${{ github.ref }}
+            environment=dev
+            sourceIp=${{ secrets.SOURCE_IP }}
+            version=${{ github.run_number }}
+
+      - id: resolve-shared-resources
+        name: Resolve shared resources
+        working-directory: .\deployment
+        run: |
+          .\ResolveSharedResources.ps1 -Prefix ${{ secrets.PREFIX }}
+
+      - name: Build App Environment
+        id: build_env
+        uses: azure/arm-deploy@v1
+        with:
+          deploymentName: "deploy-environment-${{ github.run_number }}"
+          resourceGroupName: ${{ steps.resolve-shared-resources.outputs.appResourceGroup }}
+          template: ./deployment/app.bicep
+          parameters: >
+            version=${{ github.run_number }}
+            location=${{ steps.resolve-shared-resources.outputs.location }}
+            keyVaultName=${{ steps.resolve-shared-resources.outputs.keyVaultName }}            
+            prefix=${{ secrets.PREFIX }}
+            branch=${{ github.ref }}
+            keyVaultName=${{ steps.resolve-shared-resources.outputs.keyVaultName }}
+            sharedResourceGroup=${{ steps.resolve-shared-resources.outputs.sharedResourceGroup }}
+            nodesResourceGroup=${{ steps.resolve-shared-resources.outputs.nodesResourceGroup }}
+            subnetId=${{ steps.resolve-shared-resources.outputs.subnetId }}
+            aksMSIId=${{ steps.resolve-shared-resources.outputs.managedIdentityId }}
+    outputs:
+      managedIdentityId: ${{ steps.build_env.outputs.managedIdentityId }}
+      keyVaultName: ${{ steps.resolve-shared-resources.outputs.keyVaultName }}
+      queueName: ${{ steps.build_env.outputs.queueName }}
+
+  deploy_apps:
+    name: Deploy apps
+    needs: cd_deploy
+    runs-on: windows-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Azure CLI Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.CCH_AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+
+      - id: deploy_apps
+        name: Deploy apps
+        run: |
+          .\Deployment\Deploy.ps1 `
+          -AKSMSIId ${{ needs.cd_deploy.outputs.managedIdentityId }} `
+          -KeyVaultName ${{ needs.cd_deploy.outputs.keyVaultName }} `
+          -QueueName ${{ needs.cd_deploy.outputs.queueName }}
+
+  deploy_db:
+    name: Deploy database
+    needs: cd_deploy
+    runs-on: windows-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Azure CLI Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.CCH_AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+
+      - id: resolve-sql-connectionstring
+        name: Resolve SQL connection string
+        working-directory: .\deployment
+        run: |
+          .\ResolveSqlConnection.ps1
+
+      - id: deploy_db
+        name: Deploy database
+        uses: azure/sql-action@v1.2
+        with:
+          connection-string: ${{ steps.resolve-sql-connectionstring.outputs.sqlConnectionString }}
+          dacpac-package: "./Db/cch.dacpac"

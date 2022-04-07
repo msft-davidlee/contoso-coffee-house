@@ -51,10 +51,6 @@ $apps = @(
     @{
         name = "$namePrefix-service-bus-shipping-func";
         path = "DemoServiceBusShippingFunc";
-    },
-    @{
-        name = "$namePrefix-storage-queue-func";
-        path = "DemoStorageShippingFunc";
     }
 )
 
@@ -68,7 +64,15 @@ for ($i = 0; $i -lt $apps.Length; $i++) {
 
     $imageName = "$appName`:$appVersion"
 
-    if (!$list -or !$list.Contains($imageName)) {
+    $shouldBuild = $true
+    $tags = az acr repository show-tags --name $AcrName --repository $appName | ConvertFrom-Json
+    if ($tags) {
+        if ($tags.Contains($appVersion)) {
+            $shouldBuild = $false
+        }
+    }
+
+    if ($shouldBuild -eq $true) {
         # Build your app with ACR build command
         az acr build --image $imageName -r $AcrName --file ./$path/Dockerfile .
     
