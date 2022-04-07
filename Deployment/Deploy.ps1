@@ -57,8 +57,15 @@ $AAD_SCOPES = (az keyvault secret show -n contoso-customer-service-aad-scope --v
 $acr = GetResource -stackName cch-shared-container-registry -stackEnvironment dev
 $acrName = $acr.Name
 
+$log = $all | Where-Object { $_.type -eq 'microsoft.insights/components' }
+az extension add --name application-insights
+$appInsightsKey = az monitor app-insights component show --app $log.name -g $log.resourceGroup --query "instrumentationKey" -o tsv
+if ($LastExitCode -ne 0) {
+    throw "An error has occured. Unable get app insights instrumentation key."
+}
+
 # The version here can be configurable so we can also pull dev specific packages.
-$version = "v4.9"
+$version = "v4.10"
 
 # Step 2: Login to AKS.
 az aks get-credentials --resource-group $AKS_RESOURCE_GROUP --name $AKS_NAME
@@ -209,6 +216,7 @@ $content = $content.Replace('$ACRNAME', $acrName)
 $content = $content.Replace('$AZURE_STORAGE_CONNECTION', $backendConn)
 $content = $content.Replace('$AZURE_STORAGEQUEUE_CONNECTION', $QueueConnectionString)
 $content = $content.Replace('$QUEUENAME', $QueueName)
+$content = $content.Replace('$APPINSIGHTSKEY', $appInsightsKey)
 
 Set-Content -Path ".\backendservice.yaml" -Value $content
 kubectl apply -f ".\backendservice.yaml" --namespace $namespace
@@ -230,7 +238,7 @@ $content = $content.Replace('$AADDOMAIN', $AAD_DOMAIN)
 $content = $content.Replace('$AADCLIENTID', $AAD_CLIENT_ID)
 $content = $content.Replace('$AADCLIENTSECRET', $AAD_CLIENT_SECRET)
 $content = $content.Replace('$AADSCOPES', $AAD_SCOPES)
-
+$content = $content.Replace('$APPINSIGHTSKEY', $appInsightsKey)
 $content = $content.Replace('$VERSION', $version)
 
 Set-Content -Path ".\customerservice.yaml" -Value $content
@@ -252,7 +260,7 @@ $content = $content.Replace('$AADTENANTID', $AAD_TENANT_ID)
 $content = $content.Replace('$AADDOMAIN', $AAD_DOMAIN)
 $content = $content.Replace('$AADCLIENTID', $AAD_CLIENT_ID)
 $content = $content.Replace('$AADAUDIENCE', $AAD_AUDIENCE)
-
+$content = $content.Replace('$APPINSIGHTSKEY', $appInsightsKey)
 $content = $content.Replace('$VERSION', $version)
 
 Set-Content -Path ".\alternateid.yaml" -Value $content
@@ -271,7 +279,7 @@ $content = $content.Replace('$DBSOURCE', $SqlServer)
 $content = $content.Replace('$DBNAME', $DbName)
 $content = $content.Replace('$DBUSERID', $SqlUsername)
 $content = $content.Replace('$SHIPPINGREPOSITORYTYPE', "ServiceBus")
-
+$content = $content.Replace('$APPINSIGHTSKEY', $appInsightsKey)
 $content = $content.Replace('$VERSION', $version)
 
 Set-Content -Path ".\partnerapi.yaml" -Value $content
@@ -294,7 +302,7 @@ $content = $content.Replace('$AADTENANTID', $AAD_TENANT_ID)
 $content = $content.Replace('$AADDOMAIN', $AAD_DOMAIN)
 $content = $content.Replace('$AADCLIENTID', $AAD_CLIENT_ID)
 $content = $content.Replace('$AADAUDIENCE', $AAD_AUDIENCE)
-
+$content = $content.Replace('$APPINSIGHTSKEY', $appInsightsKey)
 $content = $content.Replace('$VERSION', $version)
 
 Set-Content -Path ".\memberservice.yaml" -Value $content
@@ -316,7 +324,7 @@ $content = $content.Replace('$AADTENANTID', $AAD_TENANT_ID)
 $content = $content.Replace('$AADDOMAIN', $AAD_DOMAIN)
 $content = $content.Replace('$AADCLIENTID', $AAD_CLIENT_ID)
 $content = $content.Replace('$AADAUDIENCE', $AAD_AUDIENCE)
-
+$content = $content.Replace('$APPINSIGHTSKEY', $appInsightsKey)
 $content = $content.Replace('$VERSION', $version)
 
 Set-Content -Path ".\pointsservice.yaml" -Value $content

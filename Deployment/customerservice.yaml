@@ -81,6 +81,8 @@ spec:
           value: $AADSCOPES         
         - name: ASPNETCORE_FORWARDEDHEADERS_ENABLED
           value: "true"
+        - name: AppInsightsInstrumentationKey
+          value: $APPINSIGHTSKEY           
 ---
 apiVersion: v1
 kind: Service
