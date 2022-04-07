@@ -15,5 +15,7 @@ namespace DemoCustomerServicePoints.Core
         public DbSet<RewardCustomerPoints> RewardCustomerPoints { get; set; }
 
         public DbSet<Promotions> Promotions { get; set; }
+
+        public DbSet<AwardTransaction> AwardTransactions { get; set; }
     }
 }

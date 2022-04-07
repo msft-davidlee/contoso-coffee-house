@@ -70,6 +70,7 @@
     <Build Include="dbo\Tables\Orders.sql" />
     <Build Include="dbo\Tables\AlternateIds.sql" />
     <Build Include="dbo\Tables\Promotions.sql" />
+    <Build Include="dbo\Tables\AwardTransactions.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DemoCustomerDb.publish.xml" />

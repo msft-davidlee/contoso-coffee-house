@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DemoCustomerServicePoints.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace DemoCustomerServicePoints.Core
@@ -30,9 +31,21 @@ namespace DemoCustomerServicePoints.Core
         public async Task<int> AddPoints(AwardPointsTransaction pointsTransaction)
         {
             var ctx = _dbService.GetDbContext();
-            var memberPoints = await ctx.RewardCustomerPoints.SingleAsync(x => x.MemberId == pointsTransaction.MemberId);
+            var memberPoints = await ctx.RewardCustomerPoints.SingleOrDefaultAsync(x => x.MemberId == pointsTransaction.MemberId);
+
+            // Member invalid. Return 0.
+            if (memberPoints == null) return 0;
+
             var total = memberPoints.Points;
 
+            // Has transaction been processed?
+            if (await ctx.AwardTransactions.CountAsync(x => x.TransactionId == pointsTransaction.TransactionId) == 1)
+            {
+                // Yes? No points needs to be awarded. Return current points.
+                return total;
+            }
+
+            // No? Good, we can continue
             foreach (var lineItem in pointsTransaction.LineItems)
             {
                 var promo = await ctx.Promotions.SingleOrDefaultAsync(x => x.SKU == lineItem.SKU);
@@ -66,6 +79,12 @@ namespace DemoCustomerServicePoints.Core
                 total = memberPoints.Points;
                 ctx.Update(memberPoints);
             }
+
+            await ctx.AwardTransactions.AddAsync(new AwardTransaction
+            {
+                TransactionId = pointsTransaction.TransactionId,
+                Awarded = DateTime.UtcNow
+            });
 
             await ctx.SaveChangesAsync();
 
