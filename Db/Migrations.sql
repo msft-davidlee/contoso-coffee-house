@@ -1,5 +1,3 @@
-USE [app]
-
 IF NOT EXISTS (SELECT 1 from sysobjects where name='RewardCustomers' and xtype='U')
 	CREATE TABLE RewardCustomers ([MemberId] VARCHAR(10) NOT NULL, FirstName VARCHAR(25), LastName VARCHAR(25), PRIMARY KEY (MemberId))
 GO
