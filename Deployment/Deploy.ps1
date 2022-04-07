@@ -58,7 +58,7 @@ $acr = GetResource -stackName cch-shared-container-registry -stackEnvironment de
 $acrName = $acr.Name
 
 # The version here can be configurable so we can also pull dev specific packages.
-$version = "v4.7"
+$version = "v4.9"
 
 # Step 2: Login to AKS.
 az aks get-credentials --resource-group $AKS_RESOURCE_GROUP --name $AKS_NAME

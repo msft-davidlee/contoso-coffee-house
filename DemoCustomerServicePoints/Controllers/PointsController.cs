@@ -17,9 +17,9 @@ namespace DemoCustomerServicePoints.ApiControllers
         }
 
         [HttpPost]
-        public async Task<AwardPointsResult> Add(AwardPoints awardPoints)
+        public async Task<AwardPointsResult> Add(AwardPointsTransaction awardPoints)
         {
-            var points = await _pointsService.AddPoints(awardPoints.MemberId, awardPoints.Points);
+            var points = await _pointsService.AddPoints(awardPoints);
             return new AwardPointsResult { TotalPoints = points };
         }
 
@@ -30,21 +30,5 @@ namespace DemoCustomerServicePoints.ApiControllers
             var points = await _pointsService.GetPoints(memberId);
             return new AwardPointsResult { TotalPoints = points };
         }
-    }
-
-    public class AwardPointsResult
-    {
-        public int TotalPoints { get; set; }
-    }
-
-    public class AwardPoints
-    {
-        public string MemberId { get; set; }
-        public int Points { get; set; }
-
-        /// <summary>
-        /// Relates to the transaction that qualifies for this add.
-        /// </summary>
-        public string TransactionId { get; set; }
     }
 }

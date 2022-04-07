@@ -129,6 +129,14 @@ BEGIN
     INSERT INTO AlternateIds(MemberId,[Value]) VALUES('5454667577','788112')
 END
 
+IF ((SELECT COUNT(1) FROM Promotions) = 0)
+BEGIN
+    INSERT INTO Promotions(SKU,[Multiplier]) VALUES('UY0122100',2)
+    INSERT INTO Promotions(SKU,[Multiplier]) VALUES('OO1334511',3)
+    INSERT INTO Promotions(SKU,[Multiplier]) VALUES('8549494DX',2)
+    INSERT INTO Promotions(SKU,[Multiplier]) VALUES('DUS872344',3)
+END
+
 SELECT COUNT(1) AS TOTAL_RewardCustomer FROM RewardCustomers
 SELECT COUNT(1) AS TOTAL_RewardItem FROM RewardItems
 SELECT COUNT(1) AS TOTAL_Products FROM Products
