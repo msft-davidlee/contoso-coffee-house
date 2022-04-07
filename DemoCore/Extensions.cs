@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DemoCore
 {
@@ -23,6 +24,17 @@ namespace DemoCore
             }
 
             return connectionString;
+        }
+
+        public static void EnableApplicationInsights(this IServiceCollection services, IConfiguration configuration)
+        {
+            // See: https://github.com/microsoft/ApplicationInsights-Kubernetes
+            var appInsightsInstrumentationKey = configuration["AppInsightsInstrumentationKey"];
+            if (!string.IsNullOrEmpty(appInsightsInstrumentationKey))
+            {
+                services.AddApplicationInsightsTelemetry(appInsightsInstrumentationKey);
+                services.AddApplicationInsightsKubernetesEnricher();
+            }
         }
     }
 }

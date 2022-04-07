@@ -28,6 +28,7 @@ namespace DemoCustomerServiceAltId
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
 
+            services.EnableApplicationInsights(Configuration);
             services.AddLogging();
             services.AddDbContext<AppDbContext>(options =>
             {
