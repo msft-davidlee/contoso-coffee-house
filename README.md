@@ -47,50 +47,19 @@ The technology stack used includes .NET 6, MS SSQL, Azure Service Bus, and Azure
 2. The Enterprise Service Bus approach is an interesting way for Contoso to "expose" their request to a third party because this is typically done by making a call to the third party endpoint. However, not all third party vendors will host their applications as services on the internet as their core business is not in technology but in fulfillment. Hence, the ESB approach will allow the most flexibility for any third party vendors. For example, if a vendor already has an API endpoint, they can simply create a proxy app to subscribe and push the request to their API. If they don't, they will create an app to subscribe to the ESB and consume the fulfillment request.
 3. The security of the web app is taken care of using Identity Providers rather than a custom authentication approach (think asp.net forms authentication where we end up creating our own identity store in the olden days). A third party approach like AAD B2B or B2C means Contoso can get developers to focus on business problems and leave authentication and authorization to the experts.
 
-# Local Development
-If you are interested to run this Solution locally as a Developer, you will need to make sure you have the Azurite emulator, and a local instance of SQL Server running. I recommand installing Docker Desktop so you can install these dependencies which is the easist way to get started. Once you have configured Docker Desktop, you can run the following which uses Docker to install Storage and SQL dependencies.
+# Topics
+Use the following links to get started.
 
-```
-.\LocalEnv\Install.ps1 -Password <Password>
-```
+1. [Get started](GETSTARTED.md)
+2. [Running .NET solution locally](LOCALDEV.md)
 
-# Get Started
-Please follow the steps below to deploy this solution into your Azure Subscription. Note that you will either need to use CloudShell or ensure Azure CLI is installed locally.
+# Demos
+Use this Project to showcase the following solutions.
 
-1. We need to execute a blueprint deployment to create our environment, shared resources and take care of RBAC. The first step is to create a Service Principal which is assigned into each resource group. Take note of the tenant Id, appId and password.
-```
-az ad sp create-for-rbac -n "Contoso Coffee House GitHub"
-```
-![Create Service Principal](/doc/CreateServicePrincipal.png)
-2. We need to get the Object Id for the Service principal we have created. This is used as input to our Blueprint deployment later.
-```
-az ad sp show --id <appId from the previous command> --query "objectId" | ConvertFrom-Json
-```
-![Get Service Principal Object Id](/doc/GetServicePrincipalObjectId.png)
-3. We need to get the Object Id for our user. This is used as input to our Blueprint deployment later so we can grant oursleves access to shared resources such as Azure Key Vault.
-```
-az ad signed-in-user show --query 'objectId' | ConvertFrom-Json
-```
-![Get Signed In User Object Id](/doc/GetSignedInUserObjectId.png)
-4. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this git repo locally.
-5. We should cd into the blueprint directory and execute our blueprint.bicep with the following command.
-```
-DeployBlueprint.ps1 -SVC_PRINCIPAL_ID <Object Id for Contoso Coffee House GitHub Service Principal> -MY_PRINCIPAL_ID <Object Id for your user>
-```
-6. Create the secret(s) in your github dev environment as defined in secrets section below. Be sure to populate with your desired values from the previous steps. 
-7. Create a branch named demo or dev and push into your git remote repo to kick off the CI process because it is tied to the name of the git branch.
-8. Create certificate for your solution using the following ``` openssl req -x509 -nodes -days 365 -newkey rsa:2048 -out demo.contoso.com.crt -keyout demo.contoso.com.key -subj "/CN=demo.contoso.com/O=aks-ingress-tls" ```
-9. Next, upload the outputs to a container named certs in your shared storage account.
-10. You will need to run the CompleteSetup.ps1 script manually in CloudShell or your local Azure CLI.
-11. To check if everything is setup successfully, review the script output for any errors.
-12. Update your local host file to point to the public ip.
-
-## Secrets
-| Name | Value |
-| --- | --- |
-| CCH_AZURE_CREDENTIALS | <pre>{<br/>&nbsp;&nbsp;&nbsp;&nbsp;"clientId": "",<br/>&nbsp;&nbsp;&nbsp;&nbsp;"clientSecret": "", <br/>&nbsp;&nbsp;&nbsp;&nbsp;"subscriptionId": "",<br/>&nbsp;&nbsp;&nbsp;&nbsp;"tenantId": "" <br/>}</pre> |
-| PREFIX | mytodos - or whatever name you would like for all your resources |
-| SOURCE_IP | This is your home or office IP. This is applied on NSG to allow you to access your web app |
+1. [Governance with Azure Blueprint](AZUREBLUEPRINTS.md)
+2. [DevOps with GitHub](DEVOPS.md)
+3. [Microservices with Frontdoor, AKS, APIM, and AAD B2C](AKS.md)
+4. [ETL File Processing with DataFactory](DATAFACTORY.md)
 
 ## Have an issue?
 You are welcome to create an issue if you need help but please note that there is no timeline to answer or resolve any issues you have with the contents of this project. Use the contents of this project at your own risk! If you are interested to volunteer to maintain this, please feel free to reach out to be added as a contributor and send Pull Requests (PR).
