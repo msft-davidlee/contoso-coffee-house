@@ -44,7 +44,7 @@ Use the following links to get started.
 2. [Running .NET solution locally](LOCALDEV.md)
 
 # Demos
-Use this Project to showcase the following solutions.
+Use this Project to demo/showcase the following solutions.
 
 1. [Governance with Azure Blueprint](AZUREBLUEPRINTS.md)
 2. [DevOps with GitHub](DEVOPS.md)
