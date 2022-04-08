@@ -100,6 +100,8 @@ jobs:
             subnetId=${{ steps.resolve-shared-resources.outputs.subnetId }}
             aksMSIId=${{ steps.resolve-shared-resources.outputs.managedIdentityId }}
             subnetAPIMId=${{ steps.resolve-shared-resources.outputs.subnetAPIMId }}
+            jwtConfigTenantId=${{ steps.resolve-shared-resources.outputs.jwtConfigTenantId }}
+            jwtConfigAppId=${{ steps.resolve-shared-resources.outputs.jwtConfigAppId }}
     outputs:
       managedIdentityId: ${{ steps.build_env.outputs.managedIdentityId }}
       keyVaultName: ${{ steps.resolve-shared-resources.outputs.keyVaultName }}

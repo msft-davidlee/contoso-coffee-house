@@ -14,6 +14,8 @@ param nodesResourceGroup string
 param subnetAPIMId string
 param publisherName string = 'ContosoOwner'
 param publisherEmail string = 'rewards@contoso.com'
+param jwtConfigAppId string
+param jwtConfigTenantId string
 
 var stackName = '${prefix}${appEnvironment}'
 var tags = {
@@ -192,6 +194,16 @@ resource apim 'Microsoft.ApiManagement/service@2021-08-01' = {
     publisherName: publisherName
   }
 }
+var rawValueapi = replace(replace(loadTextContent('apimjwtvalidation.xml'), '%jwtconfigappid%', jwtConfigAppId), '%jwtconfigtenantid%', jwtConfigTenantId)
+resource rewardpolicy 'Microsoft.ApiManagement/service/policies@2021-08-01' = {
+  name: 'policy'
+  parent: apim
+  properties: {
+    format: 'rawxml'
+    value: rawValueapi
+  }
+}
+
 
 output aksName string = aks.name
 output sqlserver string = sql.outputs.sqlFqdn
