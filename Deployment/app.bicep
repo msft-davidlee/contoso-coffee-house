@@ -11,7 +11,7 @@ param apimsku string = 'Developer'
 param version string
 param lastUpdated string = utcNow('u')
 param nodesResourceGroup string
-param subnetIdAPIM string
+param subnetAPIMId string
 param publisherName string = 'ContosoOwner'
 param publisherEmail string = 'rewards@contoso.com'
 
@@ -24,7 +24,6 @@ var tags = {
   'stack-last-updated': lastUpdated
   'stack-sub-name': 'demo'
 }
-
 
 resource appinsights 'Microsoft.Insights/components@2020-02-02' = {
   name: stackName
@@ -181,17 +180,17 @@ resource apim 'Microsoft.ApiManagement/service@2021-08-01' = {
     capacity: 1
     name: apimsku
   }
-  identity:{
+  identity: {
     type: 'SystemAssigned'
   }
   properties: {
     virtualNetworkConfiguration: {
-      subnetResourceId: subnetIdAPIM
+      subnetResourceId: subnetAPIMId
     }
+    virtualNetworkType: 'External'
     publisherEmail: publisherName
     publisherName: publisherEmail
   }
-
 }
 
 output aksName string = aks.name
