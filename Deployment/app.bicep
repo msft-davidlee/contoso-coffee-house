@@ -188,8 +188,8 @@ resource apim 'Microsoft.ApiManagement/service@2021-08-01' = {
       subnetResourceId: subnetAPIMId
     }
     virtualNetworkType: 'External'
-    publisherEmail: publisherName
-    publisherName: publisherEmail
+    publisherEmail: publisherEmail
+    publisherName: publisherName
   }
 }
 
