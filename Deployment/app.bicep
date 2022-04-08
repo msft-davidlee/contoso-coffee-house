@@ -7,9 +7,13 @@ param keyVaultName string
 param kubernetesVersion string = '1.23.3'
 param subnetId string
 param aksMSIId string
+param apimsku string = 'Developer'
 param version string
 param lastUpdated string = utcNow('u')
 param nodesResourceGroup string
+param subnetIdAPIM string
+param publisherName string = 'ContosoOwner'
+param publisherEmail string = 'rewards@contoso.com'
 
 var stackName = '${prefix}${appEnvironment}'
 var tags = {
@@ -20,6 +24,7 @@ var tags = {
   'stack-last-updated': lastUpdated
   'stack-sub-name': 'demo'
 }
+
 
 resource appinsights 'Microsoft.Insights/components@2020-02-02' = {
   name: stackName
@@ -166,6 +171,27 @@ resource aks 'Microsoft.ContainerService/managedClusters@2021-08-01' = {
       }
     }
   }
+}
+
+resource apim 'Microsoft.ApiManagement/service@2021-08-01' = {
+  name: '${stackName}-apim'
+  location: location
+  tags: tags
+  sku: {
+    capacity: 1
+    name: apimsku
+  }
+  identity:{
+    type: 'SystemAssigned'
+  }
+  properties: {
+    virtualNetworkConfiguration: {
+      subnetResourceId: subnetIdAPIM
+    }
+    publisherEmail: publisherName
+    publisherName: publisherEmail
+  }
+
 }
 
 output aksName string = aks.name

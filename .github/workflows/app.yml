@@ -99,6 +99,7 @@ jobs:
             nodesResourceGroup=${{ steps.resolve-shared-resources.outputs.nodesResourceGroup }}
             subnetId=${{ steps.resolve-shared-resources.outputs.subnetId }}
             aksMSIId=${{ steps.resolve-shared-resources.outputs.managedIdentityId }}
+            subnetIdAPIM=${{ steps.resolve-shared-resources.outputs.subnetAPIMId }}
     outputs:
       managedIdentityId: ${{ steps.build_env.outputs.managedIdentityId }}
       keyVaultName: ${{ steps.resolve-shared-resources.outputs.keyVaultName }}
