@@ -138,6 +138,21 @@ resource spAppConfigDataReaderRoleAssignment 'Microsoft.Blueprint/blueprints/art
   }
 }
 
+var appConfigDataOwner ='/providers/Microsoft.Authorization/roleDefinitions/5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b'
+resource spAppConfigDataOwnerRoleAssignment 'Microsoft.Blueprint/blueprints/artifacts@2018-11-01-preview' = {
+  name: 'shared-services-appconfigowner'
+  kind: 'roleAssignment'
+  parent: blueprints[0]
+  properties: {
+    displayName: 'Service Principal : App Configuration Data Owner'
+    principalIds: [
+      myPrincipalId
+    ]
+    resourceGroup: 'ResourceGroup1'
+    roleDefinitionId: appConfigDataOwner
+  }
+}
+
 // Well-know policy defination: e56962a6-4747-49cd-b67b-bf8b01975c4c - Allowed locations
 resource allowedLocations 'Microsoft.Blueprint/blueprints/artifacts@2018-11-01-preview' = {
   name: 'sub-not-allowed-location'
