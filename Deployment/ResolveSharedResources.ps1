@@ -31,10 +31,12 @@ if (!$subnets) {
     throw "Unable to find eligible Subnets from Virtual Network $vnetName!"
 }          
 $subnetId = ($subnets | Where-Object { $_.name -eq "aks" }).id
+$subnetIdAPIM = ($subnets | Where-Object { $_.name -eq "apim" }).id
 if (!$subnetId) {
     throw "Unable to find Subnet resource!"
 }
-Write-Host "::set-output name=subnetId::$subnetId"
+Write-Host "::set-output name=AKSsubnetId::$subnetId"
+Write-Host "::set-output name=APIMsubnetId::$subnetIdAPIM"
 
 
 $kv = GetResource -stackName cch-shared-key-vault -stackEnvironment dev
