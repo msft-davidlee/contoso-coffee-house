@@ -6,12 +6,15 @@ param(
     [Parameter(Mandatory = $true)][string]$SVC_PRINCIPAL_ID,
     [Parameter(Mandatory = $true)][string]$MY_PRINCIPAL_ID,
     [string]$PREFIX = "cch",
-    [string]$BP_VERSION = "1.0")
+    [string]$BP_VERSION = "1.3")
 
 $ErrorActionPreference = "Stop"
 
 if (((az extension list | ConvertFrom-Json) | Where-Object { $_.name -eq "blueprint" }).Length -eq 0) {
-    az extension add --upgrade -n blueprint    
+    az extension add --upgrade -n blueprint
+    if ($LastExitCode -ne 0) {
+        throw "An error has occured. Unable to add extension."
+    }
 }
 
 $blueprintName = "cch$BUILD_ENV"
@@ -77,7 +80,7 @@ if ($LastExitCode -ne 0) {
     throw "An error has occured. Identity listing failed."
 }
 
-$platformRes = (az resource list --tag stack-name='shared-key-vault' | ConvertFrom-Json)
+$platformRes = (az resource list --tag stack-name='cch-shared-key-vault' | ConvertFrom-Json)
 if (!$platformRes) {
     throw "Unable to find eligible platform resource!"
 }
