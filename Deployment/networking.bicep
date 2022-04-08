@@ -23,6 +23,7 @@ var subnets = [
   'default'
   'aks'
   'appgw'
+  'apim'
 ]
 
 resource primary_vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
