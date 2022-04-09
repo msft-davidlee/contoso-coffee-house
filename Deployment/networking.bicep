@@ -100,7 +100,7 @@ var allowHttp = {
     protocol: 'Tcp'
     direction: 'Inbound'
     access: 'Allow'
-    sourceAddressPrefix: sourceIp
+    sourceAddressPrefix: '*'
     sourcePortRange: '*'
     destinationPortRange: '80'
     destinationAddressPrefix: '*'
@@ -115,9 +115,9 @@ var allowHttps = {
     protocol: 'Tcp'
     direction: 'Inbound'
     access: 'Allow'
-    sourceAddressPrefix: sourceIp
+    sourceAddressPrefix: '*'
     sourcePortRange: '*'
-    destinationPortRange: '443'
+    destinationPortRange: '443, 3443'
     destinationAddressPrefix: '*'
   }
 }
@@ -183,6 +183,11 @@ resource prinsgs 'Microsoft.Network/networkSecurityGroups@2021-05-01' = [for sub
       allowHttp
       allowHttps
       allowAppGatewayV2
+    ] :(subnetName == 'apim') ? [
+      allowHttp
+      allowHttps
+      allowFrontdoorOnHttp
+      allowFrontdoorOnHttps
     ] : []
   }
 }]
