@@ -3,7 +3,7 @@ param dr_location string = 'eastus2'
 param environment string
 param prefix string = 'platform'
 param branch string
-param sourceIp string
+// param sourceIp string
 param version string
 param lastUpdated string = utcNow('u')
 
