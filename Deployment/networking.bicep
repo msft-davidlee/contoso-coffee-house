@@ -117,7 +117,22 @@ var allowHttps = {
     access: 'Allow'
     sourceAddressPrefix: '*'
     sourcePortRange: '*'
-    destinationPortRange: '443, 3443'
+    destinationPortRange: '443'
+    destinationAddressPrefix: '*'
+  }
+}
+
+var allowAPIManagement = {
+  name: 'AllowAPIManagement'
+  properties: {
+    description: 'Allow API Management'
+    priority: 115
+    protocol: 'Tcp'
+    direction: 'Inbound'
+    access: 'Allow'
+    sourceAddressPrefix: 'ApiManagement'
+    sourcePortRange: '*'
+    destinationPortRange: '3443'
     destinationAddressPrefix: '*'
   }
 }
@@ -188,6 +203,7 @@ resource prinsgs 'Microsoft.Network/networkSecurityGroups@2021-05-01' = [for sub
       allowHttps
       allowFrontdoorOnHttp
       allowFrontdoorOnHttps
+      allowAPIManagement
     ] : []
   }
 }]
