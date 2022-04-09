@@ -3,7 +3,7 @@ param dr_location string = 'eastus2'
 param environment string
 param prefix string = 'platform'
 param branch string
-// param sourceIp string
+param sourceIp string
 param version string
 param lastUpdated string = utcNow('u')
 
@@ -100,7 +100,7 @@ var allowHttp = {
     protocol: 'Tcp'
     direction: 'Inbound'
     access: 'Allow'
-    sourceAddressPrefix: '*'
+    sourceAddressPrefix: sourceIp
     sourcePortRange: '*'
     destinationPortRange: '80'
     destinationAddressPrefix: '*'
