@@ -122,8 +122,8 @@ var allowHttps = {
   }
 }
 param destinationPortsAPIMNSG array = [
-  '443'
-  '3443'
+  443
+  3443
 ]
 var allowAPIManagement = {
   name: 'AllowAPIManagement'
