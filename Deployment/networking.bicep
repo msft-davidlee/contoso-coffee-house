@@ -121,10 +121,6 @@ var allowHttps = {
     destinationAddressPrefix: '*'
   }
 }
-param destinationPortsAPIMNSG array = [
-  443
-  3443
-]
 var allowAPIManagement = {
   name: 'AllowAPIManagement'
   properties: {
@@ -135,7 +131,7 @@ var allowAPIManagement = {
     access: 'Allow'
     sourceAddressPrefix: 'ApiManagement'
     sourcePortRange: '*'
-    destinationPortRange: destinationPortsAPIMNSG
+    destinationPortRange: '3443'
     destinationAddressPrefix: '*'
   }
 }
