@@ -6,7 +6,6 @@
                 <issuer>https://sts.windows.net/%jwtconfigtenantid%/</issuer>
             </issuers>
         </validate-jwt>
-        <base />
     </inbound>
     <backend>
         <base />
