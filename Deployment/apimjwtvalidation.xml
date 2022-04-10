@@ -5,7 +5,6 @@
             <issuers>
                 <issuer>https://sts.windows.net/%jwtconfigtenantid%/</issuer>
             </issuers>
-            </required-claims>
         </validate-jwt>
         <base />
     </inbound>
