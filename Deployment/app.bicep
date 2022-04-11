@@ -7,9 +7,15 @@ param keyVaultName string
 param kubernetesVersion string = '1.23.3'
 param subnetId string
 param aksMSIId string
+param apimsku string = 'Developer'
 param version string
 param lastUpdated string = utcNow('u')
 param nodesResourceGroup string
+param subnetAPIMId string
+param publisherName string = 'ContosoOwner'
+param publisherEmail string = 'rewards@contoso.com'
+param jwtConfigAppId string
+param jwtConfigTenantId string
 
 var stackName = '${prefix}${appEnvironment}'
 var tags = {
@@ -167,6 +173,37 @@ resource aks 'Microsoft.ContainerService/managedClusters@2021-08-01' = {
     }
   }
 }
+
+resource apim 'Microsoft.ApiManagement/service@2021-08-01' = {
+  name: '${stackName}-apim'
+  location: location
+  tags: tags
+  sku: {
+    capacity: 1
+    name: apimsku
+  }
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    virtualNetworkConfiguration: {
+      subnetResourceId: subnetAPIMId
+    }
+    virtualNetworkType: 'External'
+    publisherEmail: publisherEmail
+    publisherName: publisherName
+  }
+}
+var rawValueapi = replace(replace(loadTextContent('apimjwtvalidation.xml'), '%jwtconfigappid%', jwtConfigAppId), '%jwtconfigtenantid%', jwtConfigTenantId)
+resource rewardpolicy 'Microsoft.ApiManagement/service/policies@2021-08-01' = {
+  name: 'policy'
+  parent: apim
+  properties: {
+    format: 'rawxml'
+    value: rawValueapi
+  }
+}
+
 
 output aksName string = aks.name
 output sqlserver string = sql.outputs.sqlFqdn

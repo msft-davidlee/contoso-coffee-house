@@ -121,6 +121,20 @@ var allowHttps = {
     destinationAddressPrefix: '*'
   }
 }
+var allowAPIManagement = {
+  name: 'AllowAPIManagement'
+  properties: {
+    description: 'Allow API Management'
+    priority: 115
+    protocol: 'Tcp'
+    direction: 'Inbound'
+    access: 'Allow'
+    sourceAddressPrefix: 'ApiManagement'
+    sourcePortRange: '*'
+    destinationPortRange: '3443'
+    destinationAddressPrefix: '*'
+  }
+}
 
 var allowFrontdoorOnHttp = {
   name: 'AllowFrontdoorHttp'
@@ -183,6 +197,12 @@ resource prinsgs 'Microsoft.Network/networkSecurityGroups@2021-05-01' = [for sub
       allowHttp
       allowHttps
       allowAppGatewayV2
+    ] :(subnetName == 'apim') ? [
+      allowHttp
+      allowHttps
+      allowFrontdoorOnHttp
+      allowFrontdoorOnHttps
+      allowAPIManagement
     ] : []
   }
 }]

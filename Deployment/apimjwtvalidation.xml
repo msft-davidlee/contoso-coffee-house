@@ -1,0 +1,19 @@
+<policies>
+    <inbound>
+        <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="You are not authorized to perform this action.">
+            <openid-config url="https://login.microsoftonline.com/%jwtconfigtenantid%/v2.0/.well-known/openid-configuration" />
+            <issuers>
+                <issuer>https://sts.windows.net/%jwtconfigtenantid%/</issuer>
+            </issuers>
+        </validate-jwt>
+    </inbound>
+    <backend>
+        
+    </backend>
+    <outbound>
+       
+    </outbound>
+    <on-error>
+        
+    </on-error>
+</policies>
