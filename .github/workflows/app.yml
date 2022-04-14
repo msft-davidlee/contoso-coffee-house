@@ -132,7 +132,7 @@ jobs:
           .\Deployment\Deploy.ps1 `
           -AKSMSIId ${{ needs.cd_deploy.outputs.managedIdentityId }} `
           -KeyVaultName ${{ needs.cd_deploy.outputs.keyVaultName }} `
-          -QueueName ${{ needs.cd_deploy.outputs.queueName }}
+          -QueueName ${{ needs.cd_deploy.outputs.queueName }} `
           -DOMAINNAME ${{ env.DOMAINNAME }}
 
       - name: Build DNS Zone
