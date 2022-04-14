@@ -13,10 +13,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - demo.contoso.com
+    - $DOMAINNAME
     secretName: aks-ingress-tls
   rules:
-  - host: demo.contoso.com
+  - host: $DOMAINNAME
     http:
       paths:
       - backend:
