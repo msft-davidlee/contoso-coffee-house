@@ -7,7 +7,6 @@ var priNetworkPrefix = toLower('${prefix}-${primary_location}')
 
 resource privatednszone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: 'contoso.com'
-  location: primary_location
   properties: {
     
   }
