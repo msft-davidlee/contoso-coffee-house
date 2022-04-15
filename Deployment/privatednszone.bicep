@@ -19,7 +19,7 @@ resource demoARecord 'Microsoft.Network/privateDnsZones/A@2020-06-01' = {
   properties: {
     aRecords: [
       {
-      ipv4Address: serviceIp
+        ipv4Address: '0.0.0.0'
       }
     ]
     
