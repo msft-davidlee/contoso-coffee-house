@@ -27,7 +27,6 @@ resource demoARecord 'Microsoft.Network/privateDnsZones/A@2020-06-01' = {
 
 resource dnsvnetlinkprimary 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
   name: '${priNetworkPrefix}-vnetlink'
-  location: primary_location
   parent: privatednszone
   properties: {
     registrationEnabled: false
