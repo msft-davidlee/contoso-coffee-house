@@ -1,7 +1,7 @@
 param primary_location string = 'global'
 param prefix string = 'platform'
 param priVnetId string
-param serviceIp string
+// param serviceIp string
 
 var priNetworkPrefix = toLower('${prefix}-${primary_location}')
 
