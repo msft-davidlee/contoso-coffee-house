@@ -135,6 +135,12 @@ jobs:
           -QueueName ${{ needs.cd_deploy.outputs.queueName }} `
           -DOMAINNAME ${{ env.DOMAINNAME }}
 
+      - id: resolve-networking-shared-resources
+        name: Resolve networking shared resources
+        working-directory: .\deployment
+        run: |
+          .\ResolveNetworkSharedResources.ps1
+
       - name: Build DNS Zone
         id: build_dnszone
         uses: azure/arm-deploy@v1
@@ -143,7 +149,7 @@ jobs:
           resourceGroupName: ${{ needs.cd_deploy.outputs.resourceGroup }}
           template: ./deployment/privatednszone.bicep
           parameters: >
-            priVnetId=${{ needs.cd_deploy.outputs.priVnetId }}
+            priVnetId=${{ steps.resolve-networking-shared-resources.outputs.priVnetId }}
             serviceIp=${{ steps.deploy_apps.outputs.serviceip }}
 
   deploy_db:
