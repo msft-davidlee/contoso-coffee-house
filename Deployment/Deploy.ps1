@@ -1,7 +1,9 @@
 param(     
     [Parameter(Mandatory = $true)][string]$AKSMSIId,
     [Parameter(Mandatory = $true)][string]$KeyVaultName,     
-    [Parameter(Mandatory = $true)][string]$QueueName)
+    [Parameter(Mandatory = $true)][string]$QueueName,
+    [Parameter(Mandatory = $true)][string]$DOMAINNAME)
+
 
 function GetResource([string]$stackName, [string]$stackEnvironment) {
     $platformRes = (az resource list --tag stack-name=$stackName | ConvertFrom-Json)
@@ -136,6 +138,7 @@ $content = Get-Content .\Deployment\external-ingress.yaml
 
 # Note: Interestingly, we need to set namespace in the yaml file although we have setup the namespace here in apply.
 $content = $content.Replace('$NAMESPACE', $namespace)
+$content = $content.Replace('$DOMAINNAME', $DOMAINNAME)
 Set-Content -Path ".\external-ingress.yaml" -Value $content
 $rawOut = (kubectl apply -f .\external-ingress.yaml --namespace $namespace 2>&1)
 if ($LastExitCode -ne 0) {

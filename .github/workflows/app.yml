@@ -6,6 +6,9 @@ on:
     paths-ignore:
       - "README.md"
 
+env:
+  DOMAINNAME: 'demo.contoso.com'
+
 jobs:
   ci_build:
     name: CI Build
@@ -74,7 +77,7 @@ jobs:
             environment=dev
             sourceIp=${{ secrets.SOURCE_IP }}
             version=${{ github.run_number }}
-
+            
       - id: resolve-shared-resources
         name: Resolve shared resources
         working-directory: .\deployment
@@ -106,6 +109,8 @@ jobs:
       managedIdentityId: ${{ steps.build_env.outputs.managedIdentityId }}
       keyVaultName: ${{ steps.resolve-shared-resources.outputs.keyVaultName }}
       queueName: ${{ steps.build_env.outputs.queueName }}
+      priVnetId: ${{ steps.resolve-networking-shared-resources.outputs.priVnetId }}
+      resourceGroup: ${{ steps.resolve-networking-shared-resources.outputs.resourceGroup }}
 
   deploy_apps:
     name: Deploy apps
@@ -127,7 +132,25 @@ jobs:
           .\Deployment\Deploy.ps1 `
           -AKSMSIId ${{ needs.cd_deploy.outputs.managedIdentityId }} `
           -KeyVaultName ${{ needs.cd_deploy.outputs.keyVaultName }} `
-          -QueueName ${{ needs.cd_deploy.outputs.queueName }}
+          -QueueName ${{ needs.cd_deploy.outputs.queueName }} `
+          -DOMAINNAME ${{ env.DOMAINNAME }}
+
+      - id: resolve-networking-shared-resources
+        name: Resolve networking shared resources
+        working-directory: .\deployment
+        run: |
+          .\ResolveNetworkSharedResources.ps1
+
+      - name: Build DNS Zone
+        id: build_dnszone
+        uses: azure/arm-deploy@v1
+        with:
+          deploymentName: "deploy-dnszone-${{ github.run_number }}"
+          resourceGroupName: ${{ needs.cd_deploy.outputs.resourceGroup }}
+          template: ./deployment/privatednszone.bicep
+          parameters: >
+            priVnetId=${{ steps.resolve-networking-shared-resources.outputs.priVnetId }}
+            serviceIp=${{ steps.deploy_apps.outputs.serviceip }}
 
   deploy_db:
     name: Deploy database
