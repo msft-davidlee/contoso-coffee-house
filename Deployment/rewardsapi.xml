@@ -1,0 +1,16 @@
+<policies>
+    <inbound>
+        <base />
+        <rewrite-uri template="/api/Points/member/{memberId}" />
+        <set-backend-service base-url="https://%urlapi%" />
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
