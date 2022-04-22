@@ -5,7 +5,7 @@
         <set-backend-service base-url="https://%urlapi%/" />
     </inbound>
     <backend>
-        <base />
+        <forward-request timeout="10" />
     </backend>
     <outbound>
         <base />
