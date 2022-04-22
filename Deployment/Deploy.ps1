@@ -352,9 +352,9 @@ $serviceip = kubectl get ing demo-ingress -n $namespace -o jsonpath='{.status.lo
 Write-Host "::set-output name=serviceip::$serviceip"
 
 # Step 13: Disable cert chain validation
-$apim = $all | Where-Object { $_.type -eq 'Microsoft.ApiManagement/service'}
-$APIM_RESOURCE_GROUP = $apim.resourceGroup
-$APIM_NAME = $apim.name
+# $apim = $all | Where-Object { $_.type -eq 'Microsoft.ApiManagement/service'}
+# $APIM_RESOURCE_GROUP = $apim.resourceGroup
+# $APIM_NAME = $apim.name
 
-$context = New-AzApiManagementContext -resourcegroup $APIM_RESOURCE_GROUP -servicename $APIM_NAME
-New-AzApiManagementBackend -Context $context -Url 'https://demo.contoso.com/' -Protocol http -SkipCertificateChainValidation $true
+# $context = New-AzApiManagementContext -resourcegroup $APIM_RESOURCE_GROUP -servicename $APIM_NAME
+# New-AzApiManagementBackend -Context $context -Url 'https://demo.contoso.com/' -Protocol http -SkipCertificateChainValidation $true
