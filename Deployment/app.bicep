@@ -240,13 +240,6 @@ resource rewardsapioperations 'Microsoft.ApiManagement/service/apis/operations@2
       }
     ]
     description: 'Use this operation to lookup rewards points.'
-    responses: [
-      {
-        statusCode: 200
-        headers: []
-        representations: []
-      }
-    ]
     displayName: 'Lookup reward points'
     method: 'GET'
     urlTemplate: 'api/Points/member/{memberId}'
