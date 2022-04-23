@@ -246,8 +246,19 @@ resource rewardsapioperations 'Microsoft.ApiManagement/service/apis/operations@2
   }
 }
 
+resource rewardsapioperationspost 'Microsoft.ApiManagement/service/apis/operations@2021-08-01' = {
+  parent: rewardsapi
+  name:'rewards-api-operations-post'
+  properties: {
+    description: 'Use this operation to add rewards points.'
+    displayName: 'Add reward points'
+    method: 'POST'
+    urlTemplate: 'api/Points/'
+  }
+}
+
 var rawValue = replace(loadTextContent('rewardsapi.xml'), '%urlapi%', urlapi)
-resource rewardpointslookupbyyearpolicy 'Microsoft.ApiManagement/service/apis/operations/policies@2021-04-01-preview' = {
+resource rewardpointsget 'Microsoft.ApiManagement/service/apis/operations/policies@2021-04-01-preview' = {
   parent: rewardsapioperations
   name: 'policy'
   properties: {
@@ -256,6 +267,24 @@ resource rewardpointslookupbyyearpolicy 'Microsoft.ApiManagement/service/apis/op
   }
 }
 
+var rawValue2 = replace(loadTextContent('rewardsapipost.xml'), '%urlapi%', urlapi)
+resource rewardpointspost 'Microsoft.ApiManagement/service/apis/operations/policies@2021-04-01-preview' = {
+  parent: rewardsapioperationspost
+  name: 'policy'
+  properties: {
+    value: rawValue2
+    format: 'rawxml'
+  }
+}
+
+resource adf 'Microsoft.DataFactory/factories@2018-06-01' = {
+  name: '${stackName}-ADF'
+  location: location
+  tags: tags
+  identity: {
+    type: 'SystemAssigned'
+  }
+}
 
 
 output aksName string = aks.name
