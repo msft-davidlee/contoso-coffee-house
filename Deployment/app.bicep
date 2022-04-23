@@ -217,9 +217,9 @@ resource rewardsapi 'Microsoft.ApiManagement/service/apis@2021-08-01' = {
 
 }
 var rawValueapi = replace(replace(loadTextContent('apimjwtvalidation.xml'), '%jwtconfigappid%', jwtConfigAppId), '%jwtconfigtenantid%', jwtConfigTenantId)
-resource rewardpolicy 'Microsoft.ApiManagement/service/policies@2021-04-01-preview' = {
+resource rewardpolicy 'Microsoft.ApiManagement/service/apis/policies@2021-08-01' = {
   name: 'policy'
-  parent: apim
+  parent: rewardsapi
   properties: {
     format: 'rawxml'
     value: rawValueapi
