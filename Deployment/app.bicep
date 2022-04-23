@@ -7,7 +7,6 @@ param keyVaultName string
 param kubernetesVersion string = '1.23.3'
 param subnetId string
 param aksMSIId string
-param apimsku string = 'Developer'
 param version string
 param lastUpdated string = utcNow('u')
 param nodesResourceGroup string
@@ -16,6 +15,7 @@ param publisherName string = 'ContosoOwner'
 param publisherEmail string = 'rewards@contoso.com'
 param jwtConfigAppId string
 param jwtConfigTenantId string
+param urlapi string = 'demo.contoso.com'
 
 var stackName = '${prefix}${appEnvironment}'
 var tags = {
@@ -180,7 +180,7 @@ resource apim 'Microsoft.ApiManagement/service@2021-08-01' = {
   tags: tags
   sku: {
     capacity: 1
-    name: apimsku
+    name: 'Developer'
   }
   identity: {
     type: 'SystemAssigned'
@@ -194,8 +194,30 @@ resource apim 'Microsoft.ApiManagement/service@2021-08-01' = {
     publisherName: publisherName
   }
 }
+
+resource rewardsapi 'Microsoft.ApiManagement/service/apis@2021-08-01' = {
+  parent: apim
+  name: 'rewards-api'
+  properties: {
+    subscriptionRequired: true
+    subscriptionKeyParameterNames: {
+      header: 'Ocp-Apim-Subscription-Key'
+      query: 'subscription-key'
+    }
+    apiRevision: '1'
+    isCurrent: true
+    displayName: 'Rewards API'
+    path: 'rewards'
+    protocols: [
+      'http'
+      'https'
+    ]
+  }
+
+
+}
 var rawValueapi = replace(replace(loadTextContent('apimjwtvalidation.xml'), '%jwtconfigappid%', jwtConfigAppId), '%jwtconfigtenantid%', jwtConfigTenantId)
-resource rewardpolicy 'Microsoft.ApiManagement/service/policies@2021-08-01' = {
+resource rewardpolicy 'Microsoft.ApiManagement/service/policies@2021-04-01-preview' = {
   name: 'policy'
   parent: apim
   properties: {
@@ -203,6 +225,37 @@ resource rewardpolicy 'Microsoft.ApiManagement/service/policies@2021-08-01' = {
     value: rawValueapi
   }
 }
+
+resource rewardsapioperations 'Microsoft.ApiManagement/service/apis/operations@2021-08-01' = {
+  parent: rewardsapi
+  name:'rewards-api-operations'
+  properties: {
+    templateParameters: [
+      {
+        name: 'memberId'
+        description: 'Member Id'
+        type: 'string'
+        required: true
+        values: []
+      }
+    ]
+    description: 'Use this operation to lookup rewards points.'
+    displayName: 'Lookup reward points'
+    method: 'GET'
+    urlTemplate: 'api/Points/member/{memberId}'
+  }
+}
+
+var rawValue = replace(loadTextContent('rewardsapi.xml'), '%urlapi%', urlapi)
+resource rewardpointslookupbyyearpolicy 'Microsoft.ApiManagement/service/apis/operations/policies@2021-04-01-preview' = {
+  parent: rewardsapioperations
+  name: 'policy'
+  properties: {
+    value: rawValue
+    format: 'rawxml'
+  }
+}
+
 
 
 output aksName string = aks.name

@@ -1,0 +1,16 @@
+<policies>
+    <inbound>
+        <base />
+        <rewrite-uri template="points/api/Points/member/{memberId}" />
+        <set-backend-service base-url="https://%urlapi%/" />
+    </inbound>
+    <backend>
+        <forward-request timeout="10" />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
