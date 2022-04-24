@@ -257,6 +257,16 @@ resource rewardsapioperationspost 'Microsoft.ApiManagement/service/apis/operatio
   }
 }
 
+resource rewardsapipostschema 'Microsoft.ApiManagement/service/schemas@2021-08-01' = {
+  name: 'Payload'
+  parent: apim
+  properties: {
+    schemaType: 'json'
+    description: 'request payload expected format'
+    value: loadTextContent('Payload.json')
+  }
+}
+
 var rawValue = replace(loadTextContent('rewardsapi.xml'), '%urlapi%', urlapi)
 resource rewardpointsget 'Microsoft.ApiManagement/service/apis/operations/policies@2021-04-01-preview' = {
   parent: rewardsapioperations
@@ -267,7 +277,7 @@ resource rewardpointsget 'Microsoft.ApiManagement/service/apis/operations/polici
   }
 }
 
-var rawValue2 = replace(loadTextContent('rewardsapipost.xml'), '%urlapi%', urlapi)
+var rawValue2 = replace(replace(loadTextContent('rewardsapipost.xml'), '%urlapi%', urlapi), '%jsonformat%', rewardsapipostschema.name)
 resource rewardpointspost 'Microsoft.ApiManagement/service/apis/operations/policies@2021-04-01-preview' = {
   parent: rewardsapioperationspost
   name: 'policy'
@@ -277,14 +287,14 @@ resource rewardpointspost 'Microsoft.ApiManagement/service/apis/operations/polic
   }
 }
 
-resource adf 'Microsoft.DataFactory/factories@2018-06-01' = {
-  name: '${stackName}-ADF'
-  location: location
-  tags: tags
-  identity: {
-    type: 'SystemAssigned'
-  }
-}
+// resource adf 'Microsoft.DataFactory/factories@2018-06-01' = {
+//   name: '${stackName}-ADF'
+//   location: location
+//   tags: tags
+//   identity: {
+//     type: 'SystemAssigned'
+//   }
+// }
 
 
 output aksName string = aks.name
