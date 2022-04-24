@@ -263,6 +263,7 @@ resource rewardsapipostschema 'Microsoft.ApiManagement/service/schemas@2021-08-0
   properties: {
     description: 'request payload expected format'
     schemaType: 'json'
+    document: any(loadTextContent('Payload.json'))
   }
 }
 
