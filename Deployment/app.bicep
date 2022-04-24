@@ -257,15 +257,15 @@ resource rewardsapioperationspost 'Microsoft.ApiManagement/service/apis/operatio
   }
 }
 
-resource rewardsapipostschema 'Microsoft.ApiManagement/service/schemas@2021-08-01' = {
-  name: 'Payload'
-  parent: apim
-  properties: {
-    description: 'request payload expected format'
-    schemaType: 'json'
-    document: any(loadTextContent('Payload.json'))
-  }
-}
+// resource rewardsapipostschema 'Microsoft.ApiManagement/service/schemas@2021-08-01' = {
+//   name: 'Payload'
+//   parent: apim
+//   properties: {
+//     description: 'request payload expected format'
+//     schemaType: 'json'
+//     document: any(loadTextContent('Payload.json'))
+//   }
+// }
 
 var rawValue = replace(loadTextContent('rewardsapi.xml'), '%urlapi%', urlapi)
 resource rewardpointsget 'Microsoft.ApiManagement/service/apis/operations/policies@2021-04-01-preview' = {
@@ -277,7 +277,7 @@ resource rewardpointsget 'Microsoft.ApiManagement/service/apis/operations/polici
   }
 }
 
-var rawValue2 = replace(replace(loadTextContent('rewardsapipost.xml'), '%urlapi%', urlapi), '%jsonformat%', rewardsapipostschema.name)
+var rawValue2 = replace(replace(loadTextContent('rewardsapipost.xml'), '%urlapi%', urlapi), '%jsonformat%', 'Payload')
 resource rewardpointspost 'Microsoft.ApiManagement/service/apis/operations/policies@2021-04-01-preview' = {
   parent: rewardsapioperationspost
   name: 'policy'
