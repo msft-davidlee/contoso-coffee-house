@@ -262,7 +262,6 @@ resource rewardsapipostschema 'Microsoft.ApiManagement/service/schemas@2021-08-0
   parent: apim
   properties: {
     description: 'request payload expected format'
-    document: any(loadTextContent('Payload.json'))
     schemaType: 'json'
     value: any(loadTextContent('Payload.json'))
   }
