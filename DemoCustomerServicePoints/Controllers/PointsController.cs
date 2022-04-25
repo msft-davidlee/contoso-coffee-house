@@ -1,9 +1,11 @@
 ﻿using DemoCustomerServicePoints.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 
 namespace DemoCustomerServicePoints.ApiControllers
 {
+    [Authorize]
     [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
     [Route("api/[controller]")]
     [ApiController]

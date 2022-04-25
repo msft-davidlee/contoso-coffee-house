@@ -20,11 +20,6 @@ if ($LastExitCode -ne 0) {
     throw "An error has occured. Unable to login to acr."
 }
 
-$list = az acr repository list --name $AcrName | ConvertFrom-Json
-if ($LastExitCode -ne 0) {
-    throw "An error has occured. Unable to list from repository"
-}
-
 # Do not change this as this affect container reg
 $namePrefix = "contoso-demo"
 $apps = @(
@@ -54,7 +49,7 @@ $apps = @(
     }
 )
 
-$version = "v4.10"
+$version = "v4.11"
 for ($i = 0; $i -lt $apps.Length; $i++) {
     $app = $apps[$i]
 

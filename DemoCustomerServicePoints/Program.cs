@@ -1,6 +1,5 @@
 using DemoCore;
 using DemoCustomerServicePoints.Core;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
