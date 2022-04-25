@@ -73,3 +73,6 @@ $jwtConfigTenantId = (az keyvault secret show -n contoso-customer-service-aad-te
 Write-Host "::set-output name=jwtConfigTenantId::$jwtConfigTenantId"
 $jwtConfigAppId = (az keyvault secret show -n contoso-customer-service-aad-app-client-id --vault-name $kvName --query value | ConvertFrom-Json)
 Write-Host "::set-output name=jwtConfigAppId::$jwtConfigAppId"
+
+# Register ADF resource provider
+az provider register --namespace 'Microsoft.DataFactory'
