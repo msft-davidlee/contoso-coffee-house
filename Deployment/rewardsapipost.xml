@@ -1,0 +1,19 @@
+<policies>
+    <inbound>
+        <base />
+        <rewrite-uri template="points/api/Points" />
+        <set-backend-service base-url="https://%urlapi%/" />
+        <validate-content unspecified-content-type-action="detect" max-size="102400" size-exceeded-action="prevent" errors-variable-name="requestBodyValidation">
+            <content type="application/json" validate-as="json" action="detect" schema-id="Payload" />
+        </validate-content>
+    </inbound>
+    <backend>
+        <forward-request timeout="10" />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
