@@ -16,6 +16,7 @@ param publisherEmail string = 'rewards@contoso.com'
 param jwtConfigAppId string
 param jwtConfigTenantId string
 param urlapi string = 'demo.contoso.com'
+param cchAksPrincicalId string
 
 var stackName = '${prefix}${appEnvironment}'
 var tags = {
@@ -292,7 +293,10 @@ resource adf 'Microsoft.DataFactory/factories@2018-06-01' = {
   location: location
   tags: tags
   identity: {
-    type: 'SystemAssigned'
+    type: 'SystemAssigned,UserAssigned'
+    userAssignedIdentities: {
+      PrimaryUserAssignedIdentityId: cchAksPrincicalId
+    }
   }
 }
 
