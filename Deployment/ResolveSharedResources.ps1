@@ -74,7 +74,7 @@ Write-Host "::set-output name=jwtConfigTenantId::$jwtConfigTenantId"
 $jwtConfigAppId = (az keyvault secret show -n contoso-customer-service-aad-app-client-id --vault-name $kvName --query value | ConvertFrom-Json)
 Write-Host "::set-output name=jwtConfigAppId::$jwtConfigAppId"
 
-# Pull principalId of user assigned identity
+# Pull Resource Id of user assigned identity
 $ids = az identity list | ConvertFrom-Json
 $cchAks = $ids | Where-Object { $_.name -eq "cch-aks" }
 $cchAksid = $cchAks.id
