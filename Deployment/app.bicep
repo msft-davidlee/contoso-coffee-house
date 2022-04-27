@@ -295,7 +295,7 @@ resource adf 'Microsoft.DataFactory/factories@2018-06-01' = {
   identity: {
     type: 'SystemAssigned,UserAssigned'
     userAssignedIdentities: {
-      defaultValue: cchAksid
+      '${cchAksid}' : {}
     }
   }
 }
