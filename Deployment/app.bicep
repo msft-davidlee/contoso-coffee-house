@@ -15,8 +15,7 @@ param publisherName string = 'ContosoOwner'
 param publisherEmail string = 'rewards@contoso.com'
 param jwtConfigAppId string
 param jwtConfigTenantId string
-param urlapi string = 'demo.contoso.com'
-param cchAksPrincicalId string
+param urlapi string = 'demo.contoso.com
 param cchAksid string
 
 var stackName = '${prefix}${appEnvironment}'

@@ -77,7 +77,5 @@ Write-Host "::set-output name=jwtConfigAppId::$jwtConfigAppId"
 # Pull principalId of user assigned identity
 $ids = az identity list | ConvertFrom-Json
 $cchAks = $ids | Where-Object { $_.name -eq "cch-aks" }
-$cchAksPrincicalId = $cchAks.principalId
-Write-Host "::set-output name=cchAksPrincicalId::$cchAksPrincicalId"
 $cchAksid = $cchAks.id
 Write-Host "::set-output name=cchAksid::$cchAksid"
