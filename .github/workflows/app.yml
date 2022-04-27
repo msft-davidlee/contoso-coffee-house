@@ -106,6 +106,7 @@ jobs:
             jwtConfigTenantId=${{ steps.resolve-shared-resources.outputs.jwtConfigTenantId }}
             jwtConfigAppId=${{ steps.resolve-shared-resources.outputs.jwtConfigAppId }}
             cchAksPrincicalId= ${{ steps.resolve-shared-resources.outputs.cchAksPrincicalId }}
+            cchAksid = ${{ steps.resolve-shared-resources.outputs.cchAksid }}
     outputs:
       managedIdentityId: ${{ steps.build_env.outputs.managedIdentityId }}
       keyVaultName: ${{ steps.resolve-shared-resources.outputs.keyVaultName }}

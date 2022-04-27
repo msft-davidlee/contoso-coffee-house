@@ -79,3 +79,5 @@ $ids = az identity list | ConvertFrom-Json
 $cchAks = $ids | Where-Object { $_.name -eq "cch-aks" }
 $cchAksPrincicalId = $cchAks.principalId
 Write-Host "::set-output name=cchAksPrincicalId::$cchAksPrincicalId"
+$cchAksid = $cchAks.id
+Write-Host "::set-output name=cchAksid::$cchAksid"

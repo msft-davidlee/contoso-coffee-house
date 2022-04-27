@@ -17,6 +17,7 @@ param jwtConfigAppId string
 param jwtConfigTenantId string
 param urlapi string = 'demo.contoso.com'
 param cchAksPrincicalId string
+param cchAksid string
 
 var stackName = '${prefix}${appEnvironment}'
 var tags = {
@@ -295,7 +296,7 @@ resource adf 'Microsoft.DataFactory/factories@2018-06-01' = {
   identity: {
     type: 'SystemAssigned,UserAssigned'
     userAssignedIdentities: {
-      PrimaryUserAssignedIdentityId: cchAksPrincicalId
+      defaultValue: cchAksid
     }
   }
 }
