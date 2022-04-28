@@ -99,3 +99,8 @@ $ids | ForEach-Object {
         throw "An error has occured on role assignment."
     }
 }
+
+# This is needed
+$cchAks = $ids | Where-Object { $_.name -eq "cch-aks" }
+az role assignment create --assignee $cchAks.principalId --role 'Storage Blob Data Contributor' --resource-group $cchAks.resourceGroup
+az role assignment create --assignee $cchAks.principalId --role 'Storage Blob Data Reader' --resource-group $cchAks.resourceGroup
