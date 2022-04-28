@@ -67,6 +67,10 @@ Write-Host "::set-output name=keyVaultId::$keyVaultId"
 $identity = az identity list -g $appResourceGroup | ConvertFrom-Json
 $mid = $identity.id
 Write-Host "::set-output name=managedIdentityId::$mid"
+$midClientid = $identity.clientId
+Write-Host "::set-output name=managedIdentityClientId::$midClientid"
+$midPrincipalId = $identity.principalId
+Write-Host "::set-output name=managedIdentityPrincipalId::$midPrincipalId"
 
 # Pull tenantId and AppId from AKV
 $jwtConfigTenantId = (az keyvault secret show -n contoso-customer-service-aad-tenant-id --vault-name $kvName --query value | ConvertFrom-Json)
