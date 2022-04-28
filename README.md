@@ -23,7 +23,7 @@ Contoso Coffee House started a Loyalty Program about 10 years ago where every $1
 
 ### New Business Requirements
 * Contoso Coffee House would like to consider real-time award of points to increase member satisfaction with the program and perhaps additional purchases because of potential to get more points. One thought is that the Point-Of-Sale could forward transaction. There could potentially be a daily transaction log generated for reconciliation.
-* Would like to at some point collobrate with other organizations with similar loyalty program so points can be award from them either real-time or maybe based on schedule from their transaction logs. Offers can be displayed and customer can choose to opt-in via their Mobile App. For example, if the customer uses a Credit Card from a certain bank to make the purchase, there would be double points awarded. This would be a beta program.
+* Would like to at some point collobrate with other organizations with similar loyalty program so points can be award from them either real-time or maybe based on schedule from their transaction logs. For example, if the customer uses a Credit Card from a certain bank to make the purchase, there would be double points awarded. This would be a beta program.
 * Security MUST be a priority and we should design with zero trust in mind.
 
 # Demos
