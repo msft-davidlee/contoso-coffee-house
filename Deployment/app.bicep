@@ -16,6 +16,8 @@ param publisherEmail string = 'rewards@contoso.com'
 param jwtConfigAppId string
 param jwtConfigTenantId string
 param urlapi string = 'demo.contoso.com'
+param MIClientId string
+param MIPrincipalId string
 
 var stackName = '${prefix}${appEnvironment}'
 var tags = {
@@ -287,14 +289,20 @@ resource rewardpointspost 'Microsoft.ApiManagement/service/apis/operations/polic
   }
 }
 
-// resource adf 'Microsoft.DataFactory/factories@2018-06-01' = {
-//   name: '${stackName}-ADF'
-//   location: location
-//   tags: tags
-//   identity: {
-//     type: 'SystemAssigned'
-//   }
-// }
+resource adf 'Microsoft.DataFactory/factories@2018-06-01' = {
+  name: '${stackName}-ADF'
+  location: location
+  tags: tags
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${aksMSIId}': {
+        clientId: MIClientId
+        principalId: MIPrincipalId
+      }
+    }
+  }
+}
 
 
 output aksName string = aks.name
