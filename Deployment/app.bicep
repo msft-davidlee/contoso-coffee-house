@@ -287,14 +287,14 @@ resource rewardpointspost 'Microsoft.ApiManagement/service/apis/operations/polic
   }
 }
 
-resource adf 'Microsoft.DataFactory/factories@2018-06-01' = {
-  name: '${stackName}-ADF'
-  location: location
-  tags: tags
-  identity: {
-    type: 'SystemAssigned'
-  }
-}
+// resource adf 'Microsoft.DataFactory/factories@2018-06-01' = {
+//   name: '${stackName}-ADF'
+//   location: location
+//   tags: tags
+//   identity: {
+//     type: 'SystemAssigned'
+//   }
+// }
 
 
 output aksName string = aks.name
