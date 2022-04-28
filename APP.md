@@ -33,5 +33,5 @@ Follow the steps below to review specific demo pieces.
 ## Accompanying Demos
 1. Once we have completed the Customer Service App Demo, we can bring up Application insights to demonstrate Application Map as that will show all the different moving parts.
     1. If there are errors, we can also showcase that experience by doing "Transaction search" or viewing "Failures".
-2. Next, we can review Azure Service Bus and in the overview sceeen, we can take a look at the request and messages.
-3. Lastly, we can review AKS and review the "Services and ingresses".
+2. Next, we can review Azure Service Bus and in the overview sceeen, we can take a look at the request and messages. We can track the rate of messages, whether messages are throttled and other interesting insights.
+3. Lastly, we can review AKS and review the "Services and ingresses". We can talk about using the Portal to review the ingress configurations (where we have multiple websites), reviewing the Pods and health status, logs and many other capabilities.
