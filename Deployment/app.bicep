@@ -292,7 +292,7 @@ resource adf 'Microsoft.DataFactory/factories@2018-06-01' = {
   location: location
   tags: tags
   identity: {
-    type: 'SystemAssigned,UserAssigned'
+    type: 'UserAssigned'
     userAssignedIdentities: {
       '${aksMSIId}': {}
     }
