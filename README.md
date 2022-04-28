@@ -43,12 +43,12 @@ Follow the steps below to create the demo environment in your own Azure Subscrip
     * Owner Access to the Azure Subscription where the solution will be running in.
     * Access to create App registrations in Azure Active Directory (AAD) which is associated with that Azure Subscription.
     * For Solution 1, you will also need to access to a different Azure Active Directory for hosting CCH users i.e. the Customer Service Reps. to login from.
-2. A GitHub account as we are planning to use GitHub Actions to drive CI/CD with it.
+2. Azure CLI installed locally or Azure CloudShell configurd in your Azure Subscription.
+3. A GitHub account as we are planning to use GitHub Actions to drive CI/CD with it.
 
 ## Steps
-1. [Get started](GETSTARTED.md)
-2. [Governance with Azure Blueprint](AZUREBLUEPRINTS.md)
-3. [DevOps (CI/CD) with GitHub Actions](DEVOPS.md)
+1. [Governance with Azure Blueprint](AZUREBLUEPRINTS.md)
+2. [DevOps (CI/CD) with GitHub Actions](DEVOPS.md)
 
 Once the demo environment has been created, please review the specific solutions you are interested to demo/review for additional steps.
 
