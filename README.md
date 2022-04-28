@@ -36,9 +36,9 @@ The following are required to be executed as prerequisites for the solutions. Th
 ## Solutions
 The following are solutions developed. The first one represent the existing solution while 2 and 3 are designed to meet the new business requirements
 
-1. [Internal Web App with backend job processing (Frontdoor, AKS, SQL, Functions, Service Bus and AAD)](AKS.md)
-2. [Realtime Data Ingestion with API Microservices (Frontdoor, AKS, SQL, APIM and AAD)](AKS.md)
-3. [ETL Batch File Processing (Storage, DataFactory, SQL, AKS, APIM and AAD)](DATAFACTORY.md)
+1. [Internal Customer Service Web App with a backend points-for-rewards jobs processing (Frontdoor, AKS, SQL, Functions, Service Bus and AAD)](AKS.md)
+2. [Realtime Data Ingestion to award points API Microservice (Frontdoor, AKS, SQL, APIM and AAD)](AKS.md)
+3. [ETL Batch Transaction reconciliation File processing for awarding points (Storage, DataFactory, SQL, AKS, APIM and AAD)](DATAFACTORY.md)
 
 Optionally, we also have [Local .NET development with Docker](LOCALDEV.md) that speaks to how a developer can think about local development practices. The .NET solution in this project are developed with this practice.
 
