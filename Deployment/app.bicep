@@ -303,7 +303,7 @@ resource appInsightsAPIManagement 'Microsoft.ApiManagement/service/loggers@2021-
 }
 
 resource apiMonitoring 'Microsoft.ApiManagement/service/apis/diagnostics@2021-08-01' = {
-  name: '${apim.name}-applicationInsights'
+  name: 'applicationinsights'
   parent: rewardsapi
   properties: {
 
