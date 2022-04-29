@@ -289,6 +289,45 @@ resource rewardpointspost 'Microsoft.ApiManagement/service/apis/operations/polic
   }
 }
 
+resource appInsightsAPIManagement 'Microsoft.ApiManagement/service/loggers@2021-08-01' = {
+  name:'${stackName}-APIM-AppInsights'
+  parent: apim
+  properties: {
+    credentials: {
+      instrumentationKey: appinsights.properties.InstrumentationKey
+    }
+    loggerType: 'applicationInsights'
+    description: 'Rewards API logger'
+    resourceId: appinsights.id
+  }
+}
+
+resource apiMonitoring 'Microsoft.ApiManagement/service/apis/diagnostics@2021-08-01' = {
+  name: '${apim.name}-applicationInsights'
+  parent: rewardsapi
+  properties: {
+
+      alwaysLog: 'allErrors'
+      loggerId: appInsightsAPIManagement.id
+      logClientIp: true
+      httpCorrelationProtocol: 'W3C'
+      verbosity: 'information'
+      operationNameFormat: 'Url'
+  }
+}
+
+// resource apiMonitoring 'Microsoft.ApiManagement/service/apis/diagnostics@2020-06-01-preview' = {
+//   name: '${apimanagementApi.name}/applicationinsights'
+//   properties: {
+//     alwaysLog: 'allErrors'
+//     loggerId: appInsightsAPIManagement.id  
+//     logClientIp: true
+//     httpCorrelationProtocol: 'W3C'
+//     verbosity: 'information'
+//     operationNameFormat: 'Url'
+//   }
+// }
+
 resource adf 'Microsoft.DataFactory/factories@2018-06-01' = {
   name: '${stackName}-ADF'
   location: location
