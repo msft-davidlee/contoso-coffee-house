@@ -33,8 +33,6 @@ There will be three solutions created as part of the demo. The first solution re
 2. [Real-time Data Ingestion to award points API Microservice (Frontdoor, AKS, SQL, APIM and AAD)](AKS.md)
 3. [ETL Batch Transaction reconciliation File processing for awarding points (Storage, DataFactory, SQL, AKS, APIM and AAD)](DATAFACTORY.md)
 
-Although not part of the demo environment, we optionally review [Local .NET development with Docker](LOCALDEV.md) which speaks to how a developer can setup local development for the .NET solution.
-
 # Setting up the Demo Environment
 Follow the steps below to create the demo environment in your own Azure Subscription. Be sure to review prerequisites first!
 
@@ -47,10 +45,10 @@ Follow the steps below to create the demo environment in your own Azure Subscrip
 3. A GitHub account as we are planning to use GitHub Actions to drive CI/CD with it.
 
 ## Steps
-1. [Governance with Azure Blueprint](AZUREBLUEPRINTS.md)
-2. [DevOps (CI/CD) with GitHub Actions](DEVOPS.md)
-
-Once the demo environment has been created, please review the specific solutions you are interested to demo/review for additional steps.
+1. As an Azure Subscription Owner/ Administrator, we will need to establish a landing zone with the following: [Governance with Azure Blueprint](AZUREBLUEPRINTS.md)
+2. Next, the Development team will be responsible for writing the code. For this part, We optionally review [Local .NET development with Docker](LOCALDEV.md) which speaks to how a developer can setup local development for the .NET solution. This step is optional but speaks to the development aspect of the 3 solutions.
+3. Lastly, the DevOps engineer working closely with the Development team will develop the infrastrure-as-code (IaC) practices and we can follow the steps mentioned in: [DevOps (CI/CD) with GitHub Actions](DEVOPS.md).
+4. With that, the demo environment with the 3 solutions will be created, please review the specific solutions you are interested to demo/review.
 
 ## Have an issue?
 You are welcome to create an issue if you need help but please note that there is no timeline to answer or resolve any issues you have with the contents of this project. Use the contents of this project at your own risk! If you are interested to volunteer to maintain this, please feel free to reach out to be added as a contributor and send Pull Requests (PR).
