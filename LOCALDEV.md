@@ -1,6 +1,6 @@
 [Main](README.md)
 
-# Local .NET development with Docker  or multi-solution startup
+# Local .NET development
 If you are interested to run this Solution locally as a Developer, you will need to make sure you configure Visual Studio start up with Multiple start up project option. See below on what to configure:
 
 ![Multi-solution startup](/doc/MultiSolutionStartup.png)
