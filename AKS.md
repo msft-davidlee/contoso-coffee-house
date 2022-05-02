@@ -1,6 +1,6 @@
-[Main](README.md)
+[Main](README.md) | [Internal Customer Service Web App](APP.md) | [ETL Batch Transaction File processing](DATAFACTORY.md)
 
-# Introduction
+# Real-time Data Ingestion to award points API Microservice (Frontdoor, AKS, SQL, APIM and AAD)
 This solution consist of an real-time data ingestion API endpoint to award points via an internally hosted API Microservice. This solution consist of the following components: Frontdoor, AKS, SQL, APIM and AAD.
 
 ## Architecture

@@ -4,7 +4,7 @@ on:
       - dev
       - demo
     paths-ignore:
-      - "README.md"
+      - "*.md"
 
 env:
   DOMAINNAME: 'demo.contoso.com'
