@@ -33,7 +33,7 @@ There will be three solutions created as part of the demo. The first solution re
 2. [Real-time Data Ingestion to award points API Microservice (Frontdoor, AKS, SQL, APIM and AAD)](AKS.md)
 3. [ETL Batch Transaction reconciliation File processing for awarding points (Storage, DataFactory, SQL, AKS, APIM and AAD)](DATAFACTORY.md)
 
-Although not part of the demo environment, optionally, we can also review [Local .NET development with Docker](LOCALDEV.md) which speaks to how a developer can think about local development practices. The .NET solution in this project are developed with this practice.
+Although not part of the demo environment, we optionally review [Local .NET development with Docker](LOCALDEV.md) which speaks to how a developer can setup local development for the .NET solution.
 
 # Setting up the Demo Environment
 Follow the steps below to create the demo environment in your own Azure Subscription. Be sure to review prerequisites first!
