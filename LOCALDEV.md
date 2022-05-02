@@ -95,3 +95,5 @@ Lastly, for the DemoWebsite, you will need to configure the following appsetting
   "PartnerAPIUri": "https://localhost:5005"
 }
 ```
+## Next step
+[Continue to Step 3](DEVOPS.md)
