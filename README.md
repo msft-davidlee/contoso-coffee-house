@@ -2,7 +2,7 @@
 The information contained in this README.md file and any accompanying materials (including, but not limited to, scripts, sample codes, etc.) are provided "AS-IS" and "WITH ALL FAULTS." Any estimated pricing information is provided solely for demonstration purposes and does not represent final pricing and Microsoft assumes no liability arising from your use of the information. Microsoft makes NO GUARANTEES OR WARRANTIES OF ANY KIND, WHETHER EXPRESSED OR IMPLIED, in providing this information, including any pricing information.
 
 # Introduction 
-This project show cases several solutions for a fictitious company called Contoso Coffee House or CCH for short. CCH has been in business for over 15 years and has grown from a few stores in the Dallas Fort Worth area to entire US and Canada (North America).
+This project show cases several solutions for a fictitious company called Contoso Coffee House or CCH for short. CCH has been in business for over 15 years and has grown from a few stores in the Dallas to entire US and Canada (North America).
 
 ## Background
 CCH started a Loyalty Program about 10 years ago where every $1 purchase would earn 1 point. This program helped them grow their customer base. Currently there are about 3 million members and expect to double in the next 3 years. More about the Loyalty Program:
@@ -39,10 +39,10 @@ Although not part of the demo environment, optionally, we can also review [Local
 Follow the steps below to create the demo environment in your own Azure Subscription. Be sure to review prerequisites first!
 
 ## Prerequisites
-1. An Azure Subscription
-    * Owner Access to the Azure Subscription where the solution will be running in.
+1. Azure Subscription:
+    * Owner Access to the Subscription where the solution will be running in.
     * Access to create App registrations in Azure Active Directory (AAD) which is associated with that Azure Subscription.
-    * For Solution 1, you will also need to access to a different Azure Active Directory for hosting CCH users i.e. the Customer Service Reps. to login from.
+    * For [Solution 1](APP.md), you will also need to access to a different Azure Active Directory for hosting CCH users i.e. the Customer Service Reps. to login from.
 2. Azure CLI installed locally or Azure CloudShell configurd in your Azure Subscription.
 3. A GitHub account as we are planning to use GitHub Actions to drive CI/CD with it.
 
