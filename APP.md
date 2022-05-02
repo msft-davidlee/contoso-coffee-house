@@ -1,6 +1,7 @@
 [Main](README.md)
 
-# Introduction
+# Internal Customer Service Web App with a backend points-for-rewards jobs processing (Frontdoor, AKS, SQL, Functions, Service Bus and AAD
+
 This solution consist of an internal Customer Service Web App with a backend points-for-rewards jobs processing. This solution consist of the following components: Frontdoor, AKS, SQL, Functions, Service Bus and AAD.
 
 ## Architecture

@@ -48,7 +48,7 @@ Follow the steps below to create the demo environment in your own Azure Subscrip
 1. As an Azure Subscription Owner/ Administrator, we will need to establish a landing zone with the following: [Governance with Azure Blueprint](AZUREBLUEPRINTS.md)
 2. Next, the Development team will be responsible for writing the code. As a quick note, this step is **OPTIONAL**! For this part, We can optionally review [Local .NET development with Docker](LOCALDEV.md) which speaks to how *you*, as a developer can setup local development for the .NET solution. As an example, you can make a code change and see the CI/CD run from start to end.
 3. Lastly, the DevOps engineer working closely with the Development team will develop the infrastrure-as-code (IaC) practices and we can follow the steps mentioned in: [DevOps (CI/CD) with GitHub Actions](DEVOPS.md).
-4. With that, the demo environment with the 3 solutions will be created. Note that there is potentially specific setup with each solution. Please review the specific solutions you are interested to demo/review to perform those steps.
+4. With that, the demo environment with the 3 solutions will be created. Note that there is potentially specific setup with each solution. Please review the specific solutions you are interested to demo/review to perform them as mentioned by the above step.
 
 ## Have an issue?
 You are welcome to create an issue if you need help but please note that there is no timeline to answer or resolve any issues you have with the contents of this project. Use the contents of this project at your own risk! If you are interested to volunteer to maintain this, please feel free to reach out to be added as a contributor and send Pull Requests (PR).
