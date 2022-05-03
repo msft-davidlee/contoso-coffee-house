@@ -6,11 +6,21 @@ This solution consist of an real-time data ingestion API endpoint to award point
 ## Architecture
 1. The solution has a API frontend piece which is created in Azure API Management (APIM).
     1. The frontend API is protected by OAuth and we have created a validate-jwt policy to protect our API,
-    2. The Point-Of-Sale Terminals will leverage Client Credentials Flow to get a bearer token from AAD with the provided Client ID and Secret. 
-4. Contoso IT has an agreement with the Partner IT to communicate requests via an Enterprise Service Bus (ESB) of their choosing. The Partner development team will subscribe request from the ESB.
-5. In order to monitor the health of the system and ensure the SLA is met, there will be Application Monitoring created throughout the system.
+    2. The Point-Of-Sale Terminals will leverage Client Credentials Flow to get a bearer token from AAD with the provided Client ID and Secret.
 
-![Architecture](/Architecture/Solution.png)
+![Architecture](/Architecture/AKS.png)
 
 ## Other Considerations
 
+# APIM Demo with Postman
+1. Install [Postman](https://www.postman.com/downloads/) if it is not yet installed. 
+2. Import Test\PointsAPI.postman_collection.json into your Postman
+3. Create the following environment variables. Note that you should have these information in Azure Key Vault.
+    1. TenantId
+    2. ClientId
+    3. ClientSecret 
+4. Now you can execute the *Client Credentials Flow* step to get the token.
+5. Change the URL from *https://demo.contoso.com* to the URL of APIM for both the *Get points* and *Award Points From Transaction* steps.
+6. Next, you can execute the *Get points* step to get the points using a Member Id.
+7. Lastly, you can execute the *Award Points From Transaction* step and see points being awarded.
+8. You can review Application Insights Application Map to review the traffic flow. Note that it could take several minutes before the Application Map shows the traffic flow.
