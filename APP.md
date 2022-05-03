@@ -34,7 +34,7 @@ This solution consist of an internal Customer Service Web App with a backend poi
 # AKS Ingress Controller API test with Postman Demo
 1. Install [Postman](https://www.postman.com/downloads/) if it is not yet installed. 
 2. Import Test\PointsAPI.postman_collection.json into your Postman
-3. Create the following environment variables. Note that you should have these information in Azure Key Vault.
+3. Create the following environment variables. Note that you should have these information in Azure Key Vault which was configured in a [previous step](/AZUREBLUEPRINTS.md).
     1. TenantId
     2. ClientId
     3. ClientSecret

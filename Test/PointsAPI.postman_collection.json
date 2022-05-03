@@ -109,6 +109,11 @@
 						"key": "Authorization",
 						"value": "Bearer {{token}}",
 						"type": "default"
+					},
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{SubscriptionKey}}",
+						"type": "default"
 					}
 				],
 				"url": {
@@ -174,6 +179,11 @@
 					{
 						"key": "Authorization",
 						"value": "Bearer {{token}}",
+						"type": "default"
+					},
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{SubscriptionKey}}",
 						"type": "default"
 					}
 				],
