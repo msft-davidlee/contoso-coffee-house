@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "216c7804-908b-4b81-8395-b63060021e19",
+		"name": "PointsAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Client Credentials Flow",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var obj = pm.response.json();\r",
+							"pm.environment.set(\"token\", obj.access_token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "{{ClientId}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{ClientSecret}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "api://contoso-cs-rewards-api/.default",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://login.microsoftonline.com/{{TenantId}}/oauth2/v2.0/token",
+					"protocol": "https",
+					"host": [
+						"login",
+						"microsoftonline",
+						"com"
+					],
+					"path": [
+						"{{TenantId}}",
+						"oauth2",
+						"v2.0",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get points",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The response has all properties\", () => {\r",
+							"    //parse the response JSON and test three properties\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.totalPoints).to.be.above(0)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "default"
+					},
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{SubscriptionKey}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://demo.contoso.com/points/api/Points/member/1320122100",
+					"protocol": "https",
+					"host": [
+						"demo",
+						"contoso",
+						"com"
+					],
+					"path": [
+						"points",
+						"api",
+						"Points",
+						"member",
+						"1320122100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Award Points From Transaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The response has all properties\", () => {\r",
+							"    //parse the response JSON and test three properties\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.totalPoints).to.be.above(100)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var uuid = require('uuid')\r",
+							"var transactionId = uuid.v4().replace('-','').substring(0,9);\r",
+							"pm.environment.set('transactionId', transactionId);\r",
+							"\r",
+							"var moment = require('moment');\r",
+							"var x = Math.floor((Math.random() * 10) + 1);\r",
+							"var transactionDate = moment.utc().subtract(x, 'd').format('YYYY-MM-DD[T]HH:mm:ss[Z]');\r",
+							"pm.environment.set(\"transactionDate\", transactionDate);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "default"
+					},
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{SubscriptionKey}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"memberId\":\"1320122100\",\r\n    \"transactionDate\": \"{{transactionDate}}\",\r\n    \"transactionId\": \"{{transactionId}}\",\r\n    \"lineItems\":[\r\n        {\r\n            \"sku\": \"UY0122100\",\r\n            \"roundedAmountSpent\": 12\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://demo.contoso.com/points/api/Points",
+					"protocol": "https",
+					"host": [
+						"demo",
+						"contoso",
+						"com"
+					],
+					"path": [
+						"points",
+						"api",
+						"Points"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
