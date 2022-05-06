@@ -343,6 +343,17 @@ resource adf 'Microsoft.DataFactory/factories@2018-06-01' = {
   }
 }
 
+resource profiles_cch_frontdoor_name_resource 'Microsoft.Cdn/profiles@2021-06-01' = {
+  name: '${stackName}-FD'
+  location: location
+  sku: {
+    name: 'Standard_AzureFrontDoor'
+  }
+  kind: 'frontdoor'
+  properties: {
+    originResponseTimeoutSeconds: 60
+  }
+}
 
 output aksName string = aks.name
 output sqlserver string = sql.outputs.sqlFqdn
