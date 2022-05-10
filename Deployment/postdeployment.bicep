@@ -80,7 +80,7 @@ resource ftd 'Microsoft.Cdn/profiles@2021-06-01' = {
 
 resource aksprofile 'Microsoft.Cdn/profiles/afdendpoints@2021-06-01' = {
   parent: ftd
-  name: '${stackName}-aks'
+  name: 'aks'
   location: location
   tags: tags
   properties: {
