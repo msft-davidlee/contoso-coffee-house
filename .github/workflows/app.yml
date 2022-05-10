@@ -156,7 +156,6 @@ jobs:
             serviceIp=${{ steps.deploy_apps.outputs.serviceip }}
             branch=${{ github.ref }}
             version=${{ github.run_number }}
-            location=${{ needs.cd_deploy.outputs.location }}
 
   deploy_db:
     name: Deploy database

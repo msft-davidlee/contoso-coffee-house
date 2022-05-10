@@ -1,8 +1,7 @@
-param primary_location string = 'global'
 param prefix string = 'platform'
 param appEnvironment string = 'dev'
 param lastUpdated string = utcNow('u')
-param location string
+param location string = 'Global'
 param priVnetId string
 param serviceIp string
 param branch string
@@ -18,12 +17,12 @@ var tags = {
   'stack-sub-name': 'demo'
 }
 
-var priNetworkPrefix = toLower('${prefix}-${primary_location}')
+var priNetworkPrefix = toLower('${prefix}-global')
 
 resource privatednszone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: 'contoso.com'
   tags: tags
-  location: primary_location
+  location: location
   properties: {
     
   }
@@ -46,7 +45,7 @@ resource demoARecord 'Microsoft.Network/privateDnsZones/A@2020-06-01' = {
 resource dnsvnetlinkprimary 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
   name: '${priNetworkPrefix}-vnetlink'
   parent: privatednszone
-  location: primary_location
+  location: location
   properties: {
     registrationEnabled: false
     virtualNetwork: { 
