@@ -7,6 +7,7 @@ param serviceIp string
 param branch string
 param version string
 
+
 var stackName = '${prefix}${appEnvironment}'
 var tags = {
   'stack-name': 'cch-aks'
