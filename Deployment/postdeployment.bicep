@@ -89,7 +89,7 @@ resource aksprofile 'Microsoft.Cdn/profiles/afdendpoints@2021-06-01' = {
 
 resource aksprend 'Microsoft.Cdn/profiles/afdendpoints@2021-06-01' = {
   parent: ftd
-  name: '${aksprofile}-endpoint'
+  name: '${stackName}-endpoint'
   location: location
   tags: tags
   properties: {
