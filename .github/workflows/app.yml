@@ -113,6 +113,7 @@ jobs:
       queueName: ${{ steps.build_env.outputs.queueName }}
       priVnetId: ${{ steps.resolve-networking-shared-resources.outputs.priVnetId }}
       resourceGroup: ${{ steps.resolve-networking-shared-resources.outputs.resourceGroup }}
+      location: ${{ steps.resolve-shared-resources.outputs.location }}
 
   deploy_apps:
     name: Deploy apps
@@ -143,16 +144,19 @@ jobs:
         run: |
           .\ResolveNetworkSharedResources.ps1
 
-      - name: Build DNS Zone
-        id: build_dnszone
+      - name: Post Deployment
+        id: build_postdeployment
         uses: azure/arm-deploy@v1
         with:
-          deploymentName: "deploy-dnszone-${{ github.run_number }}"
+          deploymentName: "deploy-postdeployment-${{ github.run_number }}"
           resourceGroupName: ${{ needs.cd_deploy.outputs.resourceGroup }}
-          template: ./deployment/privatednszone.bicep
+          template: ./deployment/postdeployment.bicep
           parameters: >
             priVnetId=${{ steps.resolve-networking-shared-resources.outputs.priVnetId }}
             serviceIp=${{ steps.deploy_apps.outputs.serviceip }}
+            branch=${{ github.ref }}
+            version=${{ github.run_number }}
+            location=${{ needs.cd_deploy.outputs.location }}
 
   deploy_db:
     name: Deploy database
