@@ -80,7 +80,7 @@ resource ftd 'Microsoft.Cdn/profiles@2021-06-01' = {
 
 resource aksprofile 'Microsoft.Cdn/profiles/afdendpoints@2021-06-01' = {
   parent: ftd
-  name: 'aks'
+  name: '${stackName}-aks'
   location: location
   tags: tags
   properties: {
@@ -156,6 +156,18 @@ resource wafpolicy 'Microsoft.Cdn/cdnWebApplicationFirewallPolicies@2021-06-01' 
   location: location
   sku: {
     name: 'Standard_AzureFrontDoor'
+  }
+  properties:{
+    policySettings:{
+      enabledState: 'Enabled'
+      mode: 'Detection'
+    }
+    customRules:{
+      rules: []
+    }
+    managedRules:{
+      managedRuleSets: []
+    }
   }
 }
 
