@@ -1,4 +1,4 @@
-[Main](README.md) | [Internal Customer Service Web App](APP.md) | [Real-time API Data Ingestion](AKS.md) | [ETL Batch Transaction File processing](DATAFACTORY.md)
+[Main](README.md) | [Internal Customer Service Web App](APP.md) | [Real-time API Data Ingestion](AKS.md)
 
 # Introduction
 Azure Blueprint allows the Contoso IT team to create the necessary guardrails for their Development team to be successful. 

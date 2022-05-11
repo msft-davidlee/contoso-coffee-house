@@ -24,11 +24,10 @@ CCH started a Loyalty Program about 10 years ago where every $1 purchase would e
 * Security MUST be a priority and we should design with zero trust in mind.
 
 # Demo Environment
-There will be three solutions created as part of the demo. The first solution represents the existing solution in place today while second and third solutions are designed to meet the new business requirements. 
+The following are solutions created as part of the demo. The first solution represents the existing solution in place today while second solution is designed to meet the new business requirements. 
 
 1. [Internal Customer Service Web App with a backend points-for-rewards jobs processing (Frontdoor, AKS, SQL, Functions, Service Bus and AAD)](APP.md)
 2. [Real-time API Data Ingestion to award points API Microservice (Frontdoor, AKS, SQL, APIM and AAD)](AKS.md)
-3. [ETL Batch Transaction File processing for reconciliation of awarding points (Storage, DataFactory, SQL, AKS, APIM and AAD)](DATAFACTORY.md)
 
 # Setting up the Demo Environment
 Follow the steps below to create the demo environment in your own Azure Subscription. Be sure to review prerequisites first!

@@ -313,33 +313,6 @@ resource apiMonitoring 'Microsoft.ApiManagement/service/apis/diagnostics@2021-08
   }
 }
 
-// resource apiMonitoring 'Microsoft.ApiManagement/service/apis/diagnostics@2020-06-01-preview' = {
-//   name: '${apimanagementApi.name}/applicationinsights'
-//   properties: {
-//     alwaysLog: 'allErrors'
-//     loggerId: appInsightsAPIManagement.id  
-//     logClientIp: true
-//     httpCorrelationProtocol: 'W3C'
-//     verbosity: 'information'
-//     operationNameFormat: 'Url'
-//   }
-// }
-
-resource adf 'Microsoft.DataFactory/factories@2018-06-01' = {
-  name: '${stackName}-ADF'
-  location: location
-  tags: tags
-  identity: {
-    type: 'SystemAssigned,UserAssigned'
-    userAssignedIdentities: {
-      '${aksMSIId}': {
-        clientId: MIClientId
-        principalId: MIPrincipalId
-      }
-    }
-  }
-}
-
 output aksName string = aks.name
 output sqlserver string = sql.outputs.sqlFqdn
 output sqlusername string = sqlUsername

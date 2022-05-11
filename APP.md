@@ -1,4 +1,4 @@
-[Main](README.md) | [Real-time API Data Ingestion](AKS.md) | [ETL Batch Transaction File processing](DATAFACTORY.md)
+[Main](README.md) | [Real-time API Data Ingestion](AKS.md)
 
 # Internal Customer Service Web App with a backend points-for-rewards jobs processing (Frontdoor, AKS, SQL, Functions, Service Bus and AAD
 This solution consist of an internal Customer Service Web App with a backend points-for-rewards jobs processing. This solution consist of the following components: Frontdoor, AKS, SQL, Functions, Service Bus and AAD.

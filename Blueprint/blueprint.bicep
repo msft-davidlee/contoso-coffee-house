@@ -45,16 +45,6 @@ var rgs = [
     createManagedIdentity: true
     allResourcesDoNotDeleteInDev: true
   }
-  {
-    name: 'cch-apim'
-    tags: {
-      'stack-name': 'cch-apim'
-      'stack-environment': stackEnvironment
-      'stack-sub-name': 'cch-demo'
-    }
-    createManagedIdentity: true
-    allResourcesDoNotDeleteInDev: true
-  }
 ]
 
 // It would be great to use the same blueprint and we should, but it doesn't seem that we can create a loop
