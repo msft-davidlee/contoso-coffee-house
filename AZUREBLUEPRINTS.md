@@ -36,7 +36,7 @@ DeployBlueprint.ps1 -SVC_PRINCIPAL_ID <Object Id for Contoso Coffee House GitHub
 9. We will need to create an App Registration to represent your API. I recommand creating a different AAD tenant instead of using your CORP AAD tenant to avoid permission/setup issues. If you have a VS Subscription, you probably already associate that with your own AAD tenant which would be a good one to use. You should also note that as part of Azure Blueprint deployment, you have an existing Azure Key Vault created which you need to use in a moment. For now, use the following:
     1. Name: **Contoso Customer Service Rewards API**
     2. Under *Expose an API*, create the following Application ID URI: **api://contoso-cs-rewards-api** and create the following scope: **Points.List**
-    3. Under *App roles*, create the following App roles **Access API**
+    3. Under *App roles*, create the following App roles **Access API**. In Allowed Member types, configure **Applications** and in value, use **app_access**.
     4. Save Client Id in the Azure Key Vault with key as **contoso-customer-service-aad-app-client-id**
     5. Save the following value *api://contoso-cs-rewards-api/.default* with key as **contoso-customer-service-aad-scope** in Azure Key Vault.
     6. Save the tenant Id of AAD with key as **contoso-customer-service-aad-tenant-id** in Azure Key Vault.
