@@ -6,7 +6,6 @@ param serviceIp string
 param branch string
 param version string
 
-
 var stackName = '${prefix}${appEnvironment}'
 var tags = {
   'stack-name': 'cch-aks'
@@ -17,19 +16,8 @@ var tags = {
   'stack-sub-name': 'demo'
 }
 
-resource profiles_cch_frontdoor_name_resource 'Microsoft.Cdn/profiles@2021-06-01' = {
-  name: '${stackName}-FD'
-  location: location
-  sku: {
-    name: 'Standard_AzureFrontDoor'
-  }
-  properties: {
-    originResponseTimeoutSeconds: 60
-  }
-}
-
 resource ftd 'Microsoft.Cdn/profiles@2021-06-01' = {
-  name: '${stackName}-FTD'
+  name: stackName
   location: location
   tags: tags
   sku: {
@@ -119,15 +107,15 @@ resource wafpolicy 'Microsoft.Network/FrontDoorWebApplicationFirewallPolicies@20
   sku: {
     name: 'Standard_AzureFrontDoor'
   }
-  properties:{
-    policySettings:{
+  properties: {
+    policySettings: {
       enabledState: 'Enabled'
       mode: 'Detection'
     }
-    customRules:{
+    customRules: {
       rules: []
     }
-    managedRules:{
+    managedRules: {
       managedRuleSets: []
     }
   }
@@ -175,7 +163,7 @@ resource akspolicy 'Microsoft.Cdn/profiles/securitypolicies@2021-06-01' = {
 
 resource WAFpolicy 'Microsoft.Cdn/profiles/securitypolicies@2021-06-01' = {
   parent: ftd
-  name: '${stackName}-WAF-policy'
+  name: '${stackName}waf'
   properties: {
     parameters: {
       wafPolicy: {
