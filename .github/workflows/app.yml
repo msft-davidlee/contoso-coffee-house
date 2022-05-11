@@ -114,6 +114,7 @@ jobs:
       priVnetId: ${{ steps.resolve-networking-shared-resources.outputs.priVnetId }}
       resourceGroup: ${{ steps.resolve-networking-shared-resources.outputs.resourceGroup }}
       location: ${{ steps.resolve-shared-resources.outputs.location }}
+      resourceGroupafd: ${{ steps.resolve-shared-resources.outputs.appResourceGroup }}
 
   deploy_apps:
     name: Deploy apps
@@ -144,15 +145,27 @@ jobs:
         run: |
           .\ResolveNetworkSharedResources.ps1
 
-      - name: Post Deployment
-        id: build_postdeployment
+      - name: Private DNS Zone Deployment
+        id: build_privatednszone
         uses: azure/arm-deploy@v1
         with:
           deploymentName: "deploy-postdeployment-${{ github.run_number }}"
           resourceGroupName: ${{ needs.cd_deploy.outputs.resourceGroup }}
-          template: ./deployment/postdeployment.bicep
+          template: ./deployment/privatedns.bicep
           parameters: >
             priVnetId=${{ steps.resolve-networking-shared-resources.outputs.priVnetId }}
+            serviceIp=${{ steps.deploy_apps.outputs.serviceip }}
+            branch=${{ github.ref }}
+            version=${{ github.run_number }}
+
+      - name: Front Door Deployment
+        id: build_frontdoor
+        uses: azure/arm-deploy@v1
+        with:
+          deploymentName: "deploy-postdeployment-${{ github.run_number }}"
+          resourceGroupName: ${{ needs.cd_deploy.outputs.resourceGroupafd }}
+          template: ./deployment/frontdoor.bicep
+          parameters: >
             serviceIp=${{ steps.deploy_apps.outputs.serviceip }}
             branch=${{ github.ref }}
             version=${{ github.run_number }}
