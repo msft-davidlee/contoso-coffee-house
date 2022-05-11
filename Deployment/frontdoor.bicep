@@ -102,7 +102,7 @@ resource akspath 'Microsoft.Cdn/profiles/origingroups/origins@2021-06-01' = {
 }
 
 resource wafpolicy 'Microsoft.Network/FrontDoorWebApplicationFirewallPolicies@2020-11-01' = {
-  name: '${stackName}-WAF-Policy'
+  name: '${stackName}waf'
   location: location
   sku: {
     name: 'Standard_AzureFrontDoor'
@@ -188,7 +188,7 @@ resource WAFpolicy 'Microsoft.Cdn/profiles/securitypolicies@2021-06-01' = {
 
 resource defaultroute 'Microsoft.Cdn/profiles/afdendpoints/routes@2021-06-01' = {
   parent: aksprofile
-  name: '${stackName}-default-route'
+  name: '${stackName}defaultroute'
   properties: {
     customDomains: []
     originGroup: {
@@ -211,7 +211,7 @@ resource defaultroute 'Microsoft.Cdn/profiles/afdendpoints/routes@2021-06-01' = 
 
 resource aksroute 'Microsoft.Cdn/profiles/afdendpoints/routes@2021-06-01' = {
   parent: aksprofile
-  name: '${stackName}-aks-route'
+  name: '${stackName}aksroute'
   properties: {
     customDomains: []
     originGroup: {
