@@ -9,11 +9,16 @@ This project contains a app.yaml file located in the Deployment directory which 
 From a code scanning perspective, the workflows/codeql-analysis.yml contains the code language known as Code QL that specify the scanning parameters such as language and scanning triggers. 
 
 ## Steps
-1. Create the secret(s) in your github dev environment as defined in secrets section below. Be sure to populate with your desired values from the previous steps.
-2. Create a branch named demo or dev ```git branch checkout -b demo``` and push into your git remote repo to kick off the CI process because it is tied to the name of the git branch: ```git push```
-3. You will need to run the CompleteSetup.ps1 script manually in CloudShell or your local Azure CLI ONCE the github action executed successfully.
-4. To check if everything is setup successfully, review the script output for any errors.
-5. Update your local host file to point to the public ip.
+1. Create an environment called dev in GitHub secrets. 
+2. Create the following secrets as shown in thr secrets section below which are populate with some of the same values as in the shared Azure Key Vault.
+    1. The client Id comes from the **Contoso Coffee House GitHub** app registration.
+    2. The client secret can be generated from the  **Contoso Coffee House GitHub**.
+    3. Use the subscription Id of your Azure Subscription.
+    4. Use the tenant Id of your Azure AAD.
+3. Create a branch named demo or dev ```git branch checkout -b demo``` and push into your git remote repo to kick off the CI process because it is tied to the name of the git branch: ```git push```
+4. You will need to run the CompleteSetup.ps1 script manually in CloudShell or your local Azure CLI ONCE the github action executed successfully.
+5. To check if everything is setup successfully, review the script output for any errors.
+6. Update your local host file to point to the public ip.
 
 ## Secrets
 | Name | Value |
