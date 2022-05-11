@@ -10,7 +10,7 @@ Azure Blueprint allows the Contoso IT team to create the necessary guardrails fo
 # Setup
 Please follow the steps below to deploy the Azure Blueprint into your Azure Subscription. Note that you will either need to use CloudShell or ensure Azure CLI is installed locally.
 
-1. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this git repo locally.
+1. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this git repo.
 2. Next, we will execute a blueprint deployment to create our environment which consists of shared resources, networking and application resource groups and take care of RBAC. The first step is to create a Service Principal which is assigned into each resource group. Take note of the tenant Id, appId and password.
 ```
 az ad sp create-for-rbac -n "Contoso Coffee House GitHub"
