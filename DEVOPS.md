@@ -15,7 +15,8 @@ From a code scanning perspective, the workflows/codeql-analysis.yml contains the
     2. The client secret can be generated from the  **Contoso Coffee House GitHub**.
     3. Use the subscription Id of your Azure Subscription.
     4. Use the tenant Id of your Azure AAD.
-3. Create a branch named demo or dev ```git branch checkout -b demo``` and push into your git remote repo to kick off the CI process because it is tied to the name of the git branch: ```git push```
+3. Create a branch named demo or dev ```git branch checkout -b demo``` and push into your git remote repo to kick off the CI process. Because you forked, you may see the following and it should be good to enable to workflow.
+![Enable workflow](/doc/enableworkflow.png)
 4. You will need to run the CompleteSetup.ps1 script manually in CloudShell or your local Azure CLI ONCE the github action executed successfully.
 5. To check if everything is setup successfully, review the script output for any errors.
 6. Update your local host file to point to the public ip.
