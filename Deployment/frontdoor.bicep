@@ -113,7 +113,7 @@ resource akspath 'Microsoft.Cdn/profiles/origingroups/origins@2021-06-01' = {
   }
 }
 
-resource wafpolicy 'Microsoft.Cdn/cdnWebApplicationFirewallPolicies@2021-06-01' = {
+resource wafpolicy 'Microsoft.Network/FrontDoorWebApplicationFirewallPolicies@2020-11-01' = {
   name: '${stackName}-WAF-Policy'
   location: location
   sku: {
