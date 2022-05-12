@@ -45,4 +45,4 @@ Follow the steps below to review specific demo pieces.
 ![GitHub Enterprise Advance Security](/doc/GHEAdvanceSecurity.png)
 
 ## Next step
-[Internal Customer Service Web App](APP.md) OR [Real-time API Data Ingestion](AKS.md)
+[Customer Service Web App](APP.md) OR [Real-time API Data Ingestion](AKS.md)

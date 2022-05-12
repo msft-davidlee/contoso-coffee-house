@@ -26,7 +26,7 @@ CCH started a Loyalty Program about 10 years ago where every $1 purchase would e
 # Demo Environment
 The following are solutions created as part of the demo. The first solution represents the existing solution in place today while second solution is designed to meet the new business requirements. 
 
-1. [Internal Customer Service Web App with a backend points-for-rewards jobs processing (Frontdoor, AKS, SQL, Functions, Service Bus and AAD)](APP.md)
+1. [Customer Service Web App with a backend points-for-rewards jobs processing (Frontdoor, AKS, SQL, Functions, Service Bus and AAD)](APP.md)
 2. [Real-time API Data Ingestion to award points API Microservice (Frontdoor, AKS, SQL, APIM and AAD)](AKS.md)
 
 # Setting up the Demo Environment
@@ -36,7 +36,7 @@ Follow the steps below to create the demo environment in your own Azure Subscrip
 1. Azure Subscription:
     * Owner Access to the Subscription where the solution will be running in.
     * Access to create App registrations in Azure Active Directory (AAD) which is associated with that Azure Subscription.
-    * For [Solution 1, Internal Customer Service Web App](APP.md), you will also need to access to a different Azure Active Directory for hosting CCH users i.e. the Customer Service Reps. to login from.
+    * For [Solution 1, Customer Service Web App](APP.md), you will also need to access to a different Azure Active Directory for hosting CCH users i.e. the Customer Service Reps. to login from.
 2. Azure CLI installed locally or Azure CloudShell configurd in your Azure Subscription.
 3. A GitHub account as we are planning to use GitHub Actions to drive CI/CD with it.
 

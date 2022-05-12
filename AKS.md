@@ -1,4 +1,4 @@
-[Main](README.md) | [Internal Customer Service Web App](APP.md)
+[Main](README.md) | [Customer Service Web App](APP.md)
 
 # Real-time Data Ingestion to award points API Microservice (Frontdoor, AKS, SQL, APIM and AAD)
 This solution consist of an real-time data ingestion API endpoint to award points via an internally hosted API Microservice. This solution consist of the following components: Frontdoor, AKS, SQL, APIM and AAD.
@@ -8,7 +8,7 @@ This solution consist of an real-time data ingestion API endpoint to award point
     1. The frontend API is protected by OAuth and we have created a validate-jwt policy to protect our API,
     2. The Point-Of-Sale Terminals will leverage Client Credentials Flow to get a bearer token from AAD with the provided Client ID and Secret.
 2. APIM is configured with the backend pointing to the domain of AKS Ingress Controller. 
-    1. We can refer to [Internal Customer Service Web App](APP.md) for more information related to that architecture.
+    1. We can refer to [Customer Service Web App](APP.md) for more information related to that architecture.
 3. Azure Frontdoor is protecting APIM which means Point-Of-Sale Terminals will need to invoke calls into Azure Frontdoor and not call it directly.
 
 ![Architecture](/Architecture/AKS.png)

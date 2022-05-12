@@ -1,7 +1,7 @@
 [Main](README.md) | [Real-time API Data Ingestion](AKS.md)
 
-# Internal Customer Service Web App with a backend points-for-rewards jobs processing (Frontdoor, AKS, SQL, Functions, Service Bus and AAD
-This solution consist of an internal Customer Service Web App with a backend points-for-rewards jobs processing. This solution consist of the following components: Frontdoor, AKS, SQL, Functions, Service Bus and AAD.
+# Customer Service Web App with a backend points-for-rewards jobs processing (Frontdoor, AKS, SQL, Functions, Service Bus and AAD
+This solution consist of a Customer Service Web App with a backend points-for-rewards jobs processing. This solution consist of the following components: Frontdoor, AKS, SQL, Functions, Service Bus and AAD.
 
 ## Architecture
 1. The solution has a frontend component that requires login from the Customer Service Rep.
