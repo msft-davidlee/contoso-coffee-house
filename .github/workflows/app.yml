@@ -105,8 +105,6 @@ jobs:
             subnetAPIMId=${{ steps.resolve-shared-resources.outputs.subnetAPIMId }}
             jwtConfigTenantId=${{ steps.resolve-shared-resources.outputs.jwtConfigTenantId }}
             jwtConfigAppId=${{ steps.resolve-shared-resources.outputs.jwtConfigAppId }}
-            MIClientId=${{ steps.resolve-shared-resources.outputs.managedIdentityClientId }}
-            MIPrincipalId=${{ steps.resolve-shared-resources.outputs.managedIdentityPrincipalId }}
     outputs:
       managedIdentityId: ${{ steps.build_env.outputs.managedIdentityId }}
       keyVaultName: ${{ steps.resolve-shared-resources.outputs.keyVaultName }}

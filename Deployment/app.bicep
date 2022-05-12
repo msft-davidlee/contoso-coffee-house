@@ -16,8 +16,6 @@ param publisherEmail string = 'rewards@contoso.com'
 param jwtConfigAppId string
 param jwtConfigTenantId string
 param urlapi string = 'demo.contoso.com'
-param MIClientId string
-param MIPrincipalId string
 
 var stackName = '${prefix}${appEnvironment}'
 var tags = {
@@ -257,15 +255,46 @@ resource rewardsapioperationspost 'Microsoft.ApiManagement/service/apis/operatio
   }
 }
 
-// resource rewardsapipostschema 'Microsoft.ApiManagement/service/schemas@2021-08-01' = {
-//   name: 'Payload'
-//   parent: apim
-//   properties: {
-//     description: 'request payload expected format'
-//     schemaType: 'json'
-//     document: any(loadTextContent('Payload.json'))
-//   }
-// }
+resource rewardsapipostschema 'Microsoft.ApiManagement/service/schemas@2021-08-01' = {
+  name: 'Payload'
+  parent: apim
+  properties: {
+    description: 'request payload expected format'
+    schemaType: 'json'
+    document: {
+      'type': 'object'
+      'properties': {
+        'memberId': {
+          'type': 'string'
+        }
+        'lineItems': {
+          'type': 'array'
+          'items': {
+            'type': 'object'
+            'properties': {
+              'sku': {
+                'type': 'string'
+              }
+              'roundedAmountSpent': {
+                'type': 'integer'
+              }
+            }
+            'required': [
+              'sku'
+              'roundedAmountSpent'
+            ]
+          }
+        }
+        'transactionId': {
+          'type': 'string'
+        }
+        'transactionDate': {
+          'type': 'string'
+        }
+      }
+    }
+  }
+}
 
 var rawValue = replace(loadTextContent('rewardsapi.xml'), '%urlapi%', urlapi)
 resource rewardpointsget 'Microsoft.ApiManagement/service/apis/operations/policies@2021-04-01-preview' = {

@@ -1,6 +1,7 @@
 # Use this script to deploy Blueprint which will create the necessary resource groups in your environment
 # and assigning the Contributor role to the Service principal in those resource groups.
 
+# Note that the prefix should be changed if there's a conflict.
 param(
     [string]$BUILD_ENV = "dev",
     [Parameter(Mandatory = $true)][string]$SVC_PRINCIPAL_ID,
