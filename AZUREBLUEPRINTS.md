@@ -36,7 +36,7 @@ DeployBlueprint.ps1 -SVC_PRINCIPAL_ID <Object Id for Contoso Coffee House GitHub
 9. We will need to create an App Registration to represent your API. I recommand creating a different AAD tenant instead of using your CORP AAD tenant to avoid permission/setup issues. If you have a VS Subscription, you probably already associate that with your own AAD tenant which would be a good one to use. You should also note that as part of Azure Blueprint deployment, you have an existing Azure Key Vault created which you need to use in a moment. For now, use the following:
     1. Name: **Contoso Customer Service Rewards API**
     2. Under *Expose an API*, create the following Application ID URI: **api://contoso-cs-rewards-api** and create the following scope: **Points.List**
-    3. Under *App roles*, create the following App roles **Access API**
+    3. Under *App roles*, create the following App roles **Access API**. In Allowed Member types, configure **Applications** and in value, use **app_access**.
     4. Save Client Id in the Azure Key Vault with key as **contoso-customer-service-aad-app-client-id**
     5. Save the following value *api://contoso-cs-rewards-api/.default* with key as **contoso-customer-service-aad-scope** in Azure Key Vault.
     6. Save the tenant Id of AAD with key as **contoso-customer-service-aad-tenant-id** in Azure Key Vault.
@@ -47,16 +47,16 @@ DeployBlueprint.ps1 -SVC_PRINCIPAL_ID <Object Id for Contoso Coffee House GitHub
     1. Name: **Contoso Customer Service Rewards API Client**
     2. Save Client Id in the Azure Key Vault with key as **contoso-customer-service-aad-postman-client-id**
     3. Under *Certificates & secrets*, create a client secret and save it in the Azure Key Vault with key as **contoso-customer-service-aad-postman-client-secret**
-    4. Under *API permissions*, we will add **Contoso Customer Service Rewards API** and grant admin constent. Next, we will do the same for **Access API**.
+    4. Under *API permissions*, we will add **Contoso Customer Service Rewards API** with **Application permissions** and ensure we pick the **app_access** permission and grant admin constent. Next, we will do the same for **Access API**.
 11. We will need to create an App Registration to represent your Web App. Use the following: 
     1. Name: **Contoso Customer Service Rewards Web**
     2. Authentication: Web
     3. Under Redirect URIs: Add https://demo.contoso.com/signin-oidc
-    4. Under *Select the tokens you would like to be issued by the authorization endpoint:*, choose **ID tokens**
-    5. Under *Who can use this application or access this API?*, choose **Accounts in this organizational directory only... Single tenant)**
+    4. Under *Who can use this application or access this API?*, choose **Accounts in this organizational directory only... Single tenant)**. Now we can save.
+    5. Under *Select the tokens you would like to be issued by the authorization endpoint:*, choose **ID tokens**    
     6. Save Client Id in the Azure Key Vault with key as **contoso-customer-service-aad-client-id**
-    7. Under *API permissions*, we will add **Contoso Customer Service Rewards API** and grant admin constent.
-    8. Under App roles, we will add 2 roles **Contoso Customer Service Supervisor** with value of **CS.Supervisor** and **Contoso Customer Service Agent** with value of **CS.Agent**. It is important to get the value correct as the .NET Web App is actually going to leverage them as part of what permissions the user has.
+    7. Under *API permissions*, we will add **Contoso Customer Service Rewards API** with with **Delegated permissions** and grant admin constent.
+    8. Under App roles, we will add 2 roles **Contoso Customer Service Supervisor** with value of **CS.Supervisor** and **Contoso Customer Service Agent** with value of **CS.Agent**. It is important to get the value correct as the .NET Web App is actually going to leverage them as part of what permissions the user has. Note that in both cases, we should specify Allowed member types as **Users/Groups**.
 12. Next, we should create a few test users. The goal here is we can assign users directly via Enterprise applications app roles or indirectly via Group assignments. As seen in the screenshot below, we can see the user *David Demo* assigned **Contoso Customer Service Supervisor**.
 ![Architecture](/doc/RoleAssignment.png)
 
