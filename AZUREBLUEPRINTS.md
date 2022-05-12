@@ -58,6 +58,7 @@ DeployBlueprint.ps1 -SVC_PRINCIPAL_ID <Object Id for Contoso Coffee House GitHub
     6. Save Client Id in the Azure Key Vault with key as **contoso-customer-service-aad-client-id**
     7. Under *API permissions*, we will add **Contoso Customer Service Rewards API** with with **Delegated permissions** and grant admin constent.
     8. Under App roles, we will add 2 roles **Contoso Customer Service Supervisor** with value of **CS.Supervisor** and **Contoso Customer Service Agent** with value of **CS.Agent**. It is important to get the value correct as the .NET Web App is actually going to leverage them as part of what permissions the user has. Note that in both cases, we should specify Allowed member types as **Users/Groups**.
+    9. We should create a secret for SQL password with key as **contoso-customer-service-sql-password** and value with any valid SQL password of our choice.
 12. Next, we should create a few test users. The goal here is we can assign users directly via Enterprise applications app roles or indirectly via Group assignments. As seen in the screenshot below, we can see the user *David Demo* assigned **Contoso Customer Service Supervisor**.
 ![Architecture](/doc/RoleAssignment.png)
 
