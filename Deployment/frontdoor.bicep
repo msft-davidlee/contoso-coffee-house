@@ -125,10 +125,10 @@ resource originpath 'Microsoft.Cdn/profiles/origingroups/origins@2021-06-01' = {
   parent: origindefault
   name: '${stackName}-originpath'
   properties: {
-    hostName: 'cch03dev-apim.azure-api.net'
+    hostName: '${stackName}-apim.azure-api.net'
     httpPort: 80
     httpsPort: 443
-    originHostHeader: 'cch03dev-apim.azure-api.net'
+    originHostHeader: '${stackName}-apim.azure-api.net'
     priority: 1
     weight: 1000
     enabledState: 'Enabled'
@@ -158,54 +158,6 @@ resource akspolicy 'Microsoft.Cdn/profiles/securitypolicies@2021-06-01' = {
       ]
       type: 'WebApplicationFirewall'
     }
-  }
-}
-
-resource WAFpolicy 'Microsoft.Cdn/profiles/securitypolicies@2021-06-01' = {
-  parent: ftd
-  name: '${stackName}waf'
-  properties: {
-    parameters: {
-      wafPolicy: {
-        id: wafpolicy.id
-      }
-      associations: [
-        {
-          domains: [
-            {
-              id: aksprend.id
-            }
-          ]
-          patternsToMatch: [
-            '/*'
-          ]
-        }
-      ]
-      type: 'WebApplicationFirewall'
-    }
-  }
-}
-
-resource defaultroute 'Microsoft.Cdn/profiles/afdendpoints/routes@2021-06-01' = {
-  parent: aksprofile
-  name: '${stackName}defaultroute'
-  properties: {
-    customDomains: []
-    originGroup: {
-      id: origindefault.id
-    }
-    ruleSets: []
-    supportedProtocols: [
-      'Http'
-      'Https'
-    ]
-    patternsToMatch: [
-      '/*'
-    ]
-    forwardingProtocol: 'MatchRequest'
-    linkToDefaultDomain: 'Enabled'
-    httpsRedirect: 'Enabled'
-    enabledState: 'Enabled'
   }
 }
 
