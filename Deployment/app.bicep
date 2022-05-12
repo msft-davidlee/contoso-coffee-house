@@ -16,8 +16,6 @@ param publisherEmail string = 'rewards@contoso.com'
 param jwtConfigAppId string
 param jwtConfigTenantId string
 param urlapi string = 'demo.contoso.com'
-param MIClientId string
-param MIPrincipalId string
 
 var stackName = '${prefix}${appEnvironment}'
 var tags = {
@@ -263,7 +261,7 @@ resource rewardsapipostschema 'Microsoft.ApiManagement/service/schemas@2021-08-0
   properties: {
     description: 'request payload expected format'
     schemaType: 'json'
-    document: any(loadTextContent('Payload.json'))
+    document: {}
   }
 }
 
