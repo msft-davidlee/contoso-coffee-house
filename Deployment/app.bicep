@@ -261,7 +261,38 @@ resource rewardsapipostschema 'Microsoft.ApiManagement/service/schemas@2021-08-0
   properties: {
     description: 'request payload expected format'
     schemaType: 'json'
-    document: {}
+    document: {
+      'type': 'object'
+      'properties': {
+        'memberId': {
+          'type': 'string'
+        }
+        'lineItems': {
+          'type': 'array'
+          'items': {
+            'type': 'object'
+            'properties': {
+              'sku': {
+                'type': 'string'
+              }
+              'roundedAmountSpent': {
+                'type': 'integer'
+              }
+            }
+            'required': [
+              'sku'
+              'roundedAmountSpent'
+            ]
+          }
+        }
+        'transactionId': {
+          'type': 'string'
+        }
+        'transactionDate': {
+          'type': 'string'
+        }
+      }
+    }
   }
 }
 
