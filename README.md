@@ -46,5 +46,12 @@ Follow the steps below to create the demo environment in your own Azure Subscrip
 3. Lastly, the DevOps engineer working closely with the Development team will develop the infrastrure-as-code (IaC) practices and we can follow the steps mentioned in: [DevOps (CI/CD) with GitHub Actions](DEVOPS.md).
 4. With that, the demo environment with the 3 solutions will be created. Note that there is potentially specific setup with each solution. Please review the specific solutions you are interested to demo/review to perform them as mentioned by the above step.
 
+# Cost Optimization
+The biggest cost for the solutions would be related to API calls coming in from POS Terminals given that would generate the load. Hence, we should consider the following for cost optimizations depending on the load. The customer service app is going to be predictable based on a relative fixed number of users.
+
+1. Picking the [right VM Size](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes) for the expected load
+2. Autoscale configuration of the min and max nodes via [Cluster autoscaler](https://docs.microsoft.com/en-us/azure/aks/cluster-autoscaler)
+3. Log Analytics Workspace usage and cost as we monitor the microservices as there might be unexpected based on large amount of log data due to API usage.
+
 ## Have an issue?
 You are welcome to create an issue if you need help but please note that there is no timeline to answer or resolve any issues you have with the contents of this project. Use the contents of this project at your own risk! If you are interested to volunteer to maintain this, please feel free to reach out to be added as a contributor and send Pull Requests (PR).
