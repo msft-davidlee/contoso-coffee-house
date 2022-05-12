@@ -26,7 +26,8 @@ az ad sp show --id <appId from the previous command> --query "objectId" | Conver
 az ad signed-in-user show --query 'objectId' | ConvertFrom-Json
 ```
 ![Get Signed In User Object Id](/doc/GetSignedInUserObjectId.png)
-5. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this git repo locally.
+
+5. Clone this git repo locally.
 6. We should cd into the blueprint directory and execute our blueprint.bicep with the following command.
 ```
 DeployBlueprint.ps1 -SVC_PRINCIPAL_ID <Object Id for Contoso Coffee House GitHub Service Principal> -MY_PRINCIPAL_ID <Object Id for your user>
