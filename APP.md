@@ -3,7 +3,7 @@
 # Customer Service Web App with a backend points-for-rewards jobs processing (Frontdoor, AKS, SQL, Functions, Service Bus and AAD
 This solution consist of a Customer Service Web App with a backend points-for-rewards jobs processing. This solution consist of the following components: Frontdoor, AKS, SQL, Functions, Service Bus and AAD.
 
-## Architecture
+## Logical Architecture
 1. The solution has a frontend component that requires login from the Customer Service Rep.
 2. The solution has an API service that will allow users to lookup members and consume rewards.
 3. When the Program changed, all members were assigned a new Member Id. However, not all members have transitioned to the new Program and may be using their old card. Hence, there is a Alternate Id Service that allows Customer Service Rep to search for the member using the old member Id. There will be a grace period and Contoso would like to retire the old member Id in 3 years.
@@ -11,6 +11,14 @@ This solution consist of a Customer Service Web App with a backend points-for-re
 5. In order to monitor the health of the system and ensure the SLA is met, there will be Application Monitoring created throughout the system.
 
 ![Architecture](/Architecture/APP.png)
+
+## Physical Architecture
+1. The AKS is configured with autoscaling. The cluster autoscaler watches for pods that can't be scheduled on nodes because of resource constraints. The cluster then automatically increases the number of nodes. VMSS is used under the hoods for this purpose which is not managed by users.
+2. For scaling the pods, we make use of Kubernetes Event Driven Autoscaler or KEDA. Under the hoods, KEDA makes use of the horizontal pod autoscaler or HPA. Promethus is used to monitor HTTP request and is used by HTTP triggered microservices for scaling.
+3. For accessing secrets such as database connection string in the microservices, we are using Azure Key Vault Provider for Secrets Store CSI Driver in an AKS cluster.
+4. Application insights is used for monitoring all microservices and provides an overall picture of the health and performance of the system.
+
+![Architecture](/Architecture/PhysicalArch.png)
 
 ## Other Considerations
 1. This solution employs a microservice architecture where we have the API and legacy API service in relation to the Member Id question. It may not make sense for the business to include the old Member Id as part of the new system as it will be retired in 3 years. As such, we are keeping the legacy API. Here, it may make sense to think about leveraging APIM so we have a consistent API experience for our microservice.
