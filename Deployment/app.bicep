@@ -203,7 +203,7 @@ resource backendapi 'Microsoft.ApiManagement/service/backends@2021-12-01-preview
     tls: {
       validateCertificateChain: false
     }
-    url: urlapi
+    url: 'https://${urlapi}'
   }
 }
 
