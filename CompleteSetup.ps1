@@ -34,3 +34,8 @@ kubectl get services -n myapps
 if ($LastExitCode -ne 0) {
     throw "An error has occured. Unable to list all services"
 }
+
+# $apims = az resource list --resource-type "Microsoft.ApiManagement/service" | ConvertFrom-Json
+# $apim = ($apims | Where-Object {$_.tags.'stack-name' -eq 'cch-aks' -and $_.tags.'stack-environment' -eq $BUILD_ENV})
+# $context = New-AzApiManagementContext -resourcegroup $apim.resourceGroup -servicename $apim.name
+# New-AzApiManagementBackend -Context $context -Url 'https://demo.contoso.com/' -Protocol http -SkipCertificateChainValidation $true

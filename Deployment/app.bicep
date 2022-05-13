@@ -195,6 +195,18 @@ resource apim 'Microsoft.ApiManagement/service@2021-08-01' = {
   }
 }
 
+resource backendapi 'Microsoft.ApiManagement/service/backends@2021-12-01-preview' = {
+  name: '${stackName}-backend'
+  parent: apim
+  properties: {
+    protocol: 'http'
+    tls: {
+      validateCertificateChain: false
+    }
+    url: urlapi
+  }
+}
+
 resource rewardsapi 'Microsoft.ApiManagement/service/apis@2021-08-01' = {
   parent: apim
   name: 'rewards-api'
@@ -296,7 +308,7 @@ resource rewardsapipostschema 'Microsoft.ApiManagement/service/schemas@2021-08-0
   }
 }
 
-var rawValue = replace(loadTextContent('rewardsapi.xml'), '%urlapi%', urlapi)
+var rawValue = replace(loadTextContent('rewardsapi.xml'), '%urlapi%', backendapi.properties.url)
 resource rewardpointsget 'Microsoft.ApiManagement/service/apis/operations/policies@2021-04-01-preview' = {
   parent: rewardsapioperations
   name: 'policy'
@@ -306,7 +318,7 @@ resource rewardpointsget 'Microsoft.ApiManagement/service/apis/operations/polici
   }
 }
 
-var rawValue2 = replace(replace(loadTextContent('rewardsapipost.xml'), '%urlapi%', urlapi), '%jsonformat%', 'Payload')
+var rawValue2 = replace(replace(loadTextContent('rewardsapipost.xml'), '%urlapi%', backendapi.properties.url), '%jsonformat%', 'Payload')
 resource rewardpointspost 'Microsoft.ApiManagement/service/apis/operations/policies@2021-04-01-preview' = {
   parent: rewardsapioperationspost
   name: 'policy'
