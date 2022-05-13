@@ -308,7 +308,7 @@ resource rewardsapipostschema 'Microsoft.ApiManagement/service/schemas@2021-08-0
   }
 }
 
-var rawValue = replace(loadTextContent('rewardsapi.xml'), '%urlapi%', backendapi.properties.url)
+var rawValue = replace(loadTextContent('rewardsapi.xml'), '%urlapi%', urlapi)
 resource rewardpointsget 'Microsoft.ApiManagement/service/apis/operations/policies@2021-04-01-preview' = {
   parent: rewardsapioperations
   name: 'policy'
@@ -318,7 +318,7 @@ resource rewardpointsget 'Microsoft.ApiManagement/service/apis/operations/polici
   }
 }
 
-var rawValue2 = replace(replace(loadTextContent('rewardsapipost.xml'), '%urlapi%', backendapi.properties.url), '%jsonformat%', 'Payload')
+var rawValue2 = replace(replace(loadTextContent('rewardsapipost.xml'), '%urlapi%', urlapi), '%jsonformat%', 'Payload')
 resource rewardpointspost 'Microsoft.ApiManagement/service/apis/operations/policies@2021-04-01-preview' = {
   parent: rewardsapioperationspost
   name: 'policy'
