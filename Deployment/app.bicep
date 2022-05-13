@@ -195,6 +195,18 @@ resource apim 'Microsoft.ApiManagement/service@2021-08-01' = {
   }
 }
 
+resource backendapi 'Microsoft.ApiManagement/service/backends@2021-12-01-preview' = {
+  name: '${stackName}-backend'
+  parent: apim
+  properties: {
+    protocol: 'http'
+    tls: {
+      validateCertificateChain: false
+    }
+    url: 'https://${urlapi}'
+  }
+}
+
 resource rewardsapi 'Microsoft.ApiManagement/service/apis@2021-08-01' = {
   parent: apim
   name: 'rewards-api'

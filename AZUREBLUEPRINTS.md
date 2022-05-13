@@ -44,6 +44,7 @@ DeployBlueprint.ps1 -SVC_PRINCIPAL_ID <Object Id for Contoso Coffee House GitHub
     7. Save the audience value of *api://contoso-cs-rewards-api* with key as **contoso-customer-service-aad-app-audience** in Azure Key Vault.
     8. Save the AAD Domain name with value of *YOURDOMAIN.onmicrosoft.com* with key as **contoso-customer-service-aad-domain**. Remember to replace YOURDOMAIN with your actual instance name!
     9. Save the Instance URI with value of *https://login.microsoftonline.com/* with key as **contoso-customer-service-aad-instance**
+    10. Create a secret called **contoso-customer-service-sql-password** on Azure Key Vault. Make sure you use a password compatible with SQL server.
 10. We will need to create an App Registration to represent your API Client such as for Postman during testing and other service-to-service communications. 
     1. Name: **Contoso Customer Service Rewards API Client**
     2. Save Client Id in the Azure Key Vault with key as **contoso-customer-service-aad-postman-client-id**
