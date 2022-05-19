@@ -124,6 +124,7 @@ if (!$testSecret) {
     }
 }
 
+
 $pipRes = GetResource -stackName cch-networking -stackEnvironment dev
 $pip = (az network public-ip show --ids $pipRes.id | ConvertFrom-Json)
 $ip = $pip.ipAddress    
