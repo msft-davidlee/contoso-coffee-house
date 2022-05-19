@@ -7,6 +7,7 @@ param sourceIp string
 param version string
 param lastUpdated string = utcNow('u')
 
+var stackName = '${prefix}${environment}'
 var priNetworkPrefix = toLower('${prefix}-${primary_location}')
 var drNetworkPrefix = toLower('${prefix}-${dr_location}')
 
@@ -316,3 +317,17 @@ resource associatedrnsg 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' =
     ] : []
   }
 }]
+
+resource aksStaticIP 'Microsoft.Network/publicIPAddresses@2021-08-01' = {
+  name: '${stackName}-publicip'
+  tags: tags
+  location: primary_location
+  sku: {
+    name: 'Standard'
+    tier: 'Regional'
+  }
+  properties: {
+    publicIPAllocationMethod: 'Static'
+    publicIPAddressVersion: 'IPv4'
+  }
+}
