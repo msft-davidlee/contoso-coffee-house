@@ -370,6 +370,7 @@ if ($LastExitCode -ne 0) {
     throw "An error has occured. Unable to get IP. Check to see if it is ready."
 }
 
+
 if (!$serviceip){
     throw "No service ip found. Check to see if it is ready."
 }
