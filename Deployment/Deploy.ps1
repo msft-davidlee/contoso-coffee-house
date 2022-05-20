@@ -374,3 +374,4 @@ if (!$serviceip){
     throw "No service ip found. Check to see if it is ready."
 }
 Write-Host "::set-output name=serviceip::$serviceip"
+
