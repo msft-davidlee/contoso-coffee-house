@@ -354,7 +354,7 @@ resource apiMonitoring 'Microsoft.ApiManagement/service/apis/diagnostics@2021-08
   }
 }
 var workspaceName = '${stackName}-databricks' 
-var managedResourceGroupName = 'databricks-rg-${workspaceName}-${uniqueString(workspaceName, resourceGroup().id)}'
+var managedResourceGroupName = 'databricks-rg-${workspaceName}-${uniqueString(resourceGroup().id)}'
 resource databricks 'Microsoft.Databricks/workspaces@2021-04-01-preview' = {
   name: workspaceName
   location: location
