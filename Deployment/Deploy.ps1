@@ -125,8 +125,13 @@ if (!$testSecret) {
 }
 
 
-$pipRes = GetResource -stackName cch-networking -stackEnvironment dev
-$pip = (az network public-ip show --ids $pipRes.id | ConvertFrom-Json)
+$pipResource = GetResource -stackName cch-networking -stackEnvironment dev
+foreach($p in $pipResource)`
+{
+    if($p.type -eq 'Microsoft.Network/publicIPAddresses')`
+    {$piprg = $p} `
+}
+$pip = (az network public-ip show --ids $piprg.id | ConvertFrom-Json)
 $ip = $pip.ipAddress    
 $ipFqdn = "democontosocoffee"
 $ipResGroup = $pipRes.resourceGroup
