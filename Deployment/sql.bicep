@@ -20,6 +20,7 @@ resource sql 'Microsoft.Sql/servers@2021-02-01-preview' = {
   }
 }
 
+
 var dbName = 'app'
 resource db 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
   name: dbName
