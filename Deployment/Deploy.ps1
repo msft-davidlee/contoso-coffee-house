@@ -134,7 +134,7 @@ foreach($p in $pipResource)`
 $pip = (az network public-ip show --ids $piprg.id | ConvertFrom-Json)
 $ip = $pip.ipAddress    
 $ipFqdn = "democontosocoffee"
-$ipResGroup = $pipRes.resourceGroup
+$ipResGroup = $piprg.resourceGroup
 
 Write-Host "Configure ingress with static IP: $ip $ipFqdn $ipResGroup"
     
