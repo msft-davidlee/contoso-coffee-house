@@ -353,8 +353,8 @@ resource apiMonitoring 'Microsoft.ApiManagement/service/apis/diagnostics@2021-08
     operationNameFormat: 'Url'
   }
 }
-var workspaceName = '${stackName}-databricks' 
-var managedResourceGroupName = 'databricks-rg-${workspaceName}-${uniqueString(resourceGroup().id)}'
+var workspaceName = '${stackName}bricks' 
+var managedResourceGroupName = 'databricks-rg-${workspaceName}-${uniqueString(workspaceName, resourceGroup().id)}'
 resource databricks 'Microsoft.Databricks/workspaces@2021-04-01-preview' = {
   name: workspaceName
   location: location
@@ -363,7 +363,7 @@ resource databricks 'Microsoft.Databricks/workspaces@2021-04-01-preview' = {
     name: 'standard'
   }
   properties: {
-    managedResourceGroupId: managedResourceGroupName
+    managedResourceGroupId: subscriptionResourceId('Microsoft.Resources/resourceGroups', managedResourceGroupName)
   }
 }
 
