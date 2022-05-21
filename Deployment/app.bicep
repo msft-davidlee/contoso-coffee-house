@@ -366,7 +366,6 @@ resource databricks 'Microsoft.Databricks/workspaces@2021-04-01-preview' = {
     managedResourceGroupId: subscriptionResourceId('Microsoft.Resources/resourceGroups', managedResourceGroupName)
   }
 }
-
 output aksName string = aks.name
 output sqlserver string = sql.outputs.sqlFqdn
 output sqlusername string = sqlUsername
