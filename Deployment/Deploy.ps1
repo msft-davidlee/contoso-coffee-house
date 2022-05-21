@@ -363,15 +363,3 @@ kubectl apply -f ".\backendservicebus.yaml" --namespace $namespace
 if ($LastExitCode -ne 0) {
     throw "An error has occured. Unable to deploy service bus keda scaler."
 }
-
-# Step 12: Output ip address
-# $serviceip = kubectl get ing demo-ingress -n $namespace -o jsonpath='{.status.loadBalancer.ingress[*].ip}'
-# if ($LastExitCode -ne 0) {
-#     throw "An error has occured. Unable to get IP. Check to see if it is ready."
-# }
-
-
-# if (!$serviceip){
-#     throw "No service ip found. Check to see if it is ready."
-# }
-# Write-Host "::set-output name=serviceip::$serviceip"
