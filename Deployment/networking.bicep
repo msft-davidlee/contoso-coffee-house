@@ -331,3 +331,5 @@ resource aksStaticIP 'Microsoft.Network/publicIPAddresses@2021-08-01' = {
     publicIPAddressVersion: 'IPv4'
   }
 }
+
+output serviceIp string = aksStaticIP.properties.ipAddress

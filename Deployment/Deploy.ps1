@@ -124,11 +124,17 @@ if (!$testSecret) {
     }
 }
 
-$pipRes = GetResource -stackName cch-networking -stackEnvironment dev
-$pip = (az network public-ip show --ids $pipRes.id | ConvertFrom-Json)
+
+$pipResource = GetResource -stackName cch-networking -stackEnvironment dev
+foreach($p in $pipResource)`
+{
+    if($p.type -eq 'Microsoft.Network/publicIPAddresses')`
+    {$piprg = $p} `
+}
+$pip = (az network public-ip show --ids $piprg.id | ConvertFrom-Json)
 $ip = $pip.ipAddress    
-$ipFqdn = "democontosocoffee"
-$ipResGroup = $pipRes.resourceGroup
+$ipFqdn = "contosocoffeehouse"
+$ipResGroup = $piprg.resourceGroup
 
 Write-Host "Configure ingress with static IP: $ip $ipFqdn $ipResGroup"
     
@@ -357,14 +363,3 @@ kubectl apply -f ".\backendservicebus.yaml" --namespace $namespace
 if ($LastExitCode -ne 0) {
     throw "An error has occured. Unable to deploy service bus keda scaler."
 }
-
-# Step 12: Output ip address
-$serviceip = kubectl get ing demo-ingress -n $namespace -o jsonpath='{.status.loadBalancer.ingress[*].ip}'
-if ($LastExitCode -ne 0) {
-    throw "An error has occured. Unable to get IP. Check to see if it is ready."
-}
-
-if (!$serviceip){
-    throw "No service ip found. Check to see if it is ready."
-}
-Write-Host "::set-output name=serviceip::$serviceip"

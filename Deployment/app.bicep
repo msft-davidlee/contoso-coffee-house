@@ -353,7 +353,19 @@ resource apiMonitoring 'Microsoft.ApiManagement/service/apis/diagnostics@2021-08
     operationNameFormat: 'Url'
   }
 }
-
+var workspaceName = '${stackName}bricks' 
+var managedResourceGroupName = 'databricks-rg-${workspaceName}-${uniqueString(workspaceName, resourceGroup().id)}'
+resource databricks 'Microsoft.Databricks/workspaces@2021-04-01-preview' = {
+  name: workspaceName
+  location: location
+  tags: tags
+  sku: {
+    name: 'standard'
+  }
+  properties: {
+    managedResourceGroupId: subscriptionResourceId('Microsoft.Resources/resourceGroups', managedResourceGroupName)
+  }
+}
 output aksName string = aks.name
 output sqlserver string = sql.outputs.sqlFqdn
 output sqlusername string = sqlUsername
