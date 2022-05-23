@@ -3,7 +3,7 @@ $ErrorActionPreference = "Stop"
 $BUILD_ENV = 'dev'
 
 $groups = az group list --tag stack-environment=$BUILD_ENV | ConvertFrom-Json
-$resourceGroupName = ($groups | Where-Object { $_.tags.'stack-name' -eq 'cch-aks' -and $_.tags.'stack-environment' -eq $BUILD_ENV -and !($_.tags.'aks-managed-cluster-name') }).name
+$resourceGroupName = ($groups | Where-Object { $_.tags.'stack-name' -eq 'cch-aks' -and $_.tags.'stack-environment' -eq $BUILD_ENV -and !($_.name.StartsWith("databricks")) -and !($_.tags.'aks-managed-cluster-name') }).name
 $aks = (az resource list -g $resourceGroupName --resource-type "Microsoft.ContainerService/managedClusters" | ConvertFrom-Json)[0]
 az aks get-credentials -n $aks.name -g $resourceGroupName --overwrite-existing
 $acr = (az resource list --tag stack-name='cch-shared-container-registry' | ConvertFrom-Json)[0]
