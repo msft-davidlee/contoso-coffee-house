@@ -44,7 +44,7 @@ Follow the steps below to create the demo environment in your own Azure Subscrip
 1. As an Azure Subscription Owner/ Administrator, we will need to establish a landing zone as well as AAD setup with the following step: [Governance with Azure Blueprint](AZUREBLUEPRINTS.md)
 2. Next, the Development team will be responsible for writing the code. As a quick note, this step is **OPTIONAL**! For this part, We can optionally review [Local .NET development](LOCALDEV.md) which speaks to how *you*, as a developer can setup local development for the .NET solution. As an example, you can make a code change and see the CI/CD run from start to end.
 3. Lastly, the DevOps engineer working closely with the Development team will develop the infrastrure-as-code (IaC) practices and we can follow the steps mentioned in: [DevOps (CI/CD) with GitHub Actions](DEVOPS.md).
-4. With that, the demo environment with the 3 solutions will be created. Note that there is potentially specific setup with each solution. Please review the specific solutions you are interested to demo/review to perform them as mentioned by the above step.
+4. With that, the demo environment with the solutions will be created. Note that there is potentially specific setup with each solution. Please review the specific solutions you are interested to demo/review to perform them as mentioned by the above step.
 
 # Cost Optimization
 The biggest cost for the solutions would be related to API calls coming in from POS Terminals given that would generate the load. Hence, we should consider the following for cost optimizations depending on the load. The customer service app is going to be predictable based on a relative fixed number of users.
