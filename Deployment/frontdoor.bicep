@@ -17,7 +17,7 @@ var tags = {
 }
 
 resource ftd 'Microsoft.Cdn/profiles@2021-06-01' = {
-  name: stackName
+  name: '${stackName}-afd'
   location: location
   tags: tags
   sku: {
@@ -27,10 +27,10 @@ resource ftd 'Microsoft.Cdn/profiles@2021-06-01' = {
     originResponseTimeoutSeconds: 60
   }
 }
-
+var aksendpoint = '${stackName}-aks-${uniqueString(resourceGroup().id)}'
 resource aksprofile 'Microsoft.Cdn/profiles/afdendpoints@2021-06-01' = {
   parent: ftd
-  name: '${stackName}-aks'
+  name: aksendpoint
   location: location
   tags: tags
   properties: {
@@ -38,9 +38,10 @@ resource aksprofile 'Microsoft.Cdn/profiles/afdendpoints@2021-06-01' = {
   }
 }
 
+var aksprendendpoint = '${stackName}-endpoint-${uniqueString(resourceGroup().id)}'
 resource aksprend 'Microsoft.Cdn/profiles/afdendpoints@2021-06-01' = {
   parent: ftd
-  name: '${stackName}-endpoint'
+  name: aksprendendpoint
   location: location
   tags: tags
   properties: {
