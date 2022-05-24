@@ -256,6 +256,17 @@ resource rewardsapioperations 'Microsoft.ApiManagement/service/apis/operations@2
   }
 }
 
+resource rewardsapioperationshealth 'Microsoft.ApiManagement/service/apis/operations@2021-08-01' = {
+  parent: rewardsapi
+  name: 'rewards-api-operations-health'
+  properties: {
+    description: 'Use this operation to probe service health.'
+    displayName: 'Probe Service Health'
+    method: 'GET'
+    urlTemplate: 'health'
+  }
+}
+
 resource rewardsapioperationspost 'Microsoft.ApiManagement/service/apis/operations@2021-08-01' = {
   parent: rewardsapi
   name: 'rewards-api-operations-post'
@@ -314,6 +325,16 @@ resource rewardpointsget 'Microsoft.ApiManagement/service/apis/operations/polici
   name: 'policy'
   properties: {
     value: rawValue
+    format: 'rawxml'
+  }
+}
+
+var rawValuehealth = replace(loadTextContent('rewardsapimhealth.xml'), '%urlapi%', urlapi)
+resource rewardpointshealth 'Microsoft.ApiManagement/service/apis/operations/policies@2021-04-01-preview' = {
+  parent: rewardsapioperationshealth
+  name: 'policy'
+  properties: {
+    value: rawValuehealth
     format: 'rawxml'
   }
 }
