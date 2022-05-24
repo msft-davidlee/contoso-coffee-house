@@ -28,10 +28,10 @@ resource ftd 'Microsoft.Cdn/profiles@2021-06-01' = {
     originResponseTimeoutSeconds: 60
   }
 }
-var aksendpoint = '${stackName}-aks-${uniqueString(resourceGroup().id)}'
-resource aksprofile 'Microsoft.Cdn/profiles/afdendpoints@2021-06-01' = {
+var aksafd = '${stackName}-aks-${uniqueString(resourceGroup().id)}'
+resource aksendpoint 'Microsoft.Cdn/profiles/afdendpoints@2021-06-01' = {
   parent: ftd
-  name: aksendpoint
+  name: aksafd
   location: location
   tags: tags
   properties: {
@@ -150,7 +150,7 @@ resource akspolicy 'Microsoft.Cdn/profiles/securitypolicies@2021-06-01' = {
         {
           domains: [
             {
-              id: aksprofile.id
+              id: aksendpoint.id
             }
           ]
           patternsToMatch: [
@@ -164,8 +164,8 @@ resource akspolicy 'Microsoft.Cdn/profiles/securitypolicies@2021-06-01' = {
 }
 
 resource aksroute 'Microsoft.Cdn/profiles/afdendpoints/routes@2021-06-01' = {
-  parent: aksprofile
-  name: apimurl
+  parent: aksendpoint
+  name: '${stackName}aksroute'
   properties: {
     customDomains: []
     originGroup: {
