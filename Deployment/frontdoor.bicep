@@ -5,6 +5,7 @@ param location string = 'Global'
 param serviceIp string
 param branch string
 param version string
+param apimurl string
 
 var stackName = '${prefix}${appEnvironment}'
 var tags = {
@@ -164,7 +165,7 @@ resource akspolicy 'Microsoft.Cdn/profiles/securitypolicies@2021-06-01' = {
 
 resource aksroute 'Microsoft.Cdn/profiles/afdendpoints/routes@2021-06-01' = {
   parent: aksprofile
-  name: '${stackName}aksroute'
+  name: apimurl
   properties: {
     customDomains: []
     originGroup: {

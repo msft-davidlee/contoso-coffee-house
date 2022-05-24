@@ -1,6 +1,5 @@
 <policies>
     <inbound>
-        <base />
         <rewrite-uri template="health" />
         <set-backend-service base-url="https://%urlapi%/" />
     </inbound>

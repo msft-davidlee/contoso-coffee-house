@@ -211,7 +211,7 @@ resource rewardsapi 'Microsoft.ApiManagement/service/apis@2021-08-01' = {
   parent: apim
   name: 'rewards-api'
   properties: {
-    subscriptionRequired: true
+    subscriptionRequired: false
     subscriptionKeyParameterNames: {
       header: 'Ocp-Apim-Subscription-Key'
       query: 'subscription-key'
@@ -423,3 +423,4 @@ output backendappStorageName string = backendappStr.name
 output backend string = backendapp
 output aadinstance string = environment().authentication.loginEndpoint
 output stackname string = stackName
+output apimurl string = apim.properties.gatewayUrl
