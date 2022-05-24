@@ -1,11 +1,10 @@
-param prefix string = 'platform'
+param prefix string
 param appEnvironment string = 'dev'
 param lastUpdated string = utcNow('u')
 param location string = 'Global'
 param serviceIp string
 param branch string
 param version string
-param apimurl string
 
 var stackName = '${prefix}${appEnvironment}'
 var tags = {
@@ -110,7 +109,7 @@ resource originpath 'Microsoft.Cdn/profiles/origingroups/origins@2021-06-01' = {
     hostName: '${stackName}-apim.azure-api.net'
     httpPort: 80
     httpsPort: 443
-    originHostHeader: apimurl
+    originHostHeader: '${stackName}-apim.azure-api.net'
     priority: 1
     weight: 1000
     enabledState: 'Enabled'

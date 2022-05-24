@@ -114,7 +114,6 @@ jobs:
       location: ${{ steps.resolve-shared-resources.outputs.location }}
       resourceGroupafd: ${{ steps.resolve-shared-resources.outputs.appResourceGroup }}
       serviceIp: ${{ steps.build_networking.outputs.serviceIp }}
-      apimurl: ${{ steps.build_env.outputs.apimurl }}
 
   deploy_apps:
     name: Deploy apps
@@ -169,7 +168,7 @@ jobs:
             serviceIp=${{ needs.cd_deploy.outputs.serviceIp }}
             branch=${{ github.ref }}
             version=${{ github.run_number }}
-            apimurl=${{ needs.cd_deploy.outputs.apimurl }}
+            prefix=${{ secrets.PREFIX }}
 
   deploy_db:
     name: Deploy database
