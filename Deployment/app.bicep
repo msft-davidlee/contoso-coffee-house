@@ -423,4 +423,4 @@ output backendappStorageName string = backendappStr.name
 output backend string = backendapp
 output aadinstance string = environment().authentication.loginEndpoint
 output stackname string = stackName
-output apimurl string = apim.properties.gatewayUrl
+output apimurl string = apim.properties.gatewayRegionalUrl
