@@ -110,7 +110,7 @@ resource originpath 'Microsoft.Cdn/profiles/origingroups/origins@2021-06-01' = {
     hostName: '${stackName}-apim.azure-api.net'
     httpPort: 80
     httpsPort: 443
-    originHostHeader: '${stackName}-apim.azure-api.net'
+    originHostHeader: apimurl
     priority: 1
     weight: 1000
     enabledState: 'Enabled'
@@ -151,6 +151,9 @@ resource akspolicy 'Microsoft.Cdn/profiles/securitypolicies@2021-06-01' = {
           domains: [
             {
               id: aksendpoint.id
+            }
+            {
+              id: apimendpoint.id
             }
           ]
           patternsToMatch: [
