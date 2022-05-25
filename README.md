@@ -9,7 +9,7 @@ CCH started a Loyalty Program about 10 years ago where every $1 purchase would e
 
 * Customers sign up for free.
 * Customers can exchange for items in Store with help from Barista which means manual work via a Customer Service webapp to lookup member and select the exchange item. The Customer service web app is already using Azure Active Directory for signing in employees. For some items, a Partner will be handling the order and ship item to the member. Partner will manage the inventory so if an item is not available, the system will notify immediately.
-* Customer can order in store today and get points awarded within 7 days. This is because the full Transaction Log from each store is pushed in weekly usually on the weekend and a backend system would award points so it can be used.
+* Customer can order in store today and get points awarded within 7 days. This is because the full Transaction Log from each store is pushed in weekly usually on the weekend and a on-premise backend system with limitations in capacity would award points so it can be used.
 * The solutions needs to be avaliable for over 1000 stores located in North America (US and Canada).
 * The solutions needs to be avaliable during store operation hours which is between 5 AM to 11:00 PM CST.
 
