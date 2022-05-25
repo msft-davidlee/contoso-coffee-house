@@ -28,6 +28,7 @@ The following are solutions created as part of the demo. The first solution repr
 
 1. [Customer Service Web App with a backend points-for-rewards jobs processing (Frontdoor, AKS, SQL, Functions, Service Bus and AAD)](APP.md)
 2. [Real-time API Data Ingestion to award points API Microservice (Frontdoor, AKS, SQL, APIM and AAD)](AKS.md)
+3. [Batch Ingestion of Transaction Log File sent to API Microservice (Frontdoor, AKS, SQL, APIM, AAD and Databricks)](BATCHPROCESSING.md)
 
 # Setting up the Demo Environment
 Follow the steps below to create the demo environment in your own Azure Subscription. Be sure to review prerequisites first!
