@@ -19,7 +19,7 @@ CCH started a Loyalty Program about 10 years ago where every $1 purchase would e
 * Customers can also make an order from website, although this is less than 1%.
 
 ### New Business Requirements
-* Contoso Coffee House would like to consider real-time award of points to increase member satisfaction with the program and perhaps additional purchases because of potential to get more points. One thought is that the Point-Of-Sale could forward transaction.
+* Contoso Coffee House would like to consider real-time award of points to increase member satisfaction with the program and perhaps additional purchases because of potential to get more points. One thought is that the Point-Of-Sale could forward transaction. If there's an issue with internet connectivity in the store or a region, there needs to be a catch up process that can scale to meet any processing demands.
 * Would like to at some point collobrate with other organizations with similar loyalty program so points can be award from them either real-time or maybe based on schedule from their transaction logs. For example, if the customer buys a particular item from a vendor with a specific SKU, there could be double points awarded.
 * Security MUST be a priority and we should design with zero trust in mind.
 
