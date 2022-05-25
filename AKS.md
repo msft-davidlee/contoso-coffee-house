@@ -13,7 +13,7 @@ This solution consist of an real-time data ingestion API endpoint to award point
 
 ![Architecture](/Architecture/AKS.png)
 
-# APIM Demo with Postman
+# APIM + AFD Demo with Postman
 1. Install [Postman](https://www.postman.com/downloads/) if it is not yet installed. 
 2. Import Test\PointsAPI.postman_collection.json into your Postman
 3. Create the following environment variables. Note that you should have these information in Azure Key Vault which was configured in a [previous step](/AZUREBLUEPRINTS.md).
