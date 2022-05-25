@@ -22,7 +22,7 @@ This solution consist of an real-time data ingestion API endpoint to award point
     3. ClientSecret
     4. SubscriptionKey (This comes from APIM, not Azure Key Vault)
 4. Now you can execute the *Client Credentials Flow* step to get the token.
-5. Change the URL from *https://demo.contoso.com* to the URL of APIM for both the *Get points* and *Award Points From Transaction* steps.
+5. Change the URL from *https://demo.contoso.com* to the URL of Azure Front Door for both the *Get points* and *Award Points From Transaction* steps.
 6. Next, you can execute the *Get points* step to get the points using a Member Id.
 7. Lastly, you can execute the *Award Points From Transaction* step and see points being awarded.
 8. You can review Application Insights Application Map to review the traffic flow. Note that it could take several minutes before the Application Map shows the traffic flow.
