@@ -24,7 +24,7 @@ CCH started a Loyalty Program about 10 years ago where every $1 purchase would e
 * Security MUST be a priority and we should design with zero trust in mind.
 
 # Demo Environment
-The following are solutions created as part of the demo. The first solution represents the existing solution in place today while second solution is designed to meet the new business requirements. 
+The following are solutions created as part of the demo. The first solution represents the existing solution in place today while the second and third solution are designed to meet the new business requirements. 
 
 1. [Customer Service Web App with a backend points-for-rewards jobs processing (Frontdoor, AKS, SQL, Functions, Service Bus and AAD)](APP.md)
 2. [Real-time API Data Ingestion to award points API Microservice (Frontdoor, AKS, SQL, APIM and AAD)](AKS.md)

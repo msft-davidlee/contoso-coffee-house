@@ -1,0 +1,15 @@
+<policies>
+    <inbound>
+        <rewrite-uri template="health" />
+        <set-backend-service base-url="https://%urlapi%/" />
+    </inbound>
+    <backend>
+        <forward-request timeout="10" />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

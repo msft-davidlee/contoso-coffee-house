@@ -168,6 +168,7 @@ jobs:
             serviceIp=${{ needs.cd_deploy.outputs.serviceIp }}
             branch=${{ github.ref }}
             version=${{ github.run_number }}
+            prefix=${{ secrets.PREFIX }}
 
   deploy_db:
     name: Deploy database

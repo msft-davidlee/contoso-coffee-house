@@ -1,4 +1,4 @@
-param prefix string = 'platform'
+param prefix string
 param appEnvironment string = 'dev'
 param lastUpdated string = utcNow('u')
 param location string = 'Global'
@@ -17,7 +17,7 @@ var tags = {
 }
 
 resource ftd 'Microsoft.Cdn/profiles@2021-06-01' = {
-  name: stackName
+  name: '${stackName}-afd'
   location: location
   tags: tags
   sku: {
@@ -27,10 +27,10 @@ resource ftd 'Microsoft.Cdn/profiles@2021-06-01' = {
     originResponseTimeoutSeconds: 60
   }
 }
-
-resource aksprofile 'Microsoft.Cdn/profiles/afdendpoints@2021-06-01' = {
+var aksafd = '${stackName}-aks-${uniqueString(resourceGroup().id)}'
+resource aksendpoint 'Microsoft.Cdn/profiles/afdendpoints@2021-06-01' = {
   parent: ftd
-  name: '${stackName}-aks'
+  name: aksafd
   location: location
   tags: tags
   properties: {
@@ -38,9 +38,10 @@ resource aksprofile 'Microsoft.Cdn/profiles/afdendpoints@2021-06-01' = {
   }
 }
 
-resource aksprend 'Microsoft.Cdn/profiles/afdendpoints@2021-06-01' = {
+var apimafd = '${stackName}-endpoint-${uniqueString(resourceGroup().id)}'
+resource apimendpoint 'Microsoft.Cdn/profiles/afdendpoints@2021-06-01' = {
   parent: ftd
-  name: '${stackName}-endpoint'
+  name: apimafd
   location: location
   tags: tags
   properties: {
@@ -58,8 +59,8 @@ resource originaks 'Microsoft.Cdn/profiles/origingroups@2021-06-01' = {
       additionalLatencyInMilliseconds: 50
     }
     healthProbeSettings: {
-      probePath: '/'
-      probeRequestType: 'HEAD'
+      probePath: '/health'
+      probeRequestType: 'GET'
       probeProtocol: 'Http'
       probeIntervalInSeconds: 240
     }
@@ -67,9 +68,9 @@ resource originaks 'Microsoft.Cdn/profiles/origingroups@2021-06-01' = {
   }
 }
 
-resource origindefault 'Microsoft.Cdn/profiles/origingroups@2021-06-01' = {
+resource originapim 'Microsoft.Cdn/profiles/origingroups@2021-06-01' = {
   parent: ftd
-  name: '${stackName}-default'
+  name: '${stackName}-apim'
   properties: {
     loadBalancingSettings: {
       sampleSize: 4
@@ -77,8 +78,8 @@ resource origindefault 'Microsoft.Cdn/profiles/origingroups@2021-06-01' = {
       additionalLatencyInMilliseconds: 50
     }
     healthProbeSettings: {
-      probePath: '/'
-      probeRequestType: 'HEAD'
+      probePath: '/rewards/health'
+      probeRequestType: 'GET'
       probeProtocol: 'Http'
       probeIntervalInSeconds: 100
     }
@@ -93,7 +94,22 @@ resource akspath 'Microsoft.Cdn/profiles/origingroups/origins@2021-06-01' = {
     hostName: serviceIp
     httpPort: 80
     httpsPort: 443
-    originHostHeader: serviceIp
+    originHostHeader: 'demo.contoso.com'
+    priority: 1
+    weight: 1000
+    enabledState: 'Enabled'
+    enforceCertificateNameCheck: true
+  }
+}
+
+resource originpath 'Microsoft.Cdn/profiles/origingroups/origins@2021-06-01' = {
+  parent: originapim
+  name: '${stackName}-originpath'
+  properties: {
+    hostName: '${stackName}-apim.azure-api.net'
+    httpPort: 80
+    httpsPort: 443
+    originHostHeader: '${stackName}-apim.azure-api.net'
     priority: 1
     weight: 1000
     enabledState: 'Enabled'
@@ -121,21 +137,6 @@ resource wafpolicy 'Microsoft.Network/FrontDoorWebApplicationFirewallPolicies@20
   }
 }
 
-resource originpath 'Microsoft.Cdn/profiles/origingroups/origins@2021-06-01' = {
-  parent: origindefault
-  name: '${stackName}-originpath'
-  properties: {
-    hostName: '${stackName}-apim.azure-api.net'
-    httpPort: 80
-    httpsPort: 443
-    originHostHeader: '${stackName}-apim.azure-api.net'
-    priority: 1
-    weight: 1000
-    enabledState: 'Enabled'
-    enforceCertificateNameCheck: true
-  }
-}
-
 resource akspolicy 'Microsoft.Cdn/profiles/securitypolicies@2021-06-01' = {
   parent: ftd
   name: '${stackName}-aks-policy'
@@ -148,7 +149,10 @@ resource akspolicy 'Microsoft.Cdn/profiles/securitypolicies@2021-06-01' = {
         {
           domains: [
             {
-              id: aksprofile.id
+              id: aksendpoint.id
+            }
+            {
+              id: apimendpoint.id
             }
           ]
           patternsToMatch: [
@@ -162,12 +166,35 @@ resource akspolicy 'Microsoft.Cdn/profiles/securitypolicies@2021-06-01' = {
 }
 
 resource aksroute 'Microsoft.Cdn/profiles/afdendpoints/routes@2021-06-01' = {
-  parent: aksprofile
+  parent: aksendpoint
   name: '${stackName}aksroute'
   properties: {
     customDomains: []
     originGroup: {
       id: originaks.id
+    }
+    ruleSets: []
+    supportedProtocols: [
+      'Http'
+      'Https'
+    ]
+    patternsToMatch: [
+      '/*'
+    ]
+    forwardingProtocol: 'MatchRequest'
+    linkToDefaultDomain: 'Enabled'
+    httpsRedirect: 'Enabled'
+    enabledState: 'Enabled'
+  }
+}
+
+resource apimroute 'Microsoft.Cdn/profiles/afdendpoints/routes@2021-06-01' = {
+  parent: apimendpoint
+  name: '${stackName}apimroute'
+  properties: {
+    customDomains: []
+    originGroup: {
+      id: originapim.id
     }
     ruleSets: []
     supportedProtocols: [
